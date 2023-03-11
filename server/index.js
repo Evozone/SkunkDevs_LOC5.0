@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const uuid4 = require('uuid4');
 const { Server } = require('socket.io');
-
+const crypto = require('crypto');
 const userRouter = require('./routes/user.js');
 const roomsRouter = require('./routes/room.js');
 const blogRouter = require('./routes/blog.js');
@@ -26,6 +26,7 @@ app.use(express.json({ limit: '10MB' }));
 app.use('/api/blog', blogRouter);
 app.use('/api/user', userRouter);
 app.use('/api/rooms', roomsRouter);
+// app.user('/api/explore', exploreRouter);
 
 app.get('/mtoken', (req, res) => {
     var app_access_key = process.env.HMS_ACCESS_KEY;
@@ -58,6 +59,25 @@ app.get('/mtoken', (req, res) => {
             data: { error },
         });
     }
+});
+
+app.get('/auth', (req, res) => {
+    const privateKey = 'private_FcAC/N5RyIU4uPWUJhfPNKn8TY0=';
+    const now = Math.floor(Date.now() / 1000); // Current Unix timestamp in seconds
+    const expire = now + 3400;
+    const signature = crypto
+        .createHmac('sha1', privateKey)
+        .update(`${now}.${expire}` + expire)
+        .digest('hex')
+        .toLowerCase();
+
+    const response = {
+        signature,
+        token: `${now}.${expire}`,
+        expire,
+    };
+
+    res.json(response);
 });
 
 app.get('/', (req, res) => {

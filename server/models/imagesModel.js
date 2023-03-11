@@ -2,18 +2,10 @@ const mongoose = require('mongoose');
 
 const imagesSchema = new mongoose.Schema({
     imageUrl: {
-        public_id: {
-            type: String,
-            required: true,
-        },
-        url: {
-            type: String,
-            required: true,
-        },
+        type: String,
     },
     altText: {
         type: String,
-        required: true,
     },
     tags: [
         {
@@ -21,12 +13,11 @@ const imagesSchema = new mongoose.Schema({
         },
     ],
     createdBy: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
     createdAt: {
-        type: Date,
-        default: Date.now,
+        type: String,
     },
     uid: {
         type: String,
@@ -36,16 +27,14 @@ const imagesSchema = new mongoose.Schema({
     comments: [
         {
             commentBy: {
-                type: Schema.Types.ObjectId,
+                type: mongoose.Schema.Types.ObjectId,
                 ref: 'User',
             },
             commentAt: {
-                type: Date,
-                default: Date.now,
+                type: String,
             },
             commentText: {
                 type: String,
-                required: true,
             },
         },
     ],
