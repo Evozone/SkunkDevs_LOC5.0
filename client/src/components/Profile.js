@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 import { Button, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -8,17 +8,54 @@ import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import LinearProgress from "@mui/material/LinearProgress";
-import Snackbar from "@mui/material/Snackbar";
-
+import LinearProgress from '@mui/material/LinearProgress';
+import Snackbar from '@mui/material/Snackbar';
+import jwtDecode from 'jwt-decode';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import PinterestIcon from '@mui/icons-material/Pinterest';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import {
-    lMode1, lMode2, lMode3, lMode4, lMode5, lMode6, dMode1, dMode2, dMode3, dMode4, dMode5, dMode6
+    lMode1,
+    lMode2,
+    lMode3,
+    lMode4,
+    lMode5,
+    lMode6,
+    dMode1,
+    dMode2,
+    dMode3,
+    dMode4,
+    dMode5,
+    dMode6,
 } from '../utils/colors';
 import { border } from '@mui/system';
-
+import { useLocation } from 'react-router-dom';
 export default function Profile() {
-
+    const location = useLocation();
+    const token = location.state.token;
+    console.log(token);
+    const { sub: uid, email, name, picture: photoURL } = jwtDecode(token);
+    const username = email.split('@')[0];
+    const [formData, setFormData] = useState({
+        name: name,
+        email,
+        uid,
+        socialLinks: {
+            twitter: '',
+            instagram: '',
+            pinterest: '',
+            portfolio: '',
+        },
+        bio: '',
+        username,
+        role: '',
+        skill_level: '',
+        location: '',
+        pinnedPostRef: [],
+    });
+    console.log(formData);
     const [file, setFile] = useState(null);
     const [uploading, setUploading] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -27,21 +64,24 @@ export default function Profile() {
         setFile(e.target.files[0]);
     };
 
-    const handleUpload = async () => {
-        if (file) {
-            setUploading(true);
-            // upload file using axios or fetch
-            // simulate upload progress
-            setTimeout(() => {
-                setUploading(false);
-                setSuccess(true);
-            }, 3000);
-        }
+    // const handleUpload = async () => {
+    //     if (file) {
+    //         setUploading(true);
+    //         // upload file using axios or fetch
+    //         // simulate upload progress
+    //         // setTimeout(() => {
+    //         //     setUploading(false);
+    //         //     setSuccess(true);
+    //         // }, 3000);
+    //     // }
+    // };
+    const formSubmit = (e) => {
+        e.preventDeafults();
     };
-
-    const token = localStorage.getItem('photoApp');
-    console.log(token);
-
+    const handleLevelChange = (event) => {
+        setFormData({ ...formData, skill_level: event.target.value });
+    };
+    console.log(formData);
     return (
         <Box
             sx={{
@@ -68,7 +108,8 @@ export default function Profile() {
                     p: 2,
                 }}
             >
-                <Stack spacing={1}
+                <Stack
+                    spacing={1}
                     sx={{
                         display: 'flex',
                         flexDirection: 'column',
@@ -80,7 +121,15 @@ export default function Profile() {
                         p: 2,
                     }}
                 >
-                    <img style={{ 'borderRadius': '50%', 'height': '250px', 'width': '250px' }} src="https://picsum.photos/300/300" alt="Profile Picture" />
+                    <img
+                        style={{
+                            borderRadius: '50%',
+                            height: '250px',
+                            width: '250px',
+                        }}
+                        src={photoURL}
+                        alt='Profile Picture'
+                    />
                     <Typography
                         variant='h5'
                         sx={{
@@ -88,15 +137,15 @@ export default function Profile() {
                             fontWeight: 'bold',
                         }}
                     >
-                        Bhargav Modak
+                        {name}
                     </Typography>
                     <Typography
                         variant='p'
                         sx={{
-                            color: lMode3
+                            color: lMode3,
                         }}
                     >
-                        bhargav0modak@gmail.com
+                        {email}
                     </Typography>
 
                     <Box
@@ -112,29 +161,23 @@ export default function Profile() {
                         <Typography
                             variant='p'
                             sx={{
-                                color: lMode5
+                                color: lMode5,
                             }}
                         >
-                            Skill Level
+                            Skill Level &nbsp;&nbsp;
                         </Typography>
                         <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            label="Age"
-                            value={10}
-
-                            sx={{
-                                color: lMode5,
-                                backgroundColor: lMode1,
-                                marginLeft: '10px',
-                                border: '1px solid #000000',
-                            }}
-
-                        // onChange={handleChange}
+                            labelId='demo-simple-select-helper-label'
+                            id='demo-simple-select-helper'
+                            value={
+                                formData.skill_level.length !== 0
+                                    ? formData.skill_level
+                                    : 10
+                            }
+                            onChange={handleLevelChange}
                         >
                             <MenuItem value={10}>Beginner</MenuItem>
-                            <MenuItem value={20}>Average</MenuItem>
-                            <MenuItem value={30}>Intermediate</MenuItem>
+                            <MenuItem value={20}>Intermediate</MenuItem>
                             <MenuItem value={30}>Professional</MenuItem>
                         </Select>
                     </Box>
@@ -153,22 +196,33 @@ export default function Profile() {
                         <Typography
                             variant='p'
                             sx={{
-                                color: lMode5
+                                color: lMode5,
                             }}
                         >
                             Location
                         </Typography>
 
-                        <TextField id="outlined-basic" label="Location" variant="outlined" sx={{
-                            color: lMode5,
-                            backgroundColor: lMode1,
-                            marginLeft: '10px',
-                        }} />
+                        <TextField
+                            id='outlined-basic'
+                            label='Location'
+                            variant='outlined'
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formData,
+                                    location: e.target.value,
+                                })
+                            }
+                            sx={{
+                                color: lMode5,
+                                backgroundColor: lMode1,
+                                marginLeft: '10px',
+                            }}
+                        />
                     </Box>
                 </Stack>
-            </Box >
+            </Box>
             {/* Right part with Name, type of user and photo */}
-            < Box
+            <Box
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -177,8 +231,7 @@ export default function Profile() {
                     height: '100%',
                     width: '70%',
                     backgroundColor: lMode6,
-                }
-                }
+                }}
             >
                 <Box
                     sx={{
@@ -199,11 +252,17 @@ export default function Profile() {
                     >
                         I am a
                         <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            label="User Type"
-                            value={10}
-
+                            labelId='demo-simple-select-label'
+                            id='demo-simple-select'
+                            value={
+                                formData.role.length !== 0 ? formData.role : 10
+                            }
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formData,
+                                    role: e.target.value,
+                                })
+                            }
                             sx={{
                                 color: lMode1,
                                 backgroundColor: lMode6,
@@ -217,8 +276,8 @@ export default function Profile() {
                                 },
                             }}
                         >
-                            <MenuItem value={10}>Photographer</MenuItem>
-                            <MenuItem value={20}>User</MenuItem>
+                            <MenuItem value={10}>Explorer</MenuItem>
+                            <MenuItem value={20}>Photographer</MenuItem>
                         </Select>
                     </Typography>
 
@@ -233,8 +292,8 @@ export default function Profile() {
                     >
                         {/* Bio */}
                         <TextField
-                            id="outlined-multiline-static"
-                            label="About Yourself"
+                            id='outlined-multiline-static'
+                            label='About Yourself'
                             multiline
                             rows={4}
                             sx={{
@@ -242,12 +301,22 @@ export default function Profile() {
                                     color: 'black',
                                 },
                             }}
+                            value={formData.bio}
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formData,
+                                    bio: e.target.value,
+                                })
+                            }
                         />
 
                         {/* Social Media Links */}
                         {/* Create a 2 x 2 grid using MUI Grid */}
 
-                        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                        <Grid
+                            container
+                            rowSpacing={1}
+                            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
                             sx={{
                                 display: 'flex',
                                 flexDirection: 'row',
@@ -259,27 +328,127 @@ export default function Profile() {
                             }}
                         >
                             <Grid item xs={6}>
-                                <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                                    <AccountCircle sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                                    <TextField id="input-with-sx" label="LinkedIn" variant="standard" />
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'flex-end',
+                                    }}
+                                >
+                                    <TwitterIcon
+                                        sx={{
+                                            color: 'action.active',
+                                            mr: 1,
+                                            my: 0.5,
+                                        }}
+                                    />
+                                    <TextField
+                                        id='input-with-sx'
+                                        label='Twitter'
+                                        variant='standard'
+                                        value={formData.socialLinks.twitter}
+                                        onChange={(e) =>
+                                            setFormData({
+                                                ...formData,
+                                                socialLinks: {
+                                                    ...formData.socialLinks,
+                                                    twitter: e.target.value,
+                                                },
+                                            })
+                                        }
+                                    />
                                 </Box>
                             </Grid>
                             <Grid item xs={6}>
-                                <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                                    <AccountCircle sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                                    <TextField id="input-with-sx" label="Twitter" variant="standard" />
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'flex-end',
+                                    }}
+                                >
+                                    <InstagramIcon
+                                        sx={{
+                                            color: 'action.active',
+                                            mr: 1,
+                                            my: 0.5,
+                                        }}
+                                    />
+                                    <TextField
+                                        id='input-with-sx'
+                                        label='Instagram'
+                                        variant='standard'
+                                        value={formData.socialLinks.instagram}
+                                        onChange={(e) =>
+                                            setFormData({
+                                                ...formData,
+                                                socialLinks: {
+                                                    ...formData.socialLinks,
+                                                    instagram: e.target.value,
+                                                },
+                                            })
+                                        }
+                                    />
                                 </Box>
                             </Grid>
                             <Grid item xs={6}>
-                                <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                                    <AccountCircle sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                                    <TextField id="input-with-sx" label="Pintrest" variant="standard" />
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'flex-end',
+                                    }}
+                                >
+                                    <PinterestIcon
+                                        sx={{
+                                            color: 'action.active',
+                                            mr: 1,
+                                            my: 0.5,
+                                        }}
+                                    />
+                                    <TextField
+                                        id='input-with-sx'
+                                        label='Pinterest'
+                                        variant='standard'
+                                        value={formData.socialLinks.pinterest}
+                                        onChange={(e) =>
+                                            setFormData({
+                                                ...formData,
+                                                socialLinks: {
+                                                    ...formData.socialLinks,
+                                                    pinterest: e.target.value,
+                                                },
+                                            })
+                                        }
+                                    />
                                 </Box>
                             </Grid>
                             <Grid item xs={6}>
-                                <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-                                    <AccountCircle sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-                                    <TextField id="input-with-sx" label="Website" variant="standard" />
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'flex-end',
+                                    }}
+                                >
+                                    <AccountCircle
+                                        sx={{
+                                            color: 'action.active',
+                                            mr: 1,
+                                            my: 0.5,
+                                        }}
+                                    />
+                                    <TextField
+                                        id='input-with-sx'
+                                        label='Portfolio'
+                                        variant='standard'
+                                        value={formData.socialLinks.portfolio}
+                                        onChange={(e) =>
+                                            setFormData({
+                                                ...formData,
+                                                socialLinks: {
+                                                    ...formData.socialLinks,
+                                                    portfolio: e.target.value,
+                                                },
+                                            })
+                                        }
+                                    />
                                 </Box>
                             </Grid>
                         </Grid>
@@ -306,35 +475,31 @@ export default function Profile() {
                                 Upload your best photos
                             </Typography>
 
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'flex-start',
-                                    width: '100%',
-                                    p: 2,
-                                    my: 2,
-                                    borderRadius: '10px',
-                                    backgroundColor: lMode1,
-                                }}
-                            >
+                            <Stack spacing={2}>
                                 <input
-                                    accept="image/*"
-                                    style={{ display: "none" }}
-                                    id="file-input"
-                                    type="file"
+                                    accept='image/*'
+                                    style={{ display: 'none' }}
+                                    id='file-input'
+                                    type='file'
                                     onChange={handleFileChange}
                                 />
-                                <label htmlFor="file-input">
-                                    <Button variant="contained" component="span">
+                                <label htmlFor='file-input'>
+                                    <Button
+                                        variant='contained'
+                                        component='span'
+                                    >
                                         Choose File
                                     </Button>
                                 </label>
                                 {file && (
                                     <>
-                                        <Typography variant="body1">{file.name}</Typography>
-                                        <Button variant="contained" color="primary" onClick={handleUpload}>
+                                        <Typography variant='body1'>
+                                            {file.name}
+                                        </Typography>
+                                        <Button
+                                            variant='contained'
+                                            color='primary'
+                                        >
                                             Upload
                                         </Button>
                                     </>
@@ -344,24 +509,33 @@ export default function Profile() {
                                     open={success}
                                     autoHideDuration={6000}
                                     onClose={() => setSuccess(false)}
-                                    message="File uploaded successfully"
+                                    message='File uploaded successfully'
                                 />
                                 <input
-                                    accept="image/*"
-                                    style={{ display: "none" }}
-                                    id="file-input"
-                                    type="file"
+                                    accept='image/*'
+                                    style={{ display: 'none' }}
+                                    id='file-input'
+                                    type='file'
                                     onChange={handleFileChange}
                                 />
-                                <label htmlFor="file-input">
-                                    <Button variant="contained" component="span">
+                                <label htmlFor='file-input'>
+                                    <Button
+                                        variant='contained'
+                                        component='span'
+                                    >
                                         Choose File
                                     </Button>
                                 </label>
                                 {file && (
                                     <>
-                                        <Typography variant="body1">{file.name}</Typography>
-                                        <Button variant="contained" color="primary" onClick={handleUpload}>
+                                        <Typography variant='body1'>
+                                            {file.name}
+                                        </Typography>
+                                        <Button
+                                            variant='contained'
+                                            color='primary'
+                                            // onClick={handleUpload}
+                                        >
                                             Upload
                                         </Button>
                                     </>
@@ -371,9 +545,9 @@ export default function Profile() {
                                     open={success}
                                     autoHideDuration={6000}
                                     onClose={() => setSuccess(false)}
-                                    message="File uploaded successfully"
+                                    message='File uploaded successfully'
                                 />
-                            </Box>
+                            </Stack>
                         </Box>
 
                         {/* Save Button */}
@@ -389,7 +563,7 @@ export default function Profile() {
                             }}
                         >
                             <Button
-                                variant="contained"
+                                variant='contained'
                                 sx={{
                                     backgroundColor: lMode1,
                                     color: lMode3,
@@ -399,13 +573,15 @@ export default function Profile() {
                                         color: lMode3,
                                     },
                                 }}
+                                onSubmit={formSubmit}
+                                fullWidth
                             >
                                 Save
                             </Button>
                         </Box>
                     </Box>
                 </Box>
-            </Box >
-        </ Box >
+            </Box>
+        </Box>
     );
 }

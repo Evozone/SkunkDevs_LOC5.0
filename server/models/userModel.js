@@ -13,6 +13,10 @@ const socialLinksSchema = new mongoose.Schema({
         type: String,
         default: '',
     },
+    portfolio: {
+        type: String,
+        default: '',
+    },
 });
 
 const userSchema = new mongoose.Schema({
@@ -45,6 +49,9 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         default: 'explorer',
+    },
+    location: {
+        type: String,
     },
     skill_level: {
         type: String,

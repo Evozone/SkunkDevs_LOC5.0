@@ -12,7 +12,24 @@ import {
     stopLoadingAction,
 } from '../actions/actions';
 
-import { lMode1, lMode2, lMode3, lMode4, lMode5, lMode6, light, deepDark, richBlack, dMode1, bluegrey, dMode2, dMode3, dMode4, dMode5, dMode6 } from '../utils/colors';
+import {
+    lMode1,
+    lMode2,
+    lMode3,
+    lMode4,
+    lMode5,
+    lMode6,
+    light,
+    deepDark,
+    richBlack,
+    dMode1,
+    bluegrey,
+    dMode2,
+    dMode3,
+    dMode4,
+    dMode5,
+    dMode6,
+} from '../utils/colors';
 
 const GoogleOneTapLogin = () => {
     const navigate = useNavigate();
@@ -26,8 +43,6 @@ const GoogleOneTapLogin = () => {
     const handleResponse = async (response) => {
         dispatch(startLoadingAction());
         const token = response.credential;
-        const { sub: uid, email, name, picture: photoURL } = jwtDecode(token);
-        const username = email.split('@')[0];
 
         const config = {
             headers: {
@@ -35,7 +50,7 @@ const GoogleOneTapLogin = () => {
             },
         };
 
-        navigate('/profile');
+        navigate('/profile', { state: { token } });
 
         // await axios
         //     .post(
@@ -129,11 +144,9 @@ const GoogleOneTapLogin = () => {
                     },
                 }}
                 onClick={handleGoogleLogIn}
-            >
-
-            </Button>
+            ></Button>
             <div style={{ display: gBtnDisplay }} ref={googleButton}></div>
-        </React.Fragment >
+        </React.Fragment>
     );
 };
 
