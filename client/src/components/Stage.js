@@ -18,6 +18,7 @@ import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
 import Typography from '@mui/material/Typography';
 import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { useHMSActions } from '@100mslive/hms-video-react';
 
 import {
     bluegrey,
@@ -37,6 +38,7 @@ export default function Stage({ mode }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const currentUser = useSelector((state) => state.auth);
+    const hmsActions = useHMSActions();
 
     const [modalVisible, setModalVisible] = useState(false);
     const [roomId, setRoomId] = useState('');
@@ -47,7 +49,7 @@ export default function Stage({ mode }) {
 
     useEffect(() => {
         console.log(
-            '%cHey if u like this project, consider giving it a star on github :) https://github.com/Evozone/comfortspace',
+            '%cHey if u like this project, consider giving it a star on github :) https://github.com/Evozone/',
             'color: green; font-size: 26px;'
         );
         console.log(
@@ -55,7 +57,7 @@ export default function Stage({ mode }) {
             'font-size: 19px;'
         );
         console.log(
-            '%cPasting anything in here could give attackers access to your Comfort Space account, so do not paste anything here.',
+            '%cPasting anything in here could give attackers access to your account, so do not paste anything here.',
             'color:red; font-size: 19px;'
         );
         console.log('%c-inspired by discord', 'font-size: 17px;');
@@ -126,7 +128,7 @@ export default function Stage({ mode }) {
         try {
             const apiKey = process.env.REACT_APP_UNSPLASH_API_KEY;
             const response = await fetch(
-                `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=1&query=nature`
+                `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=1&query=photography`
             );
             const data = await response.json();
             const url = data[0].urls.regular;
@@ -138,7 +140,38 @@ export default function Stage({ mode }) {
     };
 
     const joinGroup = (roomId, createdById) => {
-        console.log('joining group');
+        dispatch(startLoadingAction());
+        getToken(roomId, createdById)
+            .then(async (token) => {
+                await hmsActions.join({
+                    userName: `${currentUser.username}@${currentUser.photoURL}`,
+                    authToken: token,
+                    settings: {
+                        isAudioMuted: true,
+                    },
+                    initEndpoint: process.env.REACT_APP_100MS_TOKEN_ENDPOINT,
+                });
+                dispatch(stopLoadingAction());
+                dispatch(
+                    notifyAction(
+                        true,
+                        'success',
+                        'Joined a Group successfully!'
+                    )
+                );
+                navigate(`/room/${roomId}`);
+            })
+            .catch((error) => {
+                dispatch(stopLoadingAction());
+                dispatch(
+                    notifyAction(
+                        true,
+                        'error',
+                        'It seems something is wrong, please log out and log in again. later :('
+                    )
+                );
+                console.log('Token API Error', error);
+            });
     };
 
     const getToken = async (roomId, createdById) => {

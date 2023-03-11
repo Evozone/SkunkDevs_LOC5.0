@@ -5,6 +5,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import jwtDecode from 'jwt-decode';
 import ProtectedRoute from './components/ProtectedRoute';
+import { HMSRoomProvider } from '@100mslive/hms-video-react';
 
 import { signInAction } from './actions/actions';
 import MainAppbar from './components/MainAppbar';
@@ -13,6 +14,7 @@ import Blogs from './components/Blogs';
 import Connect from './components/Connect';
 import Listings from './components/Listings';
 import Stage from './components/Stage';
+import StageRoom from './components/StageRoom';
 
 function App() {
     const dispatch = useDispatch();
@@ -87,7 +89,21 @@ function App() {
 
                 <Route
                     path='/stage'
-                    element={<Stage themeChange={themeChange} mode={mode} />}
+                    element={
+                        <HMSRoomProvider>
+                            <Stage themeChange={themeChange} mode={mode} />
+                        </HMSRoomProvider>
+                    }
+                />
+
+                {/* Stage Room */}
+                <Route
+                    path='/room/:id'
+                    element={
+                        <HMSRoomProvider>
+                            <StageRoom themeChange={themeChange} mode={mode} />
+                        </HMSRoomProvider>
+                    }
                 />
 
                 {/* Blogs */}
