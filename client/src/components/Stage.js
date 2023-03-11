@@ -376,9 +376,8 @@ export default function Stage({ mode }) {
                                     }}
                                 >
                                     by{' '}
-                                    {`${space.createdByUsername}  on   ${
-                                        space.createdAt.split('T')[0]
-                                    }`}
+                                    {`${space.createdByUsername}  on   ${space.createdAt.split('T')[0]
+                                        }`}
                                 </Typography>
                                 <Box
                                     sx={{

@@ -69,9 +69,7 @@ function Blogs({ mode }) {
         <Box
             sx={{
                 overflowY: 'auto',
-                mt: '75px',
-                height: 'calc(100vh - 75px)',
-                maxHeight: 'calc(100vh - 75px)',
+                minHeight: '100vh',
                 backgroundColor: mode === 'light' ? light : bluegrey,
                 padding: '5rem',
                 display: 'flex',
@@ -85,6 +83,7 @@ function Blogs({ mode }) {
                 sx={{
                     color: mode === 'light' ? deepDark : light,
                     margin: '2rem',
+                    marginTop: '5rem',
                     fontWeight: 'bold',
                     fontSize: '3rem',
                     textAlign: 'center',
@@ -172,9 +171,8 @@ function Blogs({ mode }) {
                                         }}
                                     >
                                         by{' '}
-                                        {`${blog.authorName}  on   ${
-                                            blog.createdAt.split('T')[0]
-                                        }`}
+                                        {`${blog.authorName}  on   ${blog.createdAt.split('T')[0]
+                                            }`}
                                     </Typography>
                                     <Typography
                                         variant='body1'
@@ -226,9 +224,8 @@ function Blogs({ mode }) {
                                         }}
                                     >
                                         by{' '}
-                                        {`${blog.authorName}  on   ${
-                                            blog.createdAt.split('T')[0]
-                                        }`}
+                                        {`${blog.authorName}  on   ${blog.createdAt.split('T')[0]
+                                            }`}
                                     </Typography>
                                     <Typography
                                         variant='body1'

@@ -12,7 +12,7 @@ import {
     stopLoadingAction,
 } from '../actions/actions';
 
-import { light, deepDark } from '../utils/colors';
+import { lMode1, lMode2, lMode3, lMode4, lMode5, lMode6, light, deepDark, richBlack, dMode1, bluegrey, dMode2, dMode3, dMode4, dMode5, dMode6 } from '../utils/colors';
 
 const GoogleOneTapLogin = () => {
     const navigate = useNavigate();
@@ -114,28 +114,22 @@ const GoogleOneTapLogin = () => {
                 startIcon={<Google />}
                 sx={{
                     display: displayType,
-                    width: 'fit-content',
-                    mt: 3,
-                    backgroundColor: light,
-                    color: deepDark,
+                    width: '20px',
+                    height: '35px',
+                    backgroundColor: lMode5,
+                    color: lMode1,
+                    borderRadius: '15px',
                     '&:hover': {
-                        color: '#fff',
-                        backgroundColor: deepDark,
+                        color: lMode6,
+                        backgroundColor: lMode4,
                     },
                 }}
                 onClick={handleGoogleLogIn}
             >
-                <Typography
-                    sx={{
-                        fontFamily: 'Poppins',
-                        fontWeight: 600,
-                    }}
-                >
-                    Login with Google
-                </Typography>
+
             </Button>
             <div style={{ display: gBtnDisplay }} ref={googleButton}></div>
-        </React.Fragment>
+        </React.Fragment >
     );
 };
 
