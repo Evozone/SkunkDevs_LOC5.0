@@ -6,7 +6,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import Groups2Icon from '@mui/icons-material/Groups2';
-import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import QuizIcon from '@mui/icons-material/Quiz';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
