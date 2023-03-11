@@ -11,7 +11,18 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 
 import {
-    lMode1, lMode2, lMode3, lMode4, lMode5, lMode6, dMode1, dMode2, dMode3, dMode4, dMode5, dMode6
+    lMode1,
+    lMode2,
+    lMode3,
+    lMode4,
+    lMode5,
+    lMode6,
+    dMode1,
+    dMode2,
+    dMode3,
+    dMode4,
+    dMode5,
+    dMode6,
 } from '../utils/colors';
 import { Tooltip } from '@mui/material';
 
@@ -23,7 +34,6 @@ function Blogs({ mode }) {
     const [pageNum, setPageNum] = useState(0);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
-
     useEffect(() => {
         const getBlogs = async () => {
             try {
@@ -104,8 +114,7 @@ function Blogs({ mode }) {
                 variant='h2'
                 component='h3'
                 sx={{
-                    color:
-                        mode === 'light' ? lMode2 : dMode2,
+                    color: mode === 'light' ? lMode2 : dMode2,
                     margin: '2rem',
                     fontFamily: 'Work Sans',
                     fontWeight: 'medium',
@@ -128,21 +137,21 @@ function Blogs({ mode }) {
             >
                 {blogs &&
                     blogs.map((blog, index) => {
-                        return blogs.length === index + 1 ? (
+                        return (
                             <Card
                                 ref={lastBlogRef}
                                 key={blog._id}
                                 sx={{
                                     backgroundColor:
                                         mode === 'light' ? lMode2 : dMode2,
-                                    color:
-                                        mode === 'light'
-                                            ? lMode6 : dMode6,
+                                    color: mode === 'light' ? lMode6 : dMode6,
                                     borderRadius: '10px',
                                     border:
                                         mode === 'light'
                                             ? 'none'
-                                            : `1px solid ${lMode3.concat('aa')}`,
+                                            : `1px solid ${lMode3.concat(
+                                                  'aa'
+                                              )}`,
                                     width: '100%',
                                     maxHeight: '420px',
                                     cursor: 'pointer',
@@ -159,9 +168,13 @@ function Blogs({ mode }) {
                                         flex: '1',
                                     }}
                                 >
-                                    <Typography variant='h5'
+                                    <Typography
+                                        variant='h5'
                                         sx={{
-                                            color: mode === 'light' ? lMode1 : dMode1,
+                                            color:
+                                                mode === 'light'
+                                                    ? lMode1
+                                                    : dMode1,
                                             font: '600 1.5rem Poppins, sans-serif',
                                             mb: 1,
                                         }}
@@ -176,8 +189,9 @@ function Blogs({ mode }) {
                                         }}
                                     >
                                         by{' '}
-                                        {`${blog.authorName}  on   ${blog.createdAt.split('T')[0]
-                                            }`}
+                                        {`${blog.authorName}  on   ${
+                                            blog.createdAt.split('T')[0]
+                                        }`}
                                     </Typography>
                                     <Typography
                                         variant='body1'
@@ -185,58 +199,6 @@ function Blogs({ mode }) {
                                             wordBreak: 'breakWord',
                                             font: '400 1rem/1.5rem Work Sans, sans-serif',
                                         }}
-                                    >
-                                        {blog.summary}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        ) : (
-                            <Card
-                                key={blog._id}
-                                sx={{
-                                    backgroundColor:
-                                        mode === 'light' ? lMode2 : dMode2,
-                                    color:
-                                        mode === 'light'
-                                            ? lMode2 : dMode2,
-                                    borderRadius: '10px',
-                                    border:
-                                        mode === 'light'
-                                            ? 'none'
-                                            : `1px solid ${lMode3.concat('aa')}`,
-                                    width: '100%',
-                                    maxHeight: '420px',
-                                    cursor: 'pointer',
-                                }}
-                                onClick={() => handleClick(blog._id)}
-                            >
-                                <CardMedia
-                                    component='img'
-                                    height='270px'
-                                    image={blog.cover}
-                                />
-                                <CardContent
-                                    sx={{
-                                        flex: '1',
-                                    }}
-                                >
-                                    <Typography variant='h5'>
-                                        {blog.title}
-                                    </Typography>
-                                    <Typography
-                                        variant='subtitle2'
-                                        color='textSecondary'
-                                        sx={{
-                                            mb: 1,
-                                        }}
-                                    >
-                                        by{' '}
-                                        {`${blog.authorName}  on   ${blog.createdAt.split('T')[0]
-                                            }`}
-                                    </Typography>
-                                    <Typography
-                                        variant='body1'
-                                        sx={{ wordBreak: 'breakWord' }}
                                     >
                                         {blog.summary}
                                     </Typography>
