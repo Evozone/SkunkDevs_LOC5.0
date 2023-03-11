@@ -7,6 +7,7 @@ const { Server } = require('socket.io');
 
 const userRouter = require('./routes/user.js');
 const roomsRouter = require('./routes/room.js');
+const blogRouter = require('./routes/blog.js');
 
 const app = express();
 dotenv.config();
@@ -22,7 +23,7 @@ app.use((req, res, next) => {
     next();
 });
 app.use(express.json({ limit: '10MB' }));
-
+app.use('/api/blog', blogRouter);
 app.use('/api/user', userRouter);
 app.use('/api/rooms', roomsRouter);
 

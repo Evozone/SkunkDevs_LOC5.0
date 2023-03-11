@@ -15,6 +15,9 @@ import Connect from './components/Connect';
 import Listings from './components/Listings';
 import Stage from './components/Stage';
 import StageRoom from './components/StageRoom';
+import ViewBlog from './components/ViewBlog';
+import CreateBlog from './components/CreateBlog';
+import EditBlog from './components/EditBlog';
 
 function App() {
     const dispatch = useDispatch();
@@ -111,6 +114,25 @@ function App() {
                 <Route
                     path='/blogs'
                     element={<Blogs themeChange={themeChange} mode={mode} />}
+                />
+                <Route
+                    path='/blog/:id'
+                    element={
+                        <>
+                            <MainAppbar themeChange={themeChange} mode={mode} />
+                            <ViewBlog themeChange={themeChange} mode={mode} />
+                        </>
+                    }
+                />
+                <Route
+                    path='/createBlog'
+                    element={
+                        <CreateBlog themeChange={themeChange} mode={mode} />
+                    }
+                />
+                <Route
+                    path='/editBlog/:id'
+                    element={<EditBlog themeChange={themeChange} mode={mode} />}
                 />
 
                 {/* Connect */}
