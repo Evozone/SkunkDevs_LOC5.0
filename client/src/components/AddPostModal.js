@@ -8,6 +8,8 @@ import {
     Typography,
     CardMedia,
     Container,
+    Chip,
+    Grid,
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material';
@@ -32,6 +34,18 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
     const [imageLocalURL, setImageLocalURL] = useState('');
     const [imageRemoteURL, setImageRemoteURL] = useState('');
     const [imageFile, setImageFile] = useState(null);
+    const [tags, setTags] = useState([]);
+    const inputRef = useRef(null);
+    console.log(tags);
+    function handleDelete(tagToDelete) {
+        setTags(tags.filter((tag) => tag !== tagToDelete));
+    }
+
+    function handleAddTag() {
+        const newTag = inputRef.current.value;
+        setTags([...tags, newTag]);
+        inputRef.current.value = '';
+    }
 
     const CHARACTER_LIMIT = 200;
     const [characterCount, setCharacterCount] = useState(0);
@@ -52,7 +66,6 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
             const photoURL = URL.createObjectURL(file);
             setImageLocalURL(photoURL);
             setImageFile(file);
-
             var ik = new ImageKit({
                 publicKey: 'public_ex06kCH1pb+piK6HrBm0N+Lc1JM=',
                 urlEndpoint: 'https://ik.imagekit.io/senddffrt',
@@ -68,12 +81,12 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
                         {
                             name: 'aws-auto-tagging',
                             minConfidence: 80, // only tags with a confidence value higher than 80% will be attached
-                            maxTags: 10, // a maximum of 10 tags from aws will be attached
+                            maxTags: 2, // a maximum of 10 tags from aws will be attached
                         },
                         {
                             name: 'google-auto-tagging',
                             minConfidence: 70, // only tags with a confidence value higher than 70% will be attached
-                            maxTags: 10, // a maximum of 10 tags from google will be attached
+                            maxTags: 2, // a maximum of 10 tags from google will be attached
                         },
                     ],
                 },
@@ -82,8 +95,9 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
                         console.error(err);
                         return;
                     }
+                    const tagsArray = result.AITags.map((res) => res.name);
 
-                    console.log(result);
+                    setTags(tagsArray);
                 }
             );
         }
@@ -187,21 +201,50 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
                                 />
                             </Container>
                         )}
-                        <label htmlFor='postPhoto'>
-                            <ImageIcon
-                                sx={{ marginTop: '5px', marginLeft: '9px' }}
-                                fontSize='large'
-                                color='primary'
-                                cursor='pointer'
-                            />
-                        </label>
-                        <input
-                            accept='image/*'
-                            id='postPhoto'
-                            type='file'
-                            style={{ display: 'none' }}
-                            onChange={handleImageInput}
-                        />
+                        <Grid
+                            container
+                            spacing={1}
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Grid item>
+                                <label htmlFor='postPhoto'>
+                                    <ImageIcon
+                                        sx={{
+                                            marginTop: '5px',
+                                            marginLeft: '9px',
+                                        }}
+                                        fontSize='large'
+                                        color='primary'
+                                        cursor='pointer'
+                                    />
+                                </label>
+                                <input
+                                    accept='image/*'
+                                    id='postPhoto'
+                                    type='file'
+                                    style={{ display: 'none' }}
+                                    onChange={handleImageInput}
+                                />
+                            </Grid>
+                            {tags.map((tag) => (
+                                <Grid item>
+                                    <Chip
+                                        key={tag}
+                                        label={tag}
+                                        onDelete={() => handleDelete(tag)}
+                                    />
+                                </Grid>
+                            ))}
+                        </Grid>
+                        <Box my={2}>
+                            <input type='text' ref={inputRef} />
+                            <Button size='small' onClick={handleAddTag}>
+                                Add tag
+                            </Button>
+                        </Box>
                         <Box
                             mx={4}
                             my={0}
