@@ -6,6 +6,8 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import Groups2Icon from '@mui/icons-material/Groups2';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import ListItemText from '@mui/material/ListItemText';
 import QuizIcon from '@mui/icons-material/Quiz';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
@@ -56,6 +58,7 @@ function MainAppbar({ mode, themeChange }) {
         <Box
             sx={{
                 position: 'fixed',
+                top: 0,
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'center',
@@ -74,22 +77,23 @@ function MainAppbar({ mode, themeChange }) {
                     color: 'white',
 
                     borderRadius: '50px',
+                    boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.25)',
 
                     zIndex: '1000',
                     px: 2,
-                    top: '2px',
+                    top: '5px',
                 }}
             >
 
                 <IconButton
                     onClick={themeChange}
-                    sx={{ color: 'white', height: 45, width: 45 }}
+                    sx={{ color: 'white', height: 30, width: 30 }}
                     aria-label='change theme'
                 >
                     {mode === 'light' ? (
-                        <DarkModeIcon sx={{ height: 33, width: 33 }} />
+                        <DarkModeIcon sx={{ height: 25, width: 25 }} />
                     ) : (
-                        <LightModeIcon sx={{ height: 33, width: 33 }} />
+                        <LightModeIcon sx={{ height: 25, width: 25 }} />
                     )}
                 </IconButton>
 
