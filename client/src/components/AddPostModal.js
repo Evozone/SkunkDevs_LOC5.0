@@ -95,6 +95,7 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
                         console.error(err);
                         return;
                     }
+                    console.log(result);
                     const tagsArray = result.AITags.map((res) => res.name);
 
                     setTags(tagsArray);

@@ -41,56 +41,9 @@ const GoogleOneTapLogin = () => {
     const [gBtnDisplay, setGBtnDisplay] = useState('none');
 
     const handleResponse = async (response) => {
-        dispatch(startLoadingAction());
         const token = response.credential;
 
-        const config = {
-            headers: {
-                'Content-type': 'application/json',
-            },
-        };
-
         navigate('/profile', { state: { token } });
-
-        // await axios
-        //     .post(
-        //         `${process.env.REACT_APP_SERVER_URL}/api/user/googleSignUp`,
-        //         {
-        //             uid,
-        //             email,
-        //             name,
-        //             photoURL,
-        //             username,
-        //             socialLinks: {
-        //                 twitter: '',
-        //                 instagram: '',
-        //                 pinterest: '',
-        //             },
-        //         },
-        //         config
-        //     )
-        //     .then((result) => {
-        //         const user = result.data.result;
-        //         dispatch(
-        //             signInAction(
-        //                 user.uid,
-        //                 user.email,
-        //                 user.name,
-        //                 user.photoURL,
-        //                 user.username,
-        //                 user.socialLinks,
-        //                 user.token,
-        //                 user._id
-        //             )
-        //         );
-        //         window.localStorage.setItem('photoAppLastPage', '');
-        //         navigate('/');
-        //     })
-        //     .catch((err) => {
-        //         console.log(err);
-        //         alert('Something went wrong, please try again later.');
-        //     });
-        // dispatch(stopLoadingAction());
     };
 
     const handleGoogleLogIn = () => {

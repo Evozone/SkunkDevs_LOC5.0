@@ -2,7 +2,17 @@ const UserModel = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 
 exports.googleSignUp = async (req, res) => {
-    let { uid, email, name, photoURL, username, socialLinks } = req.body;
+    let {
+        uid,
+        email,
+        name,
+        photoURL,
+        username,
+        socialLinks,
+        location,
+        bio,
+        avatar,
+    } = req.body;
     try {
         const oldUser = await UserModel.findOne({ email });
         if (oldUser) {
@@ -26,6 +36,10 @@ exports.googleSignUp = async (req, res) => {
                 avatar: photoURL,
                 username,
                 socialLinks,
+                userIsNew: false,
+                location,
+                bio,
+                avatar,
             });
             const token = jwt.sign(
                 { ...user._doc },

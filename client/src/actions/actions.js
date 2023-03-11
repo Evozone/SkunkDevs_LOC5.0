@@ -25,7 +25,10 @@ export const signInAction = (
     username,
     socialLinks,
     token,
-    mid
+    mid,
+    location,
+    bio,
+    avatar
 ) => {
     return {
         type: SIGN_IN,
@@ -37,7 +40,10 @@ export const signInAction = (
             username,
             socialLinks,
             token,
-            mid
+            mid,
+            location,
+            bio,
+            avatar,
         },
     };
 };

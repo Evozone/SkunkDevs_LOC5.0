@@ -31,11 +31,17 @@ import {
     dMode6,
 } from '../utils/colors';
 import { border } from '@mui/system';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import {
+    signInAction,
+    startLoadingAction,
+    stopLoadingAction,
+} from '../actions/actions';
+import { useDispatch } from 'react-redux';
+import axios from 'axios';
 export default function Profile() {
     const location = useLocation();
     const token = location.state.token;
-    console.log(token);
     const { sub: uid, email, name, picture: photoURL } = jwtDecode(token);
     const username = email.split('@')[0];
     const [formData, setFormData] = useState({
@@ -48,14 +54,15 @@ export default function Profile() {
             pinterest: '',
             portfolio: '',
         },
+        avatar: photoURL,
         bio: '',
         username,
         role: '',
         skill_level: '',
         location: '',
-        pinnedPostRef: [],
     });
-    console.log(formData);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [file, setFile] = useState(null);
     const [uploading, setUploading] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -63,25 +70,55 @@ export default function Profile() {
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
     };
+    const formSubmit = async (e) => {
+        // e.preventDeafults();
+        if (!formData.location || !formData.bio) {
+            alert('Please fill all the required fields.');
+            return;
+        }
 
-    // const handleUpload = async () => {
-    //     if (file) {
-    //         setUploading(true);
-    //         // upload file using axios or fetch
-    //         // simulate upload progress
-    //         // setTimeout(() => {
-    //         //     setUploading(false);
-    //         //     setSuccess(true);
-    //         // }, 3000);
-    //     // }
-    // };
-    const formSubmit = (e) => {
-        e.preventDeafults();
+        dispatch(startLoadingAction());
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+            },
+        };
+        await axios
+            .post(
+                `${process.env.REACT_APP_SERVER_URL}/api/user/googleSignUp`,
+                formData,
+                config
+            )
+            .then((result) => {
+                const user = result.data.result;
+                dispatch(
+                    signInAction(
+                        user.uid,
+                        user.email,
+                        user.name,
+                        user.photoURL,
+                        user.username,
+                        user.socialLinks,
+                        user.token,
+                        user._id,
+                        user.location,
+                        user.bio,
+                        user.avatar
+                    )
+                );
+                window.localStorage.setItem('photoAppLastPage', '');
+                navigate('/');
+            })
+            .catch((err) => {
+                console.log(err);
+                alert('Something went wrong, please try again later.');
+            });
+        dispatch(stopLoadingAction());
     };
     const handleLevelChange = (event) => {
         setFormData({ ...formData, skill_level: event.target.value });
     };
-    console.log(formData);
+
     return (
         <Box
             sx={{
@@ -203,6 +240,7 @@ export default function Profile() {
                         </Typography>
 
                         <TextField
+                            required
                             id='outlined-basic'
                             label='Location'
                             variant='outlined'
@@ -292,6 +330,7 @@ export default function Profile() {
                     >
                         {/* Bio */}
                         <TextField
+                            required
                             id='outlined-multiline-static'
                             label='About Yourself'
                             multiline
@@ -453,103 +492,6 @@ export default function Profile() {
                             </Grid>
                         </Grid>
 
-                        {/* Section for Photographer to upload two best photos */}
-
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'left',
-                                justifyContent: 'flex-start',
-                                width: '100%',
-                                p: 2,
-                            }}
-                        >
-                            <Typography
-                                variant='h5'
-                                sx={{
-                                    color: lMode1,
-                                    fontWeight: 'bold',
-                                }}
-                            >
-                                Upload your best photos
-                            </Typography>
-
-                            <Stack spacing={2}>
-                                <input
-                                    accept='image/*'
-                                    style={{ display: 'none' }}
-                                    id='file-input'
-                                    type='file'
-                                    onChange={handleFileChange}
-                                />
-                                <label htmlFor='file-input'>
-                                    <Button
-                                        variant='contained'
-                                        component='span'
-                                    >
-                                        Choose File
-                                    </Button>
-                                </label>
-                                {file && (
-                                    <>
-                                        <Typography variant='body1'>
-                                            {file.name}
-                                        </Typography>
-                                        <Button
-                                            variant='contained'
-                                            color='primary'
-                                        >
-                                            Upload
-                                        </Button>
-                                    </>
-                                )}
-                                {uploading && <LinearProgress />}
-                                <Snackbar
-                                    open={success}
-                                    autoHideDuration={6000}
-                                    onClose={() => setSuccess(false)}
-                                    message='File uploaded successfully'
-                                />
-                                <input
-                                    accept='image/*'
-                                    style={{ display: 'none' }}
-                                    id='file-input'
-                                    type='file'
-                                    onChange={handleFileChange}
-                                />
-                                <label htmlFor='file-input'>
-                                    <Button
-                                        variant='contained'
-                                        component='span'
-                                    >
-                                        Choose File
-                                    </Button>
-                                </label>
-                                {file && (
-                                    <>
-                                        <Typography variant='body1'>
-                                            {file.name}
-                                        </Typography>
-                                        <Button
-                                            variant='contained'
-                                            color='primary'
-                                            // onClick={handleUpload}
-                                        >
-                                            Upload
-                                        </Button>
-                                    </>
-                                )}
-                                {uploading && <LinearProgress />}
-                                <Snackbar
-                                    open={success}
-                                    autoHideDuration={6000}
-                                    onClose={() => setSuccess(false)}
-                                    message='File uploaded successfully'
-                                />
-                            </Stack>
-                        </Box>
-
                         {/* Save Button */}
 
                         <Box
@@ -563,6 +505,7 @@ export default function Profile() {
                             }}
                         >
                             <Button
+                                // type='submit'
                                 variant='contained'
                                 sx={{
                                     backgroundColor: lMode1,
@@ -573,7 +516,7 @@ export default function Profile() {
                                         color: lMode3,
                                     },
                                 }}
-                                onSubmit={formSubmit}
+                                onClick={formSubmit}
                                 fullWidth
                             >
                                 Save
