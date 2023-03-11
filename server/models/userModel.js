@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const validator = require('validator');
-const jwt = require('jsonwebtoken');
 
 const socialLinksSchema = new mongoose.Schema({
     twitter: {
@@ -8,6 +6,10 @@ const socialLinksSchema = new mongoose.Schema({
         default: '',
     },
     instagram: {
+        type: String,
+        default: '',
+    },
+    pinterest: {
         type: String,
         default: '',
     },
@@ -31,17 +33,9 @@ const userSchema = new mongoose.Schema({
     socialLinks: socialLinksSchema,
     bio: {
         type: String,
-        required: true,
     },
     avatar: {
-        public_id: {
-            type: String,
-            required: true,
-        },
-        url: {
-            type: String,
-            required: true,
-        },
+        type: String,
     },
     username: {
         type: String,
@@ -56,27 +50,26 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'beginner',
     },
-    postImages: [
+    postImagesRef: [
         {
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'Image',
         },
     ],
-    pinnedPost: [
+    pinnedPostRef: [
         {
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'Image',
         },
     ],
-    isNew: {
+    userIsNew: {
         type: Boolean,
         default: true,
     },
-    collection: [
+    premiumCollection: [
         {
             name: {
                 type: String,
-                required: true,
             },
             createdAt: {
                 type: Date,
@@ -85,9 +78,9 @@ const userSchema = new mongoose.Schema({
             description: {
                 type: String,
             },
-            collectionImages: [
+            collectionImagesRef: [
                 {
-                    type: Schema.Types.ObjectId,
+                    type: mongoose.Schema.Types.ObjectId,
                     ref: 'Image',
                 },
             ],
@@ -95,12 +88,5 @@ const userSchema = new mongoose.Schema({
     ],
     servicesOffered: [],
 });
-
-// JWT TOKEN
-userSchema.methods.getJWTToken = function () {
-    return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRE,
-    });
-};
 
 module.exports = mongoose.model('User', userSchema);

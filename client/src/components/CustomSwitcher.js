@@ -11,8 +11,8 @@ export const CustomSwitcherGroup = styled(ToggleButtonGroup)(({ theme }) => ({
         margin: 0,
         border: 0,
         borderRadius: '50px',
-        padding: '5px 5px',
-        width: '130px',
+        padding: '10px 15px',
+        width: '150px',
         '&:not(:first-of-type)': {
             borderRadius: '50px',
             border: `6px solid ${theme.palette.mode === 'light' ? deepDark : light

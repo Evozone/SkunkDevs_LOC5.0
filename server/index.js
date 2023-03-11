@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const { Server } = require('socket.io');
 
+const userRouter = require('./routes/user.js');
+
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 5000;
@@ -17,6 +19,8 @@ app.use((req, res, next) => {
     next();
 });
 app.use(express.json({ limit: '10MB' }));
+
+app.use('/api/user', userRouter);
 
 app.get('/', (req, res) => {
     res.send("Hello, welocme to photo app's API");

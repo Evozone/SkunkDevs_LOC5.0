@@ -2,10 +2,10 @@
 // Fill colors as deep-dark, light, medium, dark, deep-dark
 
 export const richBlack = '#0c090d';
-export const light = '#D27685';
-export const medium = '#9E4784';
-export const dark = '#66347F';
-export const deepDark = '#37306B';
+export const light = '#b5ffe1';
+export const medium = '#93e5ab';
+export const dark = '#65b891';
+export const deepDark = '#4e878c';
 
 export const bluegrey = '#1B262C';
 export const superLight = '#DBFFF1';

@@ -31,7 +31,7 @@ const authReducer = (state = INITIAL_STATE, action) => {
             };
 
         case SIGN_OUT:
-            window.localStorage.removeItem('photoApp');
+            window.localStorage.removeItem('healthApp');
             return {
                 ...state,
                 isSignedIn: false,
