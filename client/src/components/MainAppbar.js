@@ -16,7 +16,7 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import ExploreIcon from '@mui/icons-material/Explore';
 import CommentIcon from '@mui/icons-material/Comment';
 import GavelIcon from '@mui/icons-material/Gavel';
-
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import GoogleOneTapLogin from './GoogleOneTapLogin';
 
 import { CustomSwitcherGroup, CustomSwitcherButton } from './CustomSwitcher';
@@ -38,7 +38,7 @@ function MainAppbar({ mode, themeChange }) {
         if (choice) {
             dispatch(signOutAction());
             window.localStorage.removeItem('photoAppLastPage');
-            navigate('/');
+            navigate('/explore');
         }
     };
 
@@ -86,7 +86,6 @@ function MainAppbar({ mode, themeChange }) {
                     top: '5px',
                 }}
             >
-
                 <IconButton
                     onClick={themeChange}
                     sx={{ color: 'white', height: 30, width: 30 }}
@@ -95,7 +94,9 @@ function MainAppbar({ mode, themeChange }) {
                     {mode === 'light' ? (
                         <DarkModeIcon sx={{ height: 25, width: 25 }} />
                     ) : (
-                        <LightModeIcon sx={{ height: 25, width: 25, color: richBlack, }} />
+                        <LightModeIcon
+                            sx={{ height: 25, width: 25, color: richBlack }}
+                        />
                     )}
                 </IconButton>
 
@@ -134,13 +135,12 @@ function MainAppbar({ mode, themeChange }) {
                                 <CommentIcon /> Connect
                             </CustomSwitcherButton>
                             <CustomSwitcherButton
-                                onClick={() => handleNavigation('listing')}
-                                value='listing'
-                                selected={selected === 'listing'}
+                                onClick={() => handleNavigation('listings')}
+                                value='listings'
+                                selected={selected === 'listings'}
                             >
-                                <GavelIcon /> Listings
+                                <GavelIcon /> listingss
                             </CustomSwitcherButton>
-
                         </CustomSwitcherGroup>
 
                         {/* <IconButton onClick={handleMenuClick}>
@@ -159,8 +159,32 @@ function MainAppbar({ mode, themeChange }) {
                         </Avatar>
                     </IconButton> */}
 
-                        <GoogleOneTapLogin />
-
+                        {currentUser?.isSignedIn ? (
+                            <IconButton
+                                sx={{ p: '6px' }}
+                                onClick={handleMenuClick}
+                            >
+                                <Avatar
+                                    alt={currentUser.name
+                                        .charAt(0)
+                                        .toUpperCase()}
+                                    src={currentUser.photoURL}
+                                    sx={{
+                                        bgcolor:
+                                            mode === 'light' ? deepDark : light,
+                                        color:
+                                            mode === 'light' ? light : deepDark,
+                                        height: 50,
+                                        width: 50,
+                                        border: '2px solid',
+                                    }}
+                                >
+                                    {currentUser.name.charAt(0).toUpperCase()}
+                                </Avatar>
+                            </IconButton>
+                        ) : (
+                            <GoogleOneTapLogin />
+                        )}
                         <Menu
                             anchorEl={anchorEl}
                             keepMounted
@@ -175,12 +199,64 @@ function MainAppbar({ mode, themeChange }) {
                         >
                             <MenuItem
                                 onClick={() => {
+                                    themeChange();
+                                }}
+                            >
+                                {mode === 'light' ? (
+                                    <DarkModeIcon
+                                        sx={{
+                                            color:
+                                                mode === 'light'
+                                                    ? deepDark
+                                                    : light,
+                                            fontSize: '1.7rem',
+                                            ml: -0.5,
+                                        }}
+                                    />
+                                ) : (
+                                    <LightModeIcon
+                                        sx={{
+                                            color:
+                                                mode === 'light'
+                                                    ? deepDark
+                                                    : light,
+                                            fontSize: '1.7rem',
+                                            ml: -0.5,
+                                        }}
+                                    />
+                                )}
+                                <ListItemText sx={{ ml: 1 }} primary='Theme' />
+                            </MenuItem>
+                            <MenuItem
+                                onClick={() => {
+                                    handleMenuClose();
+                                    // setModalVisible(true);
+                                }}
+                            >
+                                <AccountBoxIcon
+                                    sx={{
+                                        color:
+                                            mode === 'light' ? deepDark : light,
+                                        fontSize: '1.7rem',
+                                        ml: -0.5,
+                                    }}
+                                />
+                                <ListItemText
+                                    sx={{ ml: 1 }}
+                                    primary='Profile'
+                                />
+                            </MenuItem>
+                            {/* {renderInstallOption()} */}
+                            <MenuItem
+                                onClick={() => {
+                                    handleMenuClose();
                                     handleSignOut();
                                 }}
                             >
                                 <LogoutIcon
                                     sx={{
-                                        color: mode === 'light' ? deepDark : light,
+                                        color:
+                                            mode === 'light' ? deepDark : light,
                                     }}
                                 />
                                 <ListItemText sx={{ ml: 1 }} primary='Logout' />

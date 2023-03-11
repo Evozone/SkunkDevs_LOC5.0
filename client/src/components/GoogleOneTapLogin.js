@@ -64,8 +64,8 @@ const GoogleOneTapLogin = () => {
                         user.token
                     )
                 );
-                window.localStorage.setItem('photoAppLastPage', 'stage');
-                navigate('/stage');
+                window.localStorage.setItem('photoAppLastPage', 'explore');
+                navigate('/explore');
             })
             .catch((err) => {
                 console.log(err);

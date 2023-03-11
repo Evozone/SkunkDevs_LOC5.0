@@ -168,7 +168,7 @@ export default function Stage({ mode }) {
             return;
         }
         try {
-            const auth = window.localStorage.getItem('healthApp');
+            const auth = window.localStorage.getItem('photoApp');
             const { dnd } = JSON.parse(auth);
             const data = {
                 roomId,
@@ -207,7 +207,7 @@ export default function Stage({ mode }) {
             'Are you sure you want to delete this group?'
         );
         if (!choice) return;
-        const auth = window.localStorage.getItem('healthApp');
+        const auth = window.localStorage.getItem('photoApp');
         const { dnd } = JSON.parse(auth);
         try {
             await axios({
@@ -343,8 +343,9 @@ export default function Stage({ mode }) {
                                     }}
                                 >
                                     by{' '}
-                                    {`${space.createdByUsername}  on   ${space.createdAt.split('T')[0]
-                                        }`}
+                                    {`${space.createdByUsername}  on   ${
+                                        space.createdAt.split('T')[0]
+                                    }`}
                                 </Typography>
                                 <Box
                                     sx={{
