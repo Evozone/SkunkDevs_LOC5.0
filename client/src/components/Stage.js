@@ -21,12 +21,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { useHMSActions } from '@100mslive/hms-video-react';
 
 import {
-    bluegrey,
-    richBlack,
-    light,
-    medium,
-    dark,
-    deepDark,
+    lMode1, lMode2, lMode3, lMode4, lMode5, lMode6, dMode1, dMode2, dMode3, dMode4, dMode5, dMode6
 } from '../utils/colors';
 import {
     startLoadingAction,
@@ -272,7 +267,7 @@ export default function Stage({ mode }) {
             sx={{
                 overflowY: 'auto',
                 minHeight: '100vh',
-                backgroundColor: mode === 'light' ? light : bluegrey,
+                backgroundColor: mode === 'light' ? 'whitesmoke' : '#121212',
                 padding: '5rem',
                 pt: 0,
             }}
@@ -281,8 +276,8 @@ export default function Stage({ mode }) {
                 variant='h1'
                 component='h2'
                 sx={{
-                    color: mode === 'light' ? deepDark : light,
-                    margin: '2rem',
+                    color: mode === 'light' ? lMode3 : dMode3, // light mode 3
+                    margin: '1rem',
                     marginTop: '5rem',
                     fontWeight: 'bold',
                     fontSize: '3rem',
@@ -302,10 +297,7 @@ export default function Stage({ mode }) {
                 variant='h2'
                 component='h3'
                 sx={{
-                    color:
-                        mode === 'light'
-                            ? deepDark.concat('aa')
-                            : light.concat('aa'),
+                    color: mode === 'light' ? lMode2 : dMode2,
                     margin: '2rem',
                     fontFamily: 'Work Sans',
                     fontWeight: 'medium',
@@ -334,16 +326,15 @@ export default function Stage({ mode }) {
                             key={space.roomId}
                             sx={{
                                 backgroundColor:
-                                    mode === 'light' ? deepDark : richBlack,
+                                    mode === 'light' ? lMode2 : dMode2,
                                 color:
                                     mode === 'light'
-                                        ? light
-                                        : dark.concat('aa'),
+                                        ? lMode6 : dMode6,
                                 borderRadius: '10px',
                                 border:
                                     mode === 'light'
                                         ? 'none'
-                                        : `1px solid ${dark.concat('aa')}`,
+                                        : `1px solid ${lMode3.concat('aa')}`,
                                 height: '100%',
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -361,7 +352,7 @@ export default function Stage({ mode }) {
                                     variant='h5'
                                     sx={{
                                         color:
-                                            mode === 'light' ? light : medium,
+                                            mode === 'light' ? lMode1 : dMode1,
                                         font: '600 1.5rem/1.5rem Poppins, sans-serif',
                                         mb: '0.5rem',
                                     }}
@@ -370,7 +361,7 @@ export default function Stage({ mode }) {
                                 </Typography>
                                 <Typography
                                     variant='subtitle2'
-                                    color='textSecondary'
+                                    color='text.secondary'
                                     sx={{
                                         m: 0,
                                     }}
@@ -401,10 +392,10 @@ export default function Stage({ mode }) {
                                     sx={{
                                         mt: 0,
                                         backgroundColor:
-                                            mode === 'light' ? medium : light,
+                                            mode === 'light' ? lMode3 : dMode3,
                                         color: 'black',
                                         ':hover': {
-                                            backgroundColor: light,
+                                            backgroundColor: lMode1,
                                             color: 'black',
                                         },
                                     }}
@@ -467,8 +458,7 @@ export default function Stage({ mode }) {
                         transform: 'translate(-50%, -50%)',
                         minWidth: 600,
                         maxHeight: '700px',
-                        backgroundColor: mode === 'light' ? light : bluegrey,
-                        boxShadow: 24,
+                        backgroundColor: mode === 'light' ? lMode1 : dMode1,
                         borderRadius: '10px',
                         p: 2,
                         pb: 1,
@@ -498,7 +488,8 @@ export default function Stage({ mode }) {
                         sx={{
                             textAlign: 'center',
                             mb: 3,
-                            color: mode === 'light' ? deepDark : light,
+                            color: mode === 'light' ? lMode4 : dMode4,
+                            font: '600 2rem Poppins, sans-serif',
                         }}
                     >
                         Create New Group
@@ -570,11 +561,11 @@ export default function Stage({ mode }) {
                                 mt: 1,
                                 alignSelf: 'center',
                                 backgroundColor:
-                                    mode === 'light' ? medium : light,
-                                color: 'black',
+                                    mode === 'light' ? lMode6 : dMode6,
+                                color: 'white',
                                 ':hover': {
-                                    backgroundColor: medium,
-                                    color: 'black',
+                                    backgroundColor: lMode3,
+                                    color: 'white',
                                 },
                             }}
                             onClick={generateCoverImgURL}
@@ -590,10 +581,10 @@ export default function Stage({ mode }) {
                                 mb: 1,
                                 alignSelf: 'flex-end',
                                 backgroundColor:
-                                    mode === 'light' ? medium : light,
+                                    mode === 'light' ? lMode4 : dMode4,
                                 color: 'black',
                                 ':hover': {
-                                    backgroundColor: medium,
+                                    backgroundColor: lMode3,
                                     color: 'black',
                                 },
                             }}
@@ -612,12 +603,12 @@ export default function Stage({ mode }) {
                         position: 'fixed',
                         bottom: '2rem',
                         right: '2rem',
-                        color: mode === 'light' ? 'white' : deepDark,
-                        backgroundColor: mode === 'light' ? deepDark : light,
+                        color: mode === 'light' ? 'white' : 'black',
+                        backgroundColor: mode === 'light' ? lMode4 : dMode4,
 
                         borderRadius: '50%',
-                        height: '3.5rem',
-                        width: '3.5rem',
+                        height: '3rem',
+                        width: '3rem',
 
                         display: 'grid',
                         placeItems: 'center',
@@ -626,8 +617,8 @@ export default function Stage({ mode }) {
                         boxShadow: '0 0 10px 0 rgba(78,135,140, 0.5)',
 
                         '&:hover': {
-                            backgroundColor: mode === 'dark' ? light : deepDark,
-                            color: mode === 'dark' ? deepDark : light,
+                            backgroundColor: mode === 'light' ? lMode3 : dMode3,
+                            color: mode === 'light' ? 'white' : 'black',
                             transform: 'scale(1.1) rotate(90deg)',
                             transition: 'transform 0.2s ease-in-out',
                         },

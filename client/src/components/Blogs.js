@@ -10,7 +10,9 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 
-import { bluegrey, richBlack, light, dark, deepDark } from '../utils/colors';
+import {
+    lMode1, lMode2, lMode3, lMode4, lMode5, lMode6, dMode1, dMode2, dMode3, dMode4, dMode5, dMode6
+} from '../utils/colors';
 import { Tooltip } from '@mui/material';
 
 function Blogs({ mode }) {
@@ -70,7 +72,7 @@ function Blogs({ mode }) {
             sx={{
                 overflowY: 'auto',
                 minHeight: '100vh',
-                backgroundColor: mode === 'light' ? light : bluegrey,
+                backgroundColor: mode === 'light' ? 'whitesmoke' : '#121212',
                 padding: '5rem',
                 display: 'flex',
                 flexDirection: 'column',
@@ -81,7 +83,7 @@ function Blogs({ mode }) {
                 variant='h1'
                 component='h2'
                 sx={{
-                    color: mode === 'light' ? deepDark : light,
+                    color: mode === 'light' ? lMode3 : dMode3,
                     margin: '2rem',
                     marginTop: '5rem',
                     fontWeight: 'bold',
@@ -103,9 +105,7 @@ function Blogs({ mode }) {
                 component='h3'
                 sx={{
                     color:
-                        mode === 'light'
-                            ? deepDark.concat('aa')
-                            : light.concat('aa'),
+                        mode === 'light' ? lMode2 : dMode2,
                     margin: '2rem',
                     fontFamily: 'Work Sans',
                     fontWeight: 'medium',
@@ -134,16 +134,15 @@ function Blogs({ mode }) {
                                 key={blog._id}
                                 sx={{
                                     backgroundColor:
-                                        mode === 'light' ? deepDark : richBlack,
+                                        mode === 'light' ? lMode2 : dMode2,
                                     color:
                                         mode === 'light'
-                                            ? light
-                                            : dark.concat('aa'),
+                                            ? lMode6 : dMode6,
                                     borderRadius: '10px',
                                     border:
                                         mode === 'light'
                                             ? 'none'
-                                            : `1px solid ${dark.concat('aa')}`,
+                                            : `1px solid ${lMode3.concat('aa')}`,
                                     width: '100%',
                                     maxHeight: '420px',
                                     cursor: 'pointer',
@@ -160,7 +159,13 @@ function Blogs({ mode }) {
                                         flex: '1',
                                     }}
                                 >
-                                    <Typography variant='h5'>
+                                    <Typography variant='h5'
+                                        sx={{
+                                            color: mode === 'light' ? lMode1 : dMode1,
+                                            font: '600 1.5rem Poppins, sans-serif',
+                                            mb: 1,
+                                        }}
+                                    >
                                         {blog.title}
                                     </Typography>
                                     <Typography
@@ -176,7 +181,10 @@ function Blogs({ mode }) {
                                     </Typography>
                                     <Typography
                                         variant='body1'
-                                        sx={{ wordBreak: 'breakWord' }}
+                                        sx={{
+                                            wordBreak: 'breakWord',
+                                            font: '400 1rem/1.5rem Work Sans, sans-serif',
+                                        }}
                                     >
                                         {blog.summary}
                                     </Typography>
@@ -187,16 +195,15 @@ function Blogs({ mode }) {
                                 key={blog._id}
                                 sx={{
                                     backgroundColor:
-                                        mode === 'light' ? deepDark : richBlack,
+                                        mode === 'light' ? lMode2 : dMode2,
                                     color:
                                         mode === 'light'
-                                            ? light
-                                            : dark.concat('aa'),
+                                            ? lMode2 : dMode2,
                                     borderRadius: '10px',
                                     border:
                                         mode === 'light'
                                             ? 'none'
-                                            : `1px solid ${dark.concat('aa')}`,
+                                            : `1px solid ${lMode3.concat('aa')}`,
                                     width: '100%',
                                     maxHeight: '420px',
                                     cursor: 'pointer',
@@ -253,12 +260,12 @@ function Blogs({ mode }) {
                         position: 'fixed',
                         bottom: '2rem',
                         right: '2rem',
-                        color: mode === 'light' ? 'white' : deepDark,
-                        backgroundColor: mode === 'light' ? deepDark : light,
+                        color: mode === 'light' ? 'white' : 'black',
+                        backgroundColor: mode === 'light' ? lMode4 : dMode4,
 
                         borderRadius: '50%',
-                        height: '3.5rem',
-                        width: '3.5rem',
+                        height: '3rem',
+                        width: '3rem',
 
                         display: 'grid',
                         placeItems: 'center',
@@ -267,8 +274,8 @@ function Blogs({ mode }) {
                         boxShadow: '0 0 10px 0 rgba(78,135,140, 0.5)',
 
                         '&:hover': {
-                            backgroundColor: mode === 'dark' ? light : deepDark,
-                            color: mode === 'dark' ? deepDark : light,
+                            backgroundColor: mode === 'light' ? lMode3 : dMode3,
+                            color: mode === 'light' ? 'white' : 'black',
                             transform: 'scale(1.1) rotate(90deg)',
                             transition: 'transform 0.2s ease-in-out',
                         },

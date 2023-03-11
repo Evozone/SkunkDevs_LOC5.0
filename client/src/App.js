@@ -63,7 +63,7 @@ function App() {
           dnd
         )
       );
-      const value = window.localStorage.getItem('photoApp');
+      const value = window.localStorage.getItem('photoAppLastPage');
       if (value && value !== undefined) {
         navigate(`/${value}`);
       } else {
