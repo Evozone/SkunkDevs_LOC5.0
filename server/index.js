@@ -8,6 +8,7 @@ const crypto = require('crypto');
 const userRouter = require('./routes/user.js');
 const roomsRouter = require('./routes/room.js');
 const blogRouter = require('./routes/blog.js');
+const exploreRouter = require('./routes/explore.js');
 
 const app = express();
 dotenv.config();
@@ -26,7 +27,7 @@ app.use(express.json({ limit: '10MB' }));
 app.use('/api/blog', blogRouter);
 app.use('/api/user', userRouter);
 app.use('/api/rooms', roomsRouter);
-// app.user('/api/explore', exploreRouter);
+app.use('/api/explore', exploreRouter);
 
 app.get('/mtoken', (req, res) => {
     var app_access_key = process.env.HMS_ACCESS_KEY;

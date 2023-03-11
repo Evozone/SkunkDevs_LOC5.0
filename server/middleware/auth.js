@@ -4,9 +4,9 @@ const auth = async (req, res, next) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
         const decodedTocken = jwt.verify(token, process.env.HMS_SECRET_APP);
-        const { uid, name, photoURL, email } = decodedTocken;
+        const { uid, name, photoURL, email, mid } = decodedTocken;
         const username = email.split('@')[0];
-        req.user = { uid, name, photoURL, email, username };
+        req.user = { uid, name, photoURL, email, username, mid };
         next();
     } catch (error) {
         console.log(error);
