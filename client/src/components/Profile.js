@@ -179,7 +179,7 @@ export default function Profile() {
                     <Typography
                         variant='p'
                         sx={{
-                            color: lMode3,
+                            color: lMode6,
                         }}
                     >
                         {email}
@@ -198,7 +198,7 @@ export default function Profile() {
                         <Typography
                             variant='p'
                             sx={{
-                                color: lMode5,
+                                color: lMode6,
                             }}
                         >
                             Skill Level &nbsp;&nbsp;
@@ -233,7 +233,7 @@ export default function Profile() {
                         <Typography
                             variant='p'
                             sx={{
-                                color: lMode5,
+                                color: lMode6,
                             }}
                         >
                             Location
@@ -251,7 +251,7 @@ export default function Profile() {
                                 })
                             }
                             sx={{
-                                color: lMode5,
+                                color: lMode6,
                                 backgroundColor: lMode1,
                                 marginLeft: '10px',
                             }}
@@ -268,7 +268,7 @@ export default function Profile() {
                     justifyContent: 'flex-start',
                     height: '100%',
                     width: '70%',
-                    backgroundColor: lMode6,
+                    backgroundColor: lMode3,
                 }}
             >
                 <Box
@@ -302,6 +302,8 @@ export default function Profile() {
                                 })
                             }
                             sx={{
+                                fontWeight: 'bold',
+                                fontSize: '25px',
                                 color: lMode1,
                                 backgroundColor: lMode6,
                                 marginLeft: '10px',

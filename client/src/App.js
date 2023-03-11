@@ -154,7 +154,7 @@ function App() {
         {/* Listings */}
 
         <Route
-          path='/listings'
+          path='/listing'
           element={
             <Listings themeChange={themeChange} mode={mode} />
           }

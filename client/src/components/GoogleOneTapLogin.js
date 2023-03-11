@@ -86,7 +86,7 @@ const GoogleOneTapLogin = () => {
                 startIcon={<Google />}
                 sx={{
                     display: displayType,
-                    width: '20px',
+                    width: '120px',
                     height: '35px',
                     backgroundColor: lMode5,
                     color: lMode1,
@@ -97,7 +97,7 @@ const GoogleOneTapLogin = () => {
                     },
                 }}
                 onClick={handleGoogleLogIn}
-            ></Button>
+            >Sign In</Button>
             <div style={{ display: gBtnDisplay }} ref={googleButton}></div>
         </React.Fragment>
     );

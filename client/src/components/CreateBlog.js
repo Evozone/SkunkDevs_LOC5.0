@@ -126,20 +126,17 @@ function CreateBlog({ mode }) {
         <Box
             sx={{
                 overflowY: 'auto',
-                mt: '75px',
-                height: 'calc(100vh - 75px)',
-                maxHeight: 'calc(100vh - 75px)',
-                backgroundColor: mode === 'light' ? light : bluegrey,
+                minHeight: '100vh',
+                backgroundColor: mode === 'light' ? 'whitesmoke' : 'black',
                 padding: '5rem',
-                pt: 0,
             }}
         >
             <Paper
                 sx={{
                     p: 2,
                     mt: 2,
-                    backgroundColor: mode === 'light' ? superLight : richBlack,
-                    boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.3)',
+                    backgroundColor: mode === 'light' ? lMode2 : dMode2,
+                    boxShadow: '0 0 2px 0 rgba(0, 0, 0, 0.5)',
                     border: mode === 'light' ? 'none' : `1px solid ${light}`,
                     borderRadius: '15px',
                 }}
@@ -152,7 +149,7 @@ function CreateBlog({ mode }) {
                         alignItems: 'center',
                         my: 2,
                         mb: 4,
-                        color: mode === 'light' ? deepDark : light,
+                        color: mode === 'light' ? lMode1 : dMode1,
                         padding: '0',
                         fontWeight: '600',
                         fontSize: '2.5rem',
@@ -223,8 +220,8 @@ function CreateBlog({ mode }) {
                                 fontWeight: '500',
                                 color:
                                     mode === 'light'
-                                        ? deepDark.concat('aa')
-                                        : light.concat('aa'),
+                                        ? lMode3
+                                        : dMode3,
                             }}
                         >
                             Choose cover image -{' '}
@@ -280,7 +277,7 @@ function CreateBlog({ mode }) {
                         color='success'
                         sx={{
                             mt: 3,
-                            backgroundColor: mode === 'light' ? medium : light,
+                            backgroundColor: mode === 'light' ? lMode3 : dMode3,
                             color: bluegrey,
                             font: '500 0.9rem Poppins, sans-serif',
                             ':hover': {

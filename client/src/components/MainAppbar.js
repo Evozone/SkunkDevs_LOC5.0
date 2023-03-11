@@ -10,7 +10,7 @@ import ListItemText from '@mui/material/ListItemText';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ExploreIcon from '@mui/icons-material/Explore';
 import CommentIcon from '@mui/icons-material/Comment';
-import GavelIcon from '@mui/icons-material/Gavel';
+import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 
 import IconButton from '@mui/material/IconButton';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
@@ -127,7 +127,7 @@ function MainAppbar({ mode, themeChange }) {
                         value='listing'
                         selected={selected === 'listing'}
                     >
-                        <GavelIcon /> Listings
+                        <PersonSearchIcon /> Listings
                     </CustomSwitcherButton>
 
                 </CustomSwitcherGroup>
