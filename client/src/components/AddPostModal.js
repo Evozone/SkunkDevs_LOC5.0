@@ -11,6 +11,7 @@ import {
     Chip,
     Grid,
 } from '@mui/material';
+import { useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
@@ -18,6 +19,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import ImageIcon from '@mui/icons-material/Image';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ImageKit from 'imagekit-javascript';
+import axios from 'axios';
+import { v4 as uuid } from 'uuid';
 
 const SytledModal = styled(Modal)({
     display: 'flex',
@@ -33,6 +36,7 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
     const [imageSelected, setImageSelected] = useState(false);
     const [imageLocalURL, setImageLocalURL] = useState('');
     const [imageRemoteURL, setImageRemoteURL] = useState('');
+    const [thumbnailUrl, setThumbnailUrl] = useState('');
     const [imageFile, setImageFile] = useState(null);
     const [tags, setTags] = useState([]);
     const inputRef = useRef(null);
@@ -52,6 +56,8 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
     const handleInputChange = (e) => {
         setCharacterCount(e.target.value.length);
     };
+
+    const currentUser = useSelector((state) => state.currentUser);
 
     const postText = useRef();
 
@@ -96,7 +102,8 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
                         return;
                     }
                     const tagsArray = result.AITags.map((res) => res.name);
-
+                    setImageRemoteURL(result.url);
+                    setThumbnailUrl(result.thumbnailUrl);
                     setTags(tagsArray);
                 }
             );
@@ -113,6 +120,38 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
         e.preventDefault();
         const postTextValue = postText.current.value;
         console.log(postTextValue);
+        if (postTextValue.length > 200 || postTextValue.length === 0) {
+            alert('Post description is not valid');
+            return;
+        }
+        const auth = window.localStorage.getItem('photoApp');
+        const { dnd } = JSON.parse(auth);
+        const data = {
+            imageURL: imageRemoteURL,
+            thumbnailUrl,
+            tags,
+            description: postTextValue,
+            createdAt: Date.now(),
+            createdBy: currentUser.mid,
+            uid: uuid(),
+            comments: [],
+            views: 0,
+            monetizeType: 'free',
+        };
+        try {
+            const response = await axios({
+                method: 'POST',
+                url: `${process.env.REACT_APP_SERVER_URL}/api/explore/createPost`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: `Bearer ${dnd}`,
+                },
+                data,
+            });
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (

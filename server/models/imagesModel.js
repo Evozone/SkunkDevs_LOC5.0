@@ -4,6 +4,9 @@ const imagesSchema = new mongoose.Schema({
     imageUrl: {
         type: String,
     },
+    thumbnailUrl: {
+        type: String,
+    },
     altText: {
         type: String,
     },
