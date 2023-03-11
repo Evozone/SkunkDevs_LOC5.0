@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import ListItemText from '@mui/material/ListItemText';
 import IconButton from '@mui/material/IconButton';
 import Groups2Icon from '@mui/icons-material/Groups2';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
@@ -14,6 +13,8 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LogoutIcon from '@mui/icons-material/Logout';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import ExploreIcon from '@mui/icons-material/Explore';
+import CommentIcon from '@mui/icons-material/Comment';
+import GavelIcon from '@mui/icons-material/Gavel';
 
 import { CustomSwitcherGroup, CustomSwitcherButton } from './CustomSwitcher';
 import { richBlack, light, medium, deepDark, bluegrey } from '../utils/colors';
@@ -26,21 +27,21 @@ function MainAppbar({ mode, themeChange }) {
     const currentUser = useSelector((state) => state.auth);
     const [anchorEl, setAnchorEl] = useState(null);
     const [selected, setSelected] = useState(
-        window.localStorage.getItem('healthAppLastPage') || 'groups'
+        window.localStorage.getItem('photoAppLastPage') || 'stage'
     );
 
     const handleSignOut = () => {
         const choice = window.confirm('Please click on OK to Log Out.');
         if (choice) {
             dispatch(signOutAction());
-            window.localStorage.removeItem('healthAppLastPage');
+            window.localStorage.removeItem('photoAppLastPage');
             navigate('/');
         }
     };
 
     const handleNavigation = (value) => {
         setSelected(value);
-        window.localStorage.setItem('healthAppLastPage', value);
+        window.localStorage.setItem('photoAppLastPage', value);
         navigate(`/${value}`);
     };
 
@@ -56,74 +57,88 @@ function MainAppbar({ mode, themeChange }) {
         <Box
             sx={{
                 position: 'fixed',
-                width: '100%',
                 display: 'flex',
-                justifyContent: 'space-between',
+                flexDirection: 'row',
+                justifyContent: 'center',
                 alignItems: 'center',
-                bgcolor: mode === 'light' ? medium : richBlack,
-                boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.5)',
-                color: 'white',
-                zIndex: '1000',
-                padding: '7px',
-                top: '0',
+                width: '100%',
             }}
         >
-            <IconButton
-                onClick={themeChange}
-                sx={{ color: 'white', height: 45, width: 45 }}
-                aria-label='change theme'
+            <Box
+                sx={{
+                    position: 'absolute',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+
+                    alignItems: 'center',
+                    backgroundColor: mode === 'light' ? deepDark : light,
+                    color: 'white',
+
+                    borderRadius: '50px',
+
+                    zIndex: '1000',
+                    px: 2,
+                    top: '2px',
+                }}
             >
-                {mode === 'light' ? (
-                    <DarkModeIcon sx={{ height: 33, width: 33 }} />
-                ) : (
-                    <LightModeIcon sx={{ height: 33, width: 33 }} />
-                )}
-            </IconButton>
 
+                <IconButton
+                    onClick={themeChange}
+                    sx={{ color: 'white', height: 45, width: 45 }}
+                    aria-label='change theme'
+                >
+                    {mode === 'light' ? (
+                        <DarkModeIcon sx={{ height: 33, width: 33 }} />
+                    ) : (
+                        <LightModeIcon sx={{ height: 33, width: 33 }} />
+                    )}
+                </IconButton>
 
-            {true ? (
-                <>
-                    <CustomSwitcherGroup exclusive>
-                        {/* Explore */}
-                        <CustomSwitcherButton
-                            onClick={() => handleNavigation('explore')}
-                            value='explore'
-                            selected={selected === 'explore'}
-                        >
-                            <Groups2Icon /> Explore
-                        </CustomSwitcherButton>
-                        <CustomSwitcherButton
-                            onClick={() => handleNavigation('groups')}
-                            value='groups'
-                            selected={selected === 'groups'}
-                        >
-                            <Groups2Icon /> Stage
-                        </CustomSwitcherButton>
-                        <CustomSwitcherButton
-                            onClick={() => handleNavigation('blogs')}
-                            value='blogs'
-                            selected={selected === 'blogs'}
-                        >
-                            <LibraryBooksIcon /> Blogs
-                        </CustomSwitcherButton>
-                        <CustomSwitcherButton
-                            onClick={() => handleNavigation('connect')}
-                            value='connect'
-                            selected={selected === 'connect'}
-                        >
-                            <GroupAddIcon /> Connect
-                        </CustomSwitcherButton>
-                        <CustomSwitcherButton
-                            onClick={() => handleNavigation('listing')}
-                            value='listing'
-                            selected={selected === 'listing'}
-                        >
-                            <QuizIcon /> Listings
-                        </CustomSwitcherButton>
+                {true ? (
+                    <>
+                        <CustomSwitcherGroup exclusive>
+                            {/* Explore */}
+                            <CustomSwitcherButton
+                                onClick={() => handleNavigation('explore')}
+                                value='explore'
+                                selected={selected === 'explore'}
+                            >
+                                <ExploreIcon /> Explore
+                            </CustomSwitcherButton>
 
-                    </CustomSwitcherGroup>
+                            {/* Stage */}
+                            <CustomSwitcherButton
+                                onClick={() => handleNavigation('stage')}
+                                value='stage'
+                                selected={selected === 'stage'}
+                            >
+                                <Groups2Icon /> Stage
+                            </CustomSwitcherButton>
+                            <CustomSwitcherButton
+                                onClick={() => handleNavigation('blogs')}
+                                value='blogs'
+                                selected={selected === 'blogs'}
+                            >
+                                <LibraryBooksIcon /> Blogs
+                            </CustomSwitcherButton>
+                            <CustomSwitcherButton
+                                onClick={() => handleNavigation('connect')}
+                                value='connect'
+                                selected={selected === 'connect'}
+                            >
+                                <CommentIcon /> Connect
+                            </CustomSwitcherButton>
+                            <CustomSwitcherButton
+                                onClick={() => handleNavigation('listing')}
+                                value='listing'
+                                selected={selected === 'listing'}
+                            >
+                                <GavelIcon /> Listings
+                            </CustomSwitcherButton>
 
-                    {/* <IconButton onClick={handleMenuClick}>
+                        </CustomSwitcherGroup>
+
+                        {/* <IconButton onClick={handleMenuClick}>
                         <Avatar
                             // alt={currentUser.name.charAt(0).toUpperCase()}
                             // src={currentUser.photoURL}
@@ -139,45 +154,46 @@ function MainAppbar({ mode, themeChange }) {
                         </Avatar>
                     </IconButton> */}
 
-                    <button
-                    >Sign in</button>
+                        <button
+                        >Sign in</button>
 
-                    <Menu
-                        anchorEl={anchorEl}
-                        keepMounted
-                        open={Boolean(anchorEl)}
-                        onClose={handleMenuClose}
-                        sx={{
-                            '& .MuiPaper-root': {
-                                backgroundColor:
-                                    mode === 'light' ? light : bluegrey,
-                            },
-                        }}
-                    >
-                        <MenuItem
-                            onClick={() => {
-                                handleSignOut();
+                        <Menu
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={Boolean(anchorEl)}
+                            onClose={handleMenuClose}
+                            sx={{
+                                '& .MuiPaper-root': {
+                                    backgroundColor:
+                                        mode === 'light' ? light : bluegrey,
+                                },
                             }}
                         >
-                            <LogoutIcon
-                                sx={{
-                                    color: mode === 'light' ? deepDark : light,
+                            <MenuItem
+                                onClick={() => {
+                                    handleSignOut();
                                 }}
-                            />
-                            <ListItemText sx={{ ml: 1 }} primary='Logout' />
-                        </MenuItem>
-                    </Menu>
-                </>
-            ) : (
-                <CustomSwitcherGroup>
-                    <CustomSwitcherButton
-                        onClick={() => navigate('/')}
-                        value='/'
-                    >
-                        <GroupAddIcon /> Join Now
-                    </CustomSwitcherButton>
-                </CustomSwitcherGroup>
-            )}
+                            >
+                                <LogoutIcon
+                                    sx={{
+                                        color: mode === 'light' ? deepDark : light,
+                                    }}
+                                />
+                                <ListItemText sx={{ ml: 1 }} primary='Logout' />
+                            </MenuItem>
+                        </Menu>
+                    </>
+                ) : (
+                    <CustomSwitcherGroup>
+                        <CustomSwitcherButton
+                            onClick={() => navigate('/')}
+                            value='/'
+                        >
+                            <GroupAddIcon /> Join Now
+                        </CustomSwitcherButton>
+                    </CustomSwitcherGroup>
+                )}
+            </Box>
         </Box>
     );
 }

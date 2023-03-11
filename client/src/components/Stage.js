@@ -1,8 +1,8 @@
-export default function Groups() {
+export default function Stage() {
     return (
         // Test Hello
         <div>
-            <h1>Groups</h1>
+            <h1>Stage</h1>
         </div>
     )
 }

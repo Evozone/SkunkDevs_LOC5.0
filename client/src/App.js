@@ -9,15 +9,19 @@ import ProtectedRoute from './components/ProtectedRoute';
 import { signInAction } from './actions/actions';
 import MainAppbar from './components/MainAppbar';
 import Explore from './components/Explore';
-import Groups from './components/Groups';
+import Stage from './components/Stage';
 import Blogs from './components/Blogs';
+import Connect from './components/Connect';
+import Listings from './components/Listings';
+
+import { customGlobalScrollBars, smoothScrolling } from './components/CustomGlobalCSS';
 
 
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const localTheme = window.localStorage.getItem('healthAppTheme');
+  const localTheme = window.localStorage.getItem('photoAppTheme');
 
   const [mode, setMode] = useState(localTheme ? localTheme : 'light');
 
@@ -33,7 +37,7 @@ function App() {
 
   const themeChange = () => {
     const updatedTheme = mode === 'light' ? 'dark' : 'light';
-    window.localStorage.setItem('healthAppTheme', updatedTheme);
+    window.localStorage.setItem('photoAppTheme', updatedTheme);
     setMode(updatedTheme);
   };
 
@@ -41,7 +45,7 @@ function App() {
   // const isSignedIn = useSelector((state) => state.auth.isSignedIn);
 
   useEffect(() => {
-    const auth = window.localStorage.getItem('');
+    const auth = window.localStorage.getItem('photoApp');
     if (auth) {
       const { dnd } = JSON.parse(auth);
       const {
@@ -52,7 +56,7 @@ function App() {
         iat: signInTime,
       } = jwtDecode(dnd);
       dispatch(signInAction(uid, email, name, photoURL, dnd, signInTime));
-      const value = window.localStorage.getItem('');
+      const value = window.localStorage.getItem('photoApp');
       if (value && value !== undefined) {
         navigate(`/${value}`);
       } else {
@@ -64,6 +68,8 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
+      {customGlobalScrollBars(mode)}
+      {smoothScrolling()}
 
       <MainAppbar
         {...{
@@ -74,12 +80,12 @@ function App() {
 
       <Routes>
 
-        <Route path='/' element={<Explore />} />
+        <Route path='/explore' element={<Explore />} />
 
         <Route
-          path='/groups'
+          path='/stage'
           element={
-            <Groups themeChange={themeChange} mode={mode} />
+            <Stage themeChange={themeChange} mode={mode} />
           }
         />
 
@@ -87,6 +93,22 @@ function App() {
           path='/blogs'
           element={
             <Blogs themeChange={themeChange} mode={mode} />
+          }
+        />
+
+        <Route
+          path='/connect'
+          element={
+            <Connect themeChange={themeChange} mode={mode} />
+          }
+        />
+
+        {/* Listings */}
+
+        <Route
+          path='/listings'
+          element={
+            <Listings themeChange={themeChange} mode={mode} />
           }
         />
 
