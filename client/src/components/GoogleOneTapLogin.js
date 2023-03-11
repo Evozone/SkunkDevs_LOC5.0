@@ -34,44 +34,48 @@ const GoogleOneTapLogin = () => {
                 'Content-type': 'application/json',
             },
         };
-        await axios
-            .post(
-                `${process.env.REACT_APP_SERVER_URL}/api/user/googleSignUp`,
-                {
-                    uid,
-                    email,
-                    name,
-                    photoURL,
-                    username,
-                    socialLinks: {
-                        twitter: '',
-                        instagram: '',
-                        pinterest: '',
-                    },
-                },
-                config
-            )
-            .then((result) => {
-                const user = result.data.result;
-                dispatch(
-                    signInAction(
-                        user.uid,
-                        user.email,
-                        user.name,
-                        user.photoURL,
-                        user.username,
-                        user.socialLinks,
-                        user.token
-                    )
-                );
-                window.localStorage.setItem('photoAppLastPage', 'explore');
-                navigate('/explore');
-            })
-            .catch((err) => {
-                console.log(err);
-                alert('Something went wrong, please try again later.');
-            });
-        dispatch(stopLoadingAction());
+
+        navigate('/profile');
+
+        // await axios
+        //     .post(
+        //         `${process.env.REACT_APP_SERVER_URL}/api/user/googleSignUp`,
+        //         {
+        //             uid,
+        //             email,
+        //             name,
+        //             photoURL,
+        //             username,
+        //             socialLinks: {
+        //                 twitter: '',
+        //                 instagram: '',
+        //                 pinterest: '',
+        //             },
+        //         },
+        //         config
+        //     )
+        //     .then((result) => {
+        //         const user = result.data.result;
+        //         dispatch(
+        //             signInAction(
+        //                 user.uid,
+        //                 user.email,
+        //                 user.name,
+        //                 user.photoURL,
+        //                 user.username,
+        //                 user.socialLinks,
+        //                 user.token,
+        //                 user._id
+        //             )
+        //         );
+        //         window.localStorage.setItem('photoAppLastPage', '');
+        //         navigate('/');
+        //     })
+        //     .catch((err) => {
+        //         console.log(err);
+        //         alert('Something went wrong, please try again later.');
+        //     });
+        // dispatch(stopLoadingAction());
     };
 
     const handleGoogleLogIn = () => {

@@ -24,7 +24,8 @@ export const signInAction = (
     photoURL,
     username,
     socialLinks,
-    token
+    token,
+    mid
 ) => {
     return {
         type: SIGN_IN,
@@ -36,6 +37,7 @@ export const signInAction = (
             username,
             socialLinks,
             token,
+            mid
         },
     };
 };

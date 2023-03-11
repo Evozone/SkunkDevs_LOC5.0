@@ -9,6 +9,7 @@ const INITIAL_STATE = {
     token: null,
     signInTime: null,
     username: null,
+    mid: null
 };
 
 const authReducer = (state = INITIAL_STATE, action) => {
@@ -28,6 +29,7 @@ const authReducer = (state = INITIAL_STATE, action) => {
                 token: action.payload.token,
                 signInTime: action.payload.signInTime,
                 username: action.payload.email.split('@')[0],
+                mid: action.payload.mid
             };
 
         case SIGN_OUT:

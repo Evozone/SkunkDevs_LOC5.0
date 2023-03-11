@@ -18,12 +18,13 @@ import StageRoom from './components/StageRoom';
 import ViewBlog from './components/ViewBlog';
 import CreateBlog from './components/CreateBlog';
 import EditBlog from './components/EditBlog';
+import Profile from './components/Profile';
 
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const localTheme = window.localStorage.getItem('healthAppTheme');
+  const localTheme = window.localStorage.getItem('photoAppTheme');
 
   const [mode, setMode] = useState(localTheme ? localTheme : 'light');
 
@@ -39,7 +40,7 @@ function App() {
 
   const themeChange = () => {
     const updatedTheme = mode === 'light' ? 'dark' : 'light';
-    window.localStorage.setItem('healthAppTheme', updatedTheme);
+    window.localStorage.setItem('photoAppTheme', updatedTheme);
     setMode(updatedTheme);
   };
 
@@ -50,8 +51,9 @@ function App() {
     const auth = window.localStorage.getItem('photoApp');
     if (auth) {
       const { dnd } = JSON.parse(auth);
-      const { uid, email, name, photoURL, username, socialLinks } =
+      const { uid, email, name, photoURL, username, socialLinks, _id } =
         jwtDecode(dnd);
+      console.log(jwtDecode(dnd));
       dispatch(
         signInAction(
           uid,
@@ -60,8 +62,8 @@ function App() {
           photoURL,
           username,
           socialLinks,
-          dnd
-        )
+          dnd,
+          _id)
       );
       const value = window.localStorage.getItem('photoAppLastPage');
       if (value && value !== undefined) {
@@ -76,12 +78,16 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
 
-      <MainAppbar
-        {...{
-          themeChange,
-          mode,
-        }}
-      />
+      {/* if value is profile then don't show MainAppbar */}
+
+      {window.location.href != 'http://localhost:3000/profile' ?
+        <MainAppbar
+          {...{
+            themeChange,
+            mode,
+          }}
+        /> :
+        null}
 
       <Routes>
 
@@ -159,7 +165,7 @@ function App() {
         <Route
           path='/profile'
           element={
-            <Listings themeChange={themeChange} mode={mode} />
+            <Profile themeChange={themeChange} mode={mode} />
           }
         />
 
