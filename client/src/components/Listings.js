@@ -41,6 +41,7 @@ import { useDispatch } from 'react-redux';
 export default function Listings({ mode }) {
     // define state for listings
     const dispatch = useDispatch();
+    const [shift, setShift] = useState(true);
     const [explorerListings, setExplorerListings] = useState([]);
 
     // userMode can be 'explorer' or 'photographer'
@@ -174,6 +175,7 @@ export default function Listings({ mode }) {
                 },
                 data,
             });
+            setShift((prev) => !prev);
             dispatch(
                 notifyAction(
                     true,
@@ -554,7 +556,7 @@ export default function Listings({ mode }) {
                             >
                                 <ExplorerListings
                                     mode={mode}
-                                    listings={explorerListings}
+                                    shift={shift}
                                     onDeleteListing={handleDeleteListing}
                                 />
                             </Box>

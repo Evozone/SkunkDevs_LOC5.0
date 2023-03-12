@@ -6,9 +6,13 @@ import { useEffect, useState } from 'react';
 
 import { lMode2, dMode2, lMode1, dMode1 } from '../utils/colors';
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 
-const ExplorerListings = ({ mode, listings, onDeleteListing }) => {
+const ExplorerListings = ({ mode, shift, onDeleteListing }) => {
     const [prevlistings, setPrevlistings] = useState([]);
+    const auth = window.localStorage.getItem('photoApp');
+    const { dnd } = JSON.parse(auth);
+    const { email } = jwtDecode(dnd);
     useEffect(() => {
         const getList = async () => {
             const listFromServer = await axios.get(
@@ -18,51 +22,53 @@ const ExplorerListings = ({ mode, listings, onDeleteListing }) => {
             setPrevlistings((prev) => listFromServer.data.result);
         };
         getList();
-    }, []);
+    }, [shift]);
     return (
         // The listings here are explorer's listings
         <Box>
             {prevlistings.length > 0 ? (
-                prevlistings.map((listing) => (
-                    <Box
-                        key={listing._id}
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            p: 3,
-                            borderRadius: '1rem',
-                            bgcolor: mode === 'light' ? lMode2 : dMode2,
-                            boxShadow: 2,
-                            mb: 2,
-                        }}
-                    >
-                        <Typography variant='h4' component='h2'>
-                            {listing.city}
-                        </Typography>
-                        <Typography variant='subtitle1' component='p'>
-                            Budget: {'$ '}
-                            {listing.budgetAmount}
-                        </Typography>
-                        <Typography variant='subtitle1' component='p'>
-                            From: {listing.fromDateTime}
-                        </Typography>
-                        <Typography variant='subtitle1' component='p'>
-                            To: {listing.toDateTime}
-                        </Typography>
-                        <Typography variant='subtitle1' component='p'>
-                            Tags: {listing.tags.join(', ')}
-                        </Typography>
-                        <Button
-                            variant='outlined'
-                            color='error'
-                            onClick={() => onDeleteListing(listing._id)}
+                prevlistings.map((listing) =>
+                    listing.authorEmail === email ? (
+                        <Box
+                            key={listing._id}
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                p: 3,
+                                borderRadius: '1rem',
+                                bgcolor: mode === 'light' ? lMode2 : dMode2,
+                                boxShadow: 2,
+                                mb: 2,
+                            }}
                         >
-                            Delete Listing
-                        </Button>
-                    </Box>
-                ))
+                            <Typography variant='h4' component='h2'>
+                                {listing.city}
+                            </Typography>
+                            <Typography variant='subtitle1' component='p'>
+                                Budget: {'$ '}
+                                {listing.budgetAmount}
+                            </Typography>
+                            <Typography variant='subtitle1' component='p'>
+                                From: {listing.fromDateTime}
+                            </Typography>
+                            <Typography variant='subtitle1' component='p'>
+                                To: {listing.toDateTime}
+                            </Typography>
+                            <Typography variant='subtitle1' component='p'>
+                                Tags: {listing.tags.join(', ')}
+                            </Typography>
+                            <Button
+                                variant='outlined'
+                                color='error'
+                                onClick={() => onDeleteListing(listing._id)}
+                            >
+                                Delete Listing
+                            </Button>
+                        </Box>
+                    ) : null
+                )
             ) : (
                 <Typography
                     variant='h4'
