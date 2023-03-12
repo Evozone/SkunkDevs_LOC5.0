@@ -19,160 +19,169 @@ import ViewBlog from './components/ViewBlog';
 import CreateBlog from './components/CreateBlog';
 import EditBlog from './components/EditBlog';
 import Profile from './components/Profile';
+import PersonalCall from './components/PersonalCall';
 
 function App() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-  const localTheme = window.localStorage.getItem('photoAppTheme');
+    const localTheme = window.localStorage.getItem('photoAppTheme');
 
-  const [mode, setMode] = useState(localTheme ? localTheme : 'light');
+    const [mode, setMode] = useState(localTheme ? localTheme : 'light');
 
-  const darkTheme = createTheme({
-    palette: {
-      mode: mode,
-    },
+    const darkTheme = createTheme({
+        palette: {
+            mode: mode,
+        },
 
-    typography: {
-      fontFamily: "'Open Sans', sans-serif",
-    },
-  });
+        typography: {
+            fontFamily: "'Open Sans', sans-serif",
+        },
+    });
 
-  const themeChange = () => {
-    const updatedTheme = mode === 'light' ? 'dark' : 'light';
-    window.localStorage.setItem('photoAppTheme', updatedTheme);
-    setMode(updatedTheme);
-  };
+    const themeChange = () => {
+        const updatedTheme = mode === 'light' ? 'dark' : 'light';
+        window.localStorage.setItem('photoAppTheme', updatedTheme);
+        setMode(updatedTheme);
+    };
 
-  const isSignedIn = true;
-  // const isSignedIn = useSelector((state) => state.auth.isSignedIn);
+    const isSignedIn = true;
+    // const isSignedIn = useSelector((state) => state.auth.isSignedIn);
 
-  useEffect(() => {
-    const auth = window.localStorage.getItem('photoApp');
-    if (auth) {
-      const { dnd } = JSON.parse(auth);
-      const { uid, email, name, photoURL, username, socialLinks, _id } =
-        jwtDecode(dnd);
-      console.log(jwtDecode(dnd));
-      dispatch(
-        signInAction(
-          uid,
-          email,
-          name,
-          photoURL,
-          username,
-          socialLinks,
-          dnd,
-          _id)
-      );
-      const value = window.localStorage.getItem('photoAppLastPage');
-      if (value && value !== undefined) {
-        navigate(`/${value}`);
-      } else {
-        navigate('/');
-      }
-    }
-  }, []);
+    useEffect(() => {
+        const auth = window.localStorage.getItem('photoApp');
+        if (auth) {
+            const { dnd } = JSON.parse(auth);
+            const {
+                uid,
+                email,
+                name,
+                avatar,
+                username,
+                socialLinks,
+                _id,
+                location,
+                bio,
+            } = jwtDecode(dnd);
+            dispatch(
+                signInAction(
+                    uid,
+                    bio,
+                    socialLinks,
+                    location,
+                    email,
+                    name,
+                    avatar,
+                    username,
+                    _id,
+                    dnd
+                )
+            );
+            const value = window.localStorage.getItem('photoAppLastPage');
+            if (value && value !== undefined) {
+                navigate(`/${value}`);
+            } else {
+                navigate('/');
+            }
+        }
+    }, []);
 
-  return (
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
+    return (
+        <ThemeProvider theme={darkTheme}>
+            <CssBaseline />
 
-      {/* if value is profile then don't show MainAppbar */}
+            {/* if value is profile then don't show MainAppbar */}
 
-      {window.location.href != 'http://localhost:3000/profile' ?
-        <MainAppbar
-          {...{
-            themeChange,
-            mode,
-          }}
-        /> :
-        null}
+            {window.location.href != 'http://localhost:3000/profile' ? (
+                <MainAppbar
+                    {...{
+                        themeChange,
+                        mode,
+                    }}
+                />
+            ) : null}
 
-      <Routes>
+            <Routes>
+                {/*  */}
 
-        {/*  */}
+                <Route
+                    path='/'
+                    element={<Explore themeChange={themeChange} mode={mode} />}
+                />
 
-        <Route path='/' element={< Explore themeChange={themeChange} mode={mode} />} />
+                {/* Stage */}
 
-        {/* Stage */}
+                <Route
+                    path='/stage'
+                    element={
+                        <HMSRoomProvider>
+                            <Stage themeChange={themeChange} mode={mode} />
+                        </HMSRoomProvider>
+                    }
+                />
 
-        <Route
-          path='/stage'
-          element={
-            <HMSRoomProvider>
-              <Stage themeChange={themeChange} mode={mode} />
-            </HMSRoomProvider>
-          }
-        />
+                {/* Stage Room */}
+                <Route
+                    path='/room/:id'
+                    element={
+                        <HMSRoomProvider>
+                            <StageRoom themeChange={themeChange} mode={mode} />
+                        </HMSRoomProvider>
+                    }
+                />
 
-        {/* Stage Room */}
-        <Route
-          path='/room/:id'
-          element={
-            <HMSRoomProvider>
-              <StageRoom themeChange={themeChange} mode={mode} />
-            </HMSRoomProvider>
-          }
-        />
+                {/* Blogs */}
 
-        {/* Blogs */}
+                <Route
+                    path='/blogs'
+                    element={<Blogs themeChange={themeChange} mode={mode} />}
+                />
+                <Route
+                    path='/blog/:id'
+                    element={
+                        <>
+                            <MainAppbar themeChange={themeChange} mode={mode} />
+                            <ViewBlog themeChange={themeChange} mode={mode} />
+                        </>
+                    }
+                />
+                <Route
+                    path='/createBlog'
+                    element={
+                        <CreateBlog themeChange={themeChange} mode={mode} />
+                    }
+                />
+                <Route
+                    path='/editBlog/:id'
+                    element={<EditBlog themeChange={themeChange} mode={mode} />}
+                />
 
-        <Route
-          path='/blogs'
-          element={<Blogs themeChange={themeChange} mode={mode} />}
-        />
-        <Route
-          path='/blog/:id'
-          element={
-            <>
-              <MainAppbar themeChange={themeChange} mode={mode} />
-              <ViewBlog themeChange={themeChange} mode={mode} />
-            </>
-          }
-        />
-        <Route
-          path='/createBlog'
-          element={
-            <CreateBlog themeChange={themeChange} mode={mode} />
-          }
-        />
-        <Route
-          path='/editBlog/:id'
-          element={<EditBlog themeChange={themeChange} mode={mode} />}
-        />
+                {/* Connect */}
 
-        {/* Connect */}
+                <Route
+                    path='/connect'
+                    element={<Connect themeChange={themeChange} mode={mode} />}
+                />
+                <Route
+                    path='/connect/pc/:id'
+                    element={<PersonalCall mode={mode} />}
+                />
+                {/* Listings */}
 
-        <Route
-          path='/connect'
-          element={
-            <Connect themeChange={themeChange} mode={mode} />
-          }
-        />
+                <Route
+                    path='/listing'
+                    element={<Listings themeChange={themeChange} mode={mode} />}
+                />
 
-        {/* Listings */}
+                {/* Profile */}
 
-        <Route
-          path='/listing'
-          element={
-            <Listings themeChange={themeChange} mode={mode} />
-          }
-        />
-
-        {/* Profile */}
-
-        <Route
-          path='/profile'
-          element={
-            <Profile themeChange={themeChange} mode={mode} />
-          }
-        />
-
-      </Routes>
-
-    </ThemeProvider>
-  );
+                <Route
+                    path='/profile'
+                    element={<Profile themeChange={themeChange} mode={mode} />}
+                />
+            </Routes>
+        </ThemeProvider>
+    );
 }
 
 export default App;

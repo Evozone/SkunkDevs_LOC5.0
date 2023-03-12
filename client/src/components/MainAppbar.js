@@ -21,7 +21,24 @@ import GoogleOneTapLogin from './GoogleOneTapLogin';
 
 import { CustomSwitcherGroup, CustomSwitcherButton } from './CustomSwitcher';
 
-import { lMode1, lMode2, lMode3, lMode4, lMode5, lMode6, light, deepDark, richBlack, dMode1, bluegrey, dMode2, dMode3, dMode4, dMode5, dMode6 } from '../utils/colors';
+import {
+    lMode1,
+    lMode2,
+    lMode3,
+    lMode4,
+    lMode5,
+    lMode6,
+    light,
+    deepDark,
+    richBlack,
+    dMode1,
+    bluegrey,
+    dMode2,
+    dMode3,
+    dMode4,
+    dMode5,
+    dMode6,
+} from '../utils/colors';
 
 import { signOutAction } from '../actions/actions';
 import { Avatar, Icon } from '@mui/material';
@@ -89,7 +106,6 @@ function MainAppbar({ mode, themeChange }) {
                     top: '5px',
                 }}
             >
-
                 <CustomSwitcherGroup exclusive>
                     {/* Explore */}
                     <CustomSwitcherButton
@@ -129,7 +145,6 @@ function MainAppbar({ mode, themeChange }) {
                     >
                         <PersonSearchIcon /> Listings
                     </CustomSwitcherButton>
-
                 </CustomSwitcherGroup>
 
                 {/* <IconButton onClick={handleMenuClick}>
@@ -149,20 +164,13 @@ function MainAppbar({ mode, themeChange }) {
                     </IconButton> */}
 
                 {currentUser?.isSignedIn ? (
-                    <IconButton
-                        sx={{ p: '6px' }}
-                        onClick={handleMenuClick}
-                    >
+                    <IconButton sx={{ p: '6px' }} onClick={handleMenuClick}>
                         <Avatar
-                            alt={currentUser.name
-                                .charAt(0)
-                                .toUpperCase()}
-                            src={currentUser.photoURL}
+                            alt={currentUser.name.charAt(0).toUpperCase()}
+                            src={currentUser.avatar}
                             sx={{
-                                bgcolor:
-                                    mode === 'light' ? lMode5 : dMode5,
-                                color:
-                                    mode === 'light' ? lMode1 : dMode1,
+                                bgcolor: mode === 'light' ? lMode5 : dMode5,
+                                color: mode === 'light' ? lMode1 : dMode1,
                                 height: 35,
                                 width: 35,
                                 border: '2px solid',
@@ -181,8 +189,7 @@ function MainAppbar({ mode, themeChange }) {
                     onClose={handleMenuClose}
                     sx={{
                         '& .MuiPaper-root': {
-                            backgroundColor:
-                                mode === 'light' ? lMode1 : dMode1,
+                            backgroundColor: mode === 'light' ? lMode1 : dMode1,
                             boxShadow: 'none',
                             border: `1px solid ${lMode6}`,
                         },
@@ -196,8 +203,7 @@ function MainAppbar({ mode, themeChange }) {
                         {mode === 'light' ? (
                             <DarkModeIcon
                                 sx={{
-                                    color:
-                                        mode === 'light' ? lMode3 : dMode3,
+                                    color: mode === 'light' ? lMode3 : dMode3,
                                     fontSize: '1.7rem',
                                     ml: -0.5,
                                 }}
@@ -205,8 +211,7 @@ function MainAppbar({ mode, themeChange }) {
                         ) : (
                             <LightModeIcon
                                 sx={{
-                                    color:
-                                        mode === 'light' ? lMode3 : dMode3,
+                                    color: mode === 'light' ? lMode3 : dMode3,
                                     fontSize: '1.7rem',
                                     ml: -0.5,
                                 }}
@@ -222,16 +227,12 @@ function MainAppbar({ mode, themeChange }) {
                     >
                         <AccountBoxIcon
                             sx={{
-                                color:
-                                    mode === 'light' ? lMode3 : dMode3,
+                                color: mode === 'light' ? lMode3 : dMode3,
                                 fontSize: '1.7rem',
                                 ml: -0.5,
                             }}
                         />
-                        <ListItemText
-                            sx={{ ml: 1 }}
-                            primary='Profile'
-                        />
+                        <ListItemText sx={{ ml: 1 }} primary='Profile' />
                     </MenuItem>
                     {/* {renderInstallOption()} */}
                     <MenuItem
@@ -242,16 +243,14 @@ function MainAppbar({ mode, themeChange }) {
                     >
                         <LogoutIcon
                             sx={{
-                                color:
-                                    mode === 'light' ? lMode3 : dMode3,
+                                color: mode === 'light' ? lMode3 : dMode3,
                             }}
                         />
                         <ListItemText sx={{ ml: 1 }} primary='Logout' />
                     </MenuItem>
                 </Menu>
-            </Box >
-        </Box >
-
+            </Box>
+        </Box>
     );
 }
 

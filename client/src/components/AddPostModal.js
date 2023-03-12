@@ -40,7 +40,6 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
     const [imageFile, setImageFile] = useState(null);
     const [tags, setTags] = useState([]);
     const inputRef = useRef(null);
-    console.log(tags);
     function handleDelete(tagToDelete) {
         setTags(tags.filter((tag) => tag !== tagToDelete));
     }
@@ -119,7 +118,6 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const postTextValue = postText.current.value;
-        console.log(postTextValue);
         if (postTextValue.length > 200 || postTextValue.length === 0) {
             alert('Post description is not valid');
             return;

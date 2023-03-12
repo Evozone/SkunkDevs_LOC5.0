@@ -63,3 +63,32 @@ exports.googleSignUp = async (req, res) => {
         console.log(error);
     }
 };
+
+exports.search = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const keyword = req.query.search
+            ? {
+                  $or: [
+                      { name: { $regex: req.query.search, $options: 'i' } },
+                      { username: { $regex: req.query.search, $options: 'i' } },
+                  ],
+              }
+            : {};
+        const users = await UserModel.find(keyword).find({
+            uid: { $ne: userId },
+        });
+        res.status(200).json({
+            success: true,
+            result: users,
+            message: 'User found',
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Something went wrong',
+            error: error.message,
+        });
+        console.log(error);
+    }
+};

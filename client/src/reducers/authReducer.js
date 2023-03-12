@@ -3,13 +3,15 @@ import { SIGN_IN, SIGN_OUT } from '../actions/types';
 const INITIAL_STATE = {
     isSignedIn: false,
     uid: null,
+    bio: null,
+    socialLinks: null,
+    location: null,
     email: null,
     name: null,
-    photoURL: null,
-    token: null,
-    signInTime: null,
+    avatar: null,
     username: null,
-    mid: null
+    mid: null,
+    token: null,
 };
 
 const authReducer = (state = INITIAL_STATE, action) => {
@@ -23,13 +25,15 @@ const authReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 isSignedIn: true,
                 uid: action.payload.uid,
+                bio: action.payload.bio,
+                socialLinks: action.payload.socialLinks,
+                location: action.payload.location,
                 email: action.payload.email,
                 name: action.payload.name,
-                photoURL: action.payload.photoURL,
-                token: action.payload.token,
-                signInTime: action.payload.signInTime,
+                avatar: action.payload.avatar,
                 username: action.payload.email.split('@')[0],
-                mid: action.payload.mid
+                mid: action.payload.mid,
+                token: action.payload.token,
             };
 
         case SIGN_OUT:
@@ -38,12 +42,15 @@ const authReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 isSignedIn: false,
                 uid: null,
+                bio: null,
+                socialLinks: null,
+                location: null,
                 email: null,
                 name: null,
-                photoURL: null,
-                token: null,
-                signInTime: null,
+                avatar: null,
                 username: null,
+                mid: null,
+                token: null,
             };
 
         default:

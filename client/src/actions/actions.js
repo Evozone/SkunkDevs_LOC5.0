@@ -19,31 +19,29 @@ export const notifyAction = (open, severity, message) => {
 
 export const signInAction = (
     uid,
+    bio,
+    socialLinks,
+    location,
     email,
     name,
-    photoURL,
+    avatar,
     username,
-    socialLinks,
-    token,
     mid,
-    location,
-    bio,
-    avatar
+    token
 ) => {
     return {
         type: SIGN_IN,
         payload: {
             uid,
+            bio,
+            socialLinks,
+            location,
             email,
             name,
-            photoURL,
-            username,
-            socialLinks,
-            token,
-            mid,
-            location,
-            bio,
             avatar,
+            username,
+            mid,
+            token,
         },
     };
 };

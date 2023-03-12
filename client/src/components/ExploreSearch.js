@@ -53,6 +53,7 @@ export default function ExploreSearch({ mode }) {
                 sx={{
                     position: 'absolute',
                     mt: '5rem',
+                    mb: '1rem',
                     left: '25%',
                     width: '50%',
                     '& .MuiOutlinedInput-root': {

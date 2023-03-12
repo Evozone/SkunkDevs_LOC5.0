@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const { googleSignUp } = require('../controllers/user.js');
+const { googleSignUp, search } = require('../controllers/user.js');
 
 router.post('/googleSignUp', googleSignUp);
+router.get('/:userId', search);
 module.exports = router;

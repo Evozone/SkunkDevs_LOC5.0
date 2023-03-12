@@ -94,16 +94,15 @@ export default function Profile() {
                 dispatch(
                     signInAction(
                         user.uid,
+                        user.bio,
+                        user.socialLinks,
+                        user.location,
                         user.email,
                         user.name,
-                        user.photoURL,
+                        user.avatar,
                         user.username,
-                        user.socialLinks,
-                        user.token,
                         user._id,
-                        user.location,
-                        user.bio,
-                        user.avatar
+                        user.token
                     )
                 );
                 window.localStorage.setItem('photoAppLastPage', '');
@@ -165,7 +164,7 @@ export default function Profile() {
                             width: '250px',
                         }}
                         src={photoURL}
-                        alt='Profile Picture'
+                        alt='Profile Img'
                     />
                     <Typography
                         variant='h5'
