@@ -44,12 +44,35 @@ export default function ExploreSearch({ mode }) {
         setAnchorEl(null);
     };
 
+    const handleSearch = (event) => {
+        if (event.target.value.length > 0) {
+            clearTimeout(timer);
+            setSearchStatus('Searching...');
+            const newTimer = setTimeout(async () => {
+                try {
+                    const { data } = await axios.get(
+                        `${process.env.REACT_APP_SERVER_URL}/api/explore/searchPosts/${filters}?search=${event.target.value}`
+                    );
+                    setSearchResults(data.result);
+                    console.log(data.result);
+                } catch (err) {
+                    alert('Something went wrong!');
+                    console.log(err);
+                }
+                setSearchStatus(null);
+            }, 1100);
+            setTimer(newTimer);
+        } else {
+            setSearchResults(null);
+        }
+    };
+
     return (
         <Box sx={{ position: 'relative', height: 'inherit' }}>
             <TextField
                 autoFocus
                 label='Search Images'
-                // onChange={handleSearch}
+                onChange={handleSearch}
                 sx={{
                     position: 'absolute',
                     mt: '5rem',
@@ -128,7 +151,7 @@ export default function ExploreSearch({ mode }) {
                         alignSelf: 'center',
                         width: '200px',
                         position: 'absolute',
-                        top: '36%',
+                        top: '56%',
                         right: '25%',
                     }}
                     src='/assets/vectors/searching.svg'

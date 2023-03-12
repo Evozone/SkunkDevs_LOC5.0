@@ -97,3 +97,44 @@ exports.deletePostById = async (req, res) => {
         });
     }
 };
+
+exports.search = async (req, res) => {
+    try {
+        const monetizeType = req.params.monetizeType;
+        const keyword = req.query.search
+            ? {
+                  $or: [
+                      {
+                          tags: {
+                              $elemMatch: {
+                                  $regex: req.query.search,
+                                  $options: 'i',
+                              },
+                          },
+                      },
+                      {
+                          description: {
+                              $regex: req.query.search,
+                              $options: 'i',
+                          },
+                      },
+                  ],
+              }
+            : {};
+        const users = await ImageModel.find(keyword).find({
+            monetizeType: monetizeType,
+        });
+        res.status(200).json({
+            success: true,
+            result: users,
+            message: 'User found',
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Something went wrong',
+            error: error.message,
+        });
+        console.log(error);
+    }
+};
