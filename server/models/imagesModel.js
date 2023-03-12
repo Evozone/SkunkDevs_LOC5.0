@@ -25,7 +25,6 @@ const imagesSchema = new mongoose.Schema({
     uid: {
         type: String,
         unique: true,
-        required: true,
     },
     comments: [
         {

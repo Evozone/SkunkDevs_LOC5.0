@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
     Button,
     Box,
@@ -11,6 +11,8 @@ import {
     Chip,
     Grid,
 } from '@mui/material';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material';
@@ -37,12 +39,24 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
     const [imageLocalURL, setImageLocalURL] = useState('');
     const [imageRemoteURL, setImageRemoteURL] = useState('');
     const [thumbnailUrl, setThumbnailUrl] = useState('');
+    const [imageType, setImageType] = useState('Free');
     const [imageFile, setImageFile] = useState(null);
     const [tags, setTags] = useState([]);
     const inputRef = useRef(null);
     function handleDelete(tagToDelete) {
         setTags(tags.filter((tag) => tag !== tagToDelete));
     }
+
+    useEffect(() => {
+        return () => {
+            setImageSelected(false);
+            setImageLocalURL('');
+            setImageRemoteURL('');
+            setThumbnailUrl('');
+            setImageFile(null);
+            setTags([]);
+        };
+    }, [modalVisibility]);
 
     function handleAddTag() {
         const newTag = inputRef.current.value;
@@ -56,7 +70,7 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
         setCharacterCount(e.target.value.length);
     };
 
-    const currentUser = useSelector((state) => state.currentUser);
+    const currentUser = useSelector((state) => state.auth);
 
     const postText = useRef();
 
@@ -122,6 +136,7 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
             alert('Post description is not valid');
             return;
         }
+        let assignId = uuid();
         const auth = window.localStorage.getItem('photoApp');
         const { dnd } = JSON.parse(auth);
         const data = {
@@ -131,10 +146,10 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
             description: postTextValue,
             createdAt: Date.now(),
             createdBy: currentUser.mid,
-            uid: uuid(),
+            uid: assignId,
             comments: [],
             views: 0,
-            monetizeType: 'free',
+            monetizeType: imageType,
         };
         try {
             const response = await axios({
@@ -150,6 +165,16 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
         } catch (error) {
             console.log(error);
         }
+    };
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = (type) => {
+        setImageType(type);
+        setAnchorEl(null);
     };
 
     return (
@@ -269,7 +294,7 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
                             {tags.map((tag) => (
                                 <Grid item>
                                     <Chip
-                                        key={tag}
+                                        key={uuid()}
                                         label={tag}
                                         onDelete={() => handleDelete(tag)}
                                     />
@@ -291,6 +316,54 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
                             display='flex'
                             justifyContent='right'
                         >
+                            <Chip
+                                sx={{ mt: 0.8, mr: 2 }}
+                                label={`${imageType}`}
+                                variant='outlined'
+                                size='small'
+                            />
+                            <Button
+                                id='basic-button'
+                                variant='contained'
+                                sx={{ mr: 2 }}
+                                aria-controls={open ? 'basic-menu' : undefined}
+                                aria-haspopup='true'
+                                aria-expanded={open ? 'true' : undefined}
+                                onClick={handleClick}
+                            >
+                                Type
+                            </Button>
+                            <Menu
+                                id='basic-menu'
+                                anchorEl={anchorEl}
+                                open={open}
+                                onClose={handleClose}
+                                MenuListProps={{
+                                    'aria-labelledby': 'basic-button',
+                                }}
+                            >
+                                <MenuItem
+                                    onClick={() => {
+                                        handleClose('Free');
+                                    }}
+                                >
+                                    Free
+                                </MenuItem>
+                                <MenuItem
+                                    onClick={() => {
+                                        handleClose('Standard');
+                                    }}
+                                >
+                                    Standard
+                                </MenuItem>
+                                <MenuItem
+                                    onClick={() => {
+                                        handleClose('Professional');
+                                    }}
+                                >
+                                    Professional
+                                </MenuItem>
+                            </Menu>
                             <Button
                                 disableElevation
                                 size='medium'

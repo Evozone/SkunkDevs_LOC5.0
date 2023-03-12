@@ -10,7 +10,7 @@ const {
 } = require('../controllers/explore');
 
 router.get('/getPosts', getPosts);
-router.post('/create', auth, createPost);
+router.post('/createPost', createPost);
 router.get('/get/:id', getPostById);
 router.delete('/delete/:id', auth, deletePostById);
 

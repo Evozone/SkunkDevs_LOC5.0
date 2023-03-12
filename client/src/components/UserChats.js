@@ -184,7 +184,7 @@ function UserChats({
                                         mode === 'light' ? lMode6 : dMode6,
                                 }}
                             >
-                                {user.name[0].toUpperCase()}
+                                {user?.name[0]?.toUpperCase()}
                             </Avatar>
                             {onlineUsers?.find(
                                 (onlineUser) => onlineUser.userId === user.uid

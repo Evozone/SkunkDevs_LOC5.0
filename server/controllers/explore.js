@@ -25,20 +25,24 @@ exports.getPosts = async (req, res) => {
 exports.createPost = async (req, res) => {
     const {
         imageURL,
+        thumbnailUrl,
         description,
         tags,
         createdAt,
+        uid,
         comments,
         views,
         monetizeType,
+        createdBy,
     } = req.body;
-    const { mid: createdBy } = req.user;
     try {
         const result = await ImageModel.create({
-            imageURL,
+            imageUrl: imageURL,
+            thumbnailUrl,
             description,
             tags,
             createdAt,
+            uid,
             comments,
             views,
             monetizeType,
