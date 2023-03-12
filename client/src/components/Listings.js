@@ -20,11 +20,27 @@ import ListItemText from '@mui/material/ListItemText';
 import ExplorerListings from './ExplorerListings';
 import PhotographerListings from './PhotographerListings';
 
-import { lMode1, lMode2, lMode3, lMode4, lMode5, lMode6, dMode1, dMode2, dMode3, dMode4, dMode5, dMode6 } from '../utils/colors';
+import {
+    lMode1,
+    lMode2,
+    lMode3,
+    lMode4,
+    lMode5,
+    lMode6,
+    dMode1,
+    dMode2,
+    dMode3,
+    dMode4,
+    dMode5,
+    dMode6,
+} from '../utils/colors';
+import axios from 'axios';
+import { notifyAction } from '../actions/actions';
+import { useDispatch } from 'react-redux';
 
 export default function Listings({ mode }) {
-
     // define state for listings
+    const dispatch = useDispatch();
     const [explorerListings, setExplorerListings] = useState([]);
 
     // userMode can be 'explorer' or 'photographer'
@@ -40,7 +56,7 @@ export default function Listings({ mode }) {
         tags: [],
         fromDateTime: '',
         toDateTime: '',
-        interestedPhotographers: [],
+        description: '',
     });
 
     // Photographer's filtering options
@@ -98,7 +114,9 @@ export default function Listings({ mode }) {
     };
 
     const handleDeleteTag = (tag) => {
-        setSelectedTags((selectedTags) => selectedTags.filter((t) => t !== tag));
+        setSelectedTags((selectedTags) =>
+            selectedTags.filter((t) => t !== tag)
+        );
     };
 
     const handleTagAdd = (event, value) => {
@@ -114,7 +132,7 @@ export default function Listings({ mode }) {
             tags: [],
             fromDateTime: '',
             toDateTime: '',
-            interestedPhotographers: [],
+            description: '',
         });
     };
 
@@ -124,18 +142,61 @@ export default function Listings({ mode }) {
         setSelectedTags([]);
     };
 
-
     // define a function to handle deleting a listing
     const handleDeleteListing = (listingId) => {
         // your API call to delete the listing
         // then update the state to remove the deleted listing
     };
 
+    const handleSubmitListing = async () => {
+        console.log(listing);
+        if (!listing.city || !listing.description || !listing.budget.amount) {
+            alert('Please fill all the required fields.');
+            return;
+        }
+        const auth = window.localStorage.getItem('photoApp');
+        const { dnd } = JSON.parse(auth);
+        const data = {
+            city: listing.city,
+            budgetAmount: listing.budget.amount,
+            description: listing.description,
+            tags: listing.tags.map((l) => l.label),
+            fromDateTime: listing.fromDateTime,
+            toDateTime: listing.toDateTime,
+        };
+        try {
+            const response = await axios({
+                method: 'POST',
+                url: `${process.env.REACT_APP_SERVER_URL}/api/listing/create`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    authorization: `Bearer ${dnd}`,
+                },
+                data,
+            });
+            dispatch(
+                notifyAction(
+                    true,
+                    'success',
+                    'Created a new Listing successfully!'
+                )
+            );
+        } catch (error) {
+            console.log(error);
+            dispatch(
+                notifyAction(
+                    true,
+                    'error',
+                    'It seems something is wrong, please log out and log in again. later :('
+                )
+            );
+        }
+    };
+
     useEffect(() => {
         // Effect to be run when userMode changes
         // fetch explorerListings from backend
     }, [listing, city, priceRange, selectedTags]);
-
 
     return (
         <Box
@@ -188,7 +249,9 @@ export default function Listings({ mode }) {
             >
                 {/* Say 'Job Listings' for Photographer, else say 'Looking for a Professional Photographer?' */}
 
-                {userMode === 'photographer' ? 'Job Listings' : 'Looking for a Professional Photographer?'}
+                {userMode === 'photographer'
+                    ? 'Job Listings'
+                    : 'Looking for a Professional Photographer?'}
 
                 <PersonSearchIcon
                     sx={{ fontSize: '3rem', marginLeft: '1rem' }}
@@ -216,7 +279,6 @@ export default function Listings({ mode }) {
                     ? 'Find a Job Near You'
                     : 'Create a Job Listing below and keep track of who is interested.'}
             </Typography>
-
 
             <Box
                 sx={{
@@ -270,9 +332,12 @@ export default function Listings({ mode }) {
                                     boxShadow: 2,
                                 }}
                             >
-                                <Typography variant='h2' component='h3'
+                                <Typography
+                                    variant='h2'
+                                    component='h3'
                                     sx={{
-                                        color: mode === 'light' ? lMode6 : dMode6,
+                                        color:
+                                            mode === 'light' ? lMode6 : dMode6,
                                         margin: '2rem',
                                         fontFamily: 'Work Sans',
                                         fontWeight: 'medium',
@@ -287,13 +352,25 @@ export default function Listings({ mode }) {
                                 </Typography>
 
                                 <form onSubmit={handleListingSubmit}>
-                                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'center',
+                                        }}
+                                    >
                                         <TextField
                                             id='city'
                                             name='city'
                                             label='City'
                                             value={listing.city}
-                                            onChange={handleListingChange}
+                                            required
+                                            onChange={(e) =>
+                                                setListing({
+                                                    ...listing,
+                                                    city: e.target.value,
+                                                })
+                                            }
                                             variant='outlined'
                                             margin='normal'
                                             fullWidth
@@ -312,16 +389,35 @@ export default function Listings({ mode }) {
                                                 id='budget-currency'
                                                 name='budget-currency'
                                                 value={listing.budget.currency}
-                                                onChange={(e) => setListing({ ...listing, budget: { ...listing.budget, currency: e.target.value } })}
+                                                onChange={(e) =>
+                                                    setListing({
+                                                        ...listing,
+                                                        budget: {
+                                                            ...listing.budget,
+                                                            currency:
+                                                                e.target.value,
+                                                        },
+                                                    })
+                                                }
                                                 variant='outlined'
                                                 margin='normal'
                                                 sx={{ mt: 1 }}
                                             >
-                                                <MenuItem value='USD'>USD</MenuItem>
-                                                <MenuItem value='EUR'>EUR</MenuItem>
-                                                <MenuItem value='GBP'>GBP</MenuItem>
-                                                <MenuItem value='JPY'>JPY</MenuItem>
-                                                <MenuItem value='CNY'>CNY</MenuItem>
+                                                <MenuItem value='USD'>
+                                                    USD
+                                                </MenuItem>
+                                                <MenuItem value='EUR'>
+                                                    EUR
+                                                </MenuItem>
+                                                <MenuItem value='GBP'>
+                                                    GBP
+                                                </MenuItem>
+                                                <MenuItem value='JPY'>
+                                                    JPY
+                                                </MenuItem>
+                                                <MenuItem value='CNY'>
+                                                    CNY
+                                                </MenuItem>
                                             </Select>
 
                                             <TextField
@@ -330,12 +426,39 @@ export default function Listings({ mode }) {
                                                 label='Budget'
                                                 type='number'
                                                 value={listing.budget.amount}
-                                                onChange={(e) => setListing({ ...listing, budget: { ...listing.budget, amount: e.target.value } })}
+                                                required
+                                                onChange={(e) =>
+                                                    setListing({
+                                                        ...listing,
+                                                        budget: {
+                                                            ...listing.budget,
+                                                            amount: e.target
+                                                                .value,
+                                                        },
+                                                    })
+                                                }
                                                 variant='outlined'
                                                 margin='normal'
                                                 fullWidth
                                             />
                                         </Box>
+
+                                        <TextField
+                                            id='description'
+                                            name='description'
+                                            label='Description'
+                                            required
+                                            value={listing.description}
+                                            onChange={(e) =>
+                                                setListing({
+                                                    ...listing,
+                                                    description: e.target.value,
+                                                })
+                                            }
+                                            variant='outlined'
+                                            margin='normal'
+                                            fullWidth
+                                        />
 
                                         <Autocomplete
                                             multiple
@@ -343,8 +466,15 @@ export default function Listings({ mode }) {
                                             name='tags'
                                             options={TAGS}
                                             value={listing.tags}
-                                            onChange={(event, value) => setListing({ ...listing, tags: value })}
-                                            getOptionLabel={(option) => option.label}
+                                            onChange={(event, value) =>
+                                                setListing({
+                                                    ...listing,
+                                                    tags: value,
+                                                })
+                                            }
+                                            getOptionLabel={(option) =>
+                                                option.label
+                                            }
                                             filterSelectedOptions
                                             fullWidth
                                             renderInput={(params) => (
@@ -359,13 +489,21 @@ export default function Listings({ mode }) {
                                             )}
                                         />
 
-                                        <label htmlFor='fromDateTime'>From:</label>
+                                        <label htmlFor='fromDateTime'>
+                                            From:
+                                        </label>
                                         <input
                                             id='fromDateTime'
                                             name='fromDateTime'
                                             type='datetime-local'
                                             value={listing.fromDateTime}
-                                            onChange={(e) => setListing({ ...listing, fromDateTime: e.target.value })}
+                                            onChange={(e) =>
+                                                setListing({
+                                                    ...listing,
+                                                    fromDateTime:
+                                                        e.target.value,
+                                                })
+                                            }
                                         />
 
                                         <label htmlFor='toDateTime'>To:</label>
@@ -374,11 +512,24 @@ export default function Listings({ mode }) {
                                             name='toDateTime'
                                             type='datetime-local'
                                             value={listing.toDateTime}
-                                            onChange={(e) => setListing({ ...listing, toDateTime: e.target.value })}
+                                            onChange={(e) =>
+                                                setListing({
+                                                    ...listing,
+                                                    toDateTime: e.target.value,
+                                                })
+                                            }
                                         />
 
-                                        <Button type='submit' variant='contained'
-                                            sx={{ mt: '2rem', borderRadius: '50px', bgcolor: lMode3 }}>
+                                        <Button
+                                            type='submit'
+                                            variant='contained'
+                                            sx={{
+                                                mt: '2rem',
+                                                borderRadius: '50px',
+                                                bgcolor: lMode3,
+                                            }}
+                                            onClick={handleSubmitListing}
+                                        >
                                             Add Listing
                                         </Button>
                                     </Box>
@@ -401,11 +552,13 @@ export default function Listings({ mode }) {
                                     flex: 1,
                                 }}
                             >
-                                <ExplorerListings mode={mode} listings={explorerListings} onDeleteListing={handleDeleteListing} />
+                                <ExplorerListings
+                                    mode={mode}
+                                    listings={explorerListings}
+                                    onDeleteListing={handleDeleteListing}
+                                />
                             </Box>
-
                         </Box>
-
                     ) : (
                         <Box
                             sx={{
@@ -430,9 +583,12 @@ export default function Listings({ mode }) {
                                     boxShadow: 2,
                                 }}
                             >
-                                <Typography variant='h2' component='h3'
+                                <Typography
+                                    variant='h2'
+                                    component='h3'
                                     sx={{
-                                        color: mode === 'light' ? lMode6 : dMode6,
+                                        color:
+                                            mode === 'light' ? lMode6 : dMode6,
                                         margin: '2rem',
                                         fontFamily: 'Work Sans',
                                         fontWeight: 'medium',
@@ -446,7 +602,6 @@ export default function Listings({ mode }) {
                                     Filter Listings
                                 </Typography>
                                 <Box sx={{ width: 300 }}>
-
                                     {/* City Filter */}
                                     <FormControl fullWidth sx={{ my: 2 }}>
                                         <TextField
@@ -463,13 +618,18 @@ export default function Listings({ mode }) {
 
                                     {/* Price Filter */}
                                     <Box sx={{ mb: 2 }}>
-                                        <Typography variant="body1" gutterBottom sx={{ fontWeight: 'bold' }}>
-                                            Price Range: ${priceRange[0]} - ${priceRange[1]}
+                                        <Typography
+                                            variant='body1'
+                                            gutterBottom
+                                            sx={{ fontWeight: 'bold' }}
+                                        >
+                                            Price Range: ${priceRange[0]} - $
+                                            {priceRange[1]}
                                         </Typography>
                                         <Slider
                                             value={priceRange}
                                             onChange={handlePriceRangeChange}
-                                            valueLabelDisplay="auto"
+                                            valueLabelDisplay='auto'
                                             min={0}
                                             max={1000}
                                             step={10}
@@ -484,8 +644,15 @@ export default function Listings({ mode }) {
                                         name='tags'
                                         options={TAGS}
                                         value={listing.tags}
-                                        onChange={(event, value) => setListing({ ...listing, tags: value })}
-                                        getOptionLabel={(option) => option.label}
+                                        onChange={(event, value) =>
+                                            setListing({
+                                                ...listing,
+                                                tags: value,
+                                            })
+                                        }
+                                        getOptionLabel={(option) =>
+                                            option.label
+                                        }
                                         filterSelectedOptions
                                         fullWidth
                                         renderInput={(params) => (
@@ -499,7 +666,6 @@ export default function Listings({ mode }) {
                                             />
                                         )}
                                     />
-
                                 </Box>
                             </Box>
 
@@ -518,14 +684,17 @@ export default function Listings({ mode }) {
                                     flex: 1,
                                 }}
                             >
-                                <PhotographerListings mode={mode} city={city} priceRange={priceRange} selectedTags={selectedTags} />
+                                <PhotographerListings
+                                    mode={mode}
+                                    city={city}
+                                    priceRange={priceRange}
+                                    selectedTags={selectedTags}
+                                />
                             </Box>
                         </Box>
                     )}
                 </Box>
-
             </Box>
-
         </Box>
-    )
+    );
 }

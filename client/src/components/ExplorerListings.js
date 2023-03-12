@@ -2,15 +2,28 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { useEffect, useState } from 'react';
 
 import { lMode2, dMode2, lMode1, dMode1 } from '../utils/colors';
+import axios from 'axios';
 
 const ExplorerListings = ({ mode, listings, onDeleteListing }) => {
+    const [prevlistings, setPrevlistings] = useState([]);
+    useEffect(() => {
+        const getList = async () => {
+            const listFromServer = await axios.get(
+                `${process.env.REACT_APP_SERVER_URL}/api/listing/getList`
+            );
+            console.log(listFromServer);
+            setPrevlistings((prev) => listFromServer.data.result);
+        };
+        getList();
+    }, []);
     return (
         // The listings here are explorer's listings
         <Box>
-            {listings.length > 0 ? (
-                listings.map((listing) => (
+            {prevlistings.length > 0 ? (
+                prevlistings.map((listing) => (
                     <Box
                         key={listing._id}
                         sx={{
@@ -29,7 +42,8 @@ const ExplorerListings = ({ mode, listings, onDeleteListing }) => {
                             {listing.city}
                         </Typography>
                         <Typography variant='subtitle1' component='p'>
-                            Budget: {listing.budget.currency} {listing.budget.amount}
+                            Budget: {'$ '}
+                            {listing.budgetAmount}
                         </Typography>
                         <Typography variant='subtitle1' component='p'>
                             From: {listing.fromDateTime}
@@ -40,23 +54,28 @@ const ExplorerListings = ({ mode, listings, onDeleteListing }) => {
                         <Typography variant='subtitle1' component='p'>
                             Tags: {listing.tags.join(', ')}
                         </Typography>
-                        <Button variant='outlined' color='error' onClick={() => onDeleteListing(listing._id)}>
+                        <Button
+                            variant='outlined'
+                            color='error'
+                            onClick={() => onDeleteListing(listing._id)}
+                        >
                             Delete Listing
                         </Button>
                     </Box>
                 ))
             ) : (
-                <Typography variant='h4' component='h2'
+                <Typography
+                    variant='h4'
+                    component='h2'
                     sx={{
                         color: mode === 'light' ? lMode1 : dMode2,
                         font: '600 1.5rem Poppins, sans-serif',
                     }}
                 >
-                    No Listings to Display
+                    {prevlistings.length}
                 </Typography>
-            )
-            }
-        </Box >
+            )}
+        </Box>
     );
 };
 

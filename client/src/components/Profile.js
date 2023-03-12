@@ -41,7 +41,13 @@ import { useDispatch } from 'react-redux';
 import axios from 'axios';
 export default function Profile() {
     const location = useLocation();
-    const token = location.state.token;
+    let token = location?.state?.token;
+    if (!token) {
+        const auth = window.localStorage.getItem('photoApp');
+        const { dnd } = JSON.parse(auth);
+        token = dnd;
+    }
+    console.log(token);
     const { sub: uid, email, name, picture: photoURL } = jwtDecode(token);
     const username = email.split('@')[0];
     const [formData, setFormData] = useState({

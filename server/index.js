@@ -11,6 +11,7 @@ const blogRouter = require('./routes/blog.js');
 const exploreRouter = require('./routes/explore.js');
 const chatRouter = require('./routes/chat.js');
 const messageRouter = require('./routes/message.js');
+const listingRouter = require('./routes/listing.js');
 
 const app = express();
 dotenv.config();
@@ -32,6 +33,7 @@ app.use('/api/rooms', roomsRouter);
 app.use('/api/chat', chatRouter);
 app.use('/api/message', messageRouter);
 app.use('/api/explore', exploreRouter);
+app.use('/api/listing', listingRouter);
 
 app.get('/mtoken', (req, res) => {
     var app_access_key = process.env.HMS_ACCESS_KEY;
