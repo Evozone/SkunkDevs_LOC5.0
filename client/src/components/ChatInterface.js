@@ -14,7 +14,11 @@ import Typography from '@mui/material/Typography';
 import VideoCallIcon from '@mui/icons-material/VideoCall';
 import LoopIcon from '@mui/icons-material/Loop';
 
-import { light, bluegrey, deepDark, medium } from '../utils/colors';
+import {
+    lMode1, lMode2, lMode3, lMode4, lMode5, lMode6,
+    dMode1, dMode2, dMode3, dMode4, dMode5, dMode6
+} from '../utils/colors';
+
 import { formatDate } from '../utils/formatTimestamp';
 import storage from '../appwrite';
 import TextBody from './TextBody';
@@ -232,7 +236,7 @@ function ChatInterface({ mode, otherUser, socketRef, connectSettings }) {
             <AppBar
                 sx={{
                     width: '100%',
-                    backgroundColor: mode === 'light' ? medium : bluegrey,
+                    backgroundColor: mode === 'light' ? lMode4 : dMode4,
                     height: 61,
                     display: 'flex',
                     alignItems: 'center',
@@ -256,7 +260,7 @@ function ChatInterface({ mode, otherUser, socketRef, connectSettings }) {
                         alt={otherUser.name.charAt(0).toUpperCase()}
                         src={otherUser.avatar}
                         sx={{
-                            bgcolor: mode === 'light' ? deepDark : light,
+                            bgcolor: mode === 'light' ? lMode2 : dMode2,
                             height: 50,
                             width: 50,
                         }}
@@ -292,7 +296,7 @@ function ChatInterface({ mode, otherUser, socketRef, connectSettings }) {
                         sx={{
                             height: 40,
                             width: 40,
-                            color: deepDark,
+                            color: mode === 'light' ? lMode2 : dMode2,
                         }}
                     />
                 </IconButton>
@@ -320,11 +324,11 @@ function ChatInterface({ mode, otherUser, socketRef, connectSettings }) {
                         sx={{
                             alignSelf: 'center',
                             mb: '10px',
-                            backgroundColor: mode === 'light' ? medium : light,
-                            color: bluegrey,
+                            backgroundColor: mode === 'light' ? lMode2 : dMode2,
+                            color: lMode5,
                             font: 'Poppins, sans-serif',
                             ':hover': {
-                                backgroundColor: medium,
+                                backgroundColor: mode === 'light' ? lMode3 : dMode3,
                                 color: 'black',
                             },
                             borderRadius: '20px',

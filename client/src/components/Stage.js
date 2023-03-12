@@ -267,7 +267,7 @@ export default function Stage({ mode }) {
             sx={{
                 overflowY: 'auto',
                 minHeight: '100vh',
-                backgroundColor: mode === 'light' ? 'whitesmoke' : '#121212',
+                background: mode === 'light' ? 'whitesmoke' : '#121212',
                 padding: '5rem',
                 pt: 0,
             }}

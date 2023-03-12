@@ -15,7 +15,10 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import EmailIcon from '@mui/icons-material/Email';
 import TwitterIcon from '@mui/icons-material/Twitter';
 
-import { bluegrey, light, medium } from '../utils/colors';
+import {
+    lMode1, lMode2, lMode3, lMode4, lMode5, lMode6, dMode1, dMode2, dMode3, dMode4, dMode5, dMode6,
+    light, superLight, medium, deepDark, richBlack, bluegrey
+} from '../utils/colors';
 import { notifyAction } from '../actions/actions';
 
 function ViewBlog({ mode }) {
@@ -77,16 +80,17 @@ function ViewBlog({ mode }) {
     return (
         <Box
             sx={{
-                overflowY: 'auto',
-                mt: '75px',
-                height: 'calc(100vh - 75px)',
-                maxHeight: 'calc(100vh - 75px)',
-                backgroundColor: mode === 'light' ? light : bluegrey,
+                backgroundColor: mode === 'light' ? 'whitesmoke' : 'black',
                 padding: '5rem',
-                pt: 2,
             }}
         >
-            <Card>
+            <Card
+                sx={{
+                    backgroundColor: mode === 'light' ? lMode2 : dMode2,
+                    color: mode === 'light' ? lMode6 : dMode6,
+                    boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.2)',
+                }}
+            >
                 <CardMedia
                     component='img'
                     alt='green iguana'
@@ -99,29 +103,36 @@ function ViewBlog({ mode }) {
                     }}
                 >
                     <Typography
-                        sx={{ textAlign: 'center' }}
+                        sx={{
+                            textAlign: 'center',
+                            font: '500 3rem Poppins, sans-serif',
+                            color: mode === 'light' ? lMode1 : dMode1,
+                        }}
                         gutterBottom
-                        variant='h3'
+                        variant='h2'
                         component='div'
                     >
                         {blog?.title}
                     </Typography>
                     <Typography
                         variant='subtitle1'
-                        color='textSecondary'
+                        color='text.secondary'
                         sx={{
-                            mb: 2,
+                            mb: 6,
                             textAlign: 'center',
+                            font: '500 1.2rem Work Sans, sans-serif',
                         }}
                     >
                         by{' '}
-                        {`${blog?.authorName}  on   ${
-                            blog?.createdAt.split('T')[0]
-                        }`}
+                        {`${blog?.authorName}  on   ${blog?.createdAt.split('T')[0]
+                            }`}
                     </Typography>
                     <div
                         className='content'
-                        style={{ wordBreak: 'break-word' }}
+                        style={{
+                            wordBreak: 'break-word',
+                            color: mode === 'light' ? lMode6 : dMode6,
+                        }}
                         dangerouslySetInnerHTML={{ __html: blog?.content }}
                     />
                 </CardContent>

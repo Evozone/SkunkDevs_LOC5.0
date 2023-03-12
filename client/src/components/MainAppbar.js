@@ -222,6 +222,7 @@ function MainAppbar({ mode, themeChange }) {
                     <MenuItem
                         onClick={() => {
                             handleMenuClose();
+                            navigate('/profile');
                             // setModalVisible(true);
                         }}
                     >

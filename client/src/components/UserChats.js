@@ -7,7 +7,10 @@ import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 
-import { deepDark, medium } from '../utils/colors';
+import {
+    lMode1, lMode2, lMode3, lMode4, lMode5, lMode6,
+    dMode1, dMode2, dMode3, dMode4, dMode5, dMode6
+} from '../utils/colors';
 import { formatDate, formatTime12 } from '../utils/formatTimestamp';
 import {
     notifyAction,
@@ -143,8 +146,8 @@ function UserChats({
                         b.lastMessageTime > a.lastMessageTime
                             ? 1
                             : b.lastMessageTime < a.lastMessageTime
-                            ? -1
-                            : 0
+                                ? -1
+                                : 0
                     )
                     .map((user) => (
                         <ListItemButton
@@ -178,7 +181,7 @@ function UserChats({
                                     width: 50,
                                     height: 50,
                                     backgroundColor:
-                                        mode === 'light' ? deepDark : medium,
+                                        mode === 'light' ? lMode6 : dMode6,
                                 }}
                             >
                                 {user.name[0].toUpperCase()}
@@ -186,18 +189,18 @@ function UserChats({
                             {onlineUsers?.find(
                                 (onlineUser) => onlineUser.userId === user.uid
                             ) && (
-                                <Box
-                                    sx={{
-                                        position: 'absolute',
-                                        top: 47,
-                                        left: 50,
-                                        width: '13px',
-                                        height: '13px',
-                                        borderRadius: '50%',
-                                        backgroundColor: '#4caf50',
-                                    }}
-                                />
-                            )}
+                                    <Box
+                                        sx={{
+                                            position: 'absolute',
+                                            top: 47,
+                                            left: 50,
+                                            width: '13px',
+                                            height: '13px',
+                                            borderRadius: '50%',
+                                            backgroundColor: '#4caf50',
+                                        }}
+                                    />
+                                )}
                             <Box
                                 sx={{
                                     display: 'block',
@@ -224,7 +227,7 @@ function UserChats({
                                 >
                                     {user.lastMessage?.length > 25
                                         ? user.lastMessage.substring(0, 25) +
-                                          '...'
+                                        '...'
                                         : user.lastMessage}
                                 </Typography>
                                 <Typography

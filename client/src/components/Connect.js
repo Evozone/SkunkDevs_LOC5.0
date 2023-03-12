@@ -10,7 +10,10 @@ import ChatIcon from '@mui/icons-material/Chat';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 import { initSocket } from '../socket';
-import { light, bluegrey, deepDark, medium, richBlack } from '../utils/colors';
+import {
+    lMode1, lMode2, lMode3, lMode4, lMode5, lMode6,
+    dMode1, dMode2, dMode3, dMode4, dMode5, dMode6
+} from '../utils/colors';
 import ChatInterface from './ChatInterface';
 import UserChats from './UserChats';
 import SearchUser from './SearchUser';
@@ -105,9 +108,9 @@ function Connect({ mode }) {
                 const audio = new Audio('/assets/audio/notification.mp3');
                 const body = connectSettings?.textContent
                     ? 'New message from ' +
-                      message.senderName +
-                      ' - ' +
-                      message.text
+                    message.senderName +
+                    ' - ' +
+                    message.text
                     : 'New message from ' + message.senderName;
                 const notification = new Notification('Dev Chat+', {
                     body,
@@ -153,10 +156,10 @@ function Connect({ mode }) {
                             alignItems: 'center',
                             // boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.5)',
                             backgroundColor:
-                                mode === 'light' ? medium : bluegrey,
+                                mode === 'light' ? lMode3 : dMode3,
                             '& .MuiTabs-indicator': {
                                 backgroundColor:
-                                    mode === 'light' ? deepDark : medium,
+                                    mode === 'light' ? lMode6 : dMode6,
                             },
                         }}
                         value={value}
@@ -219,7 +222,7 @@ function Connect({ mode }) {
                             mode === 'light'
                                 ? '1px solid rgba(0, 0, 0, 0.12)'
                                 : '1px solid rgba(255, 255, 255, 0.12)',
-                        backgroundColor: mode === 'light' ? light : richBlack,
+                        backgroundColor: mode === 'light' ? lMode2 : dMode2,
                     }}
                 >
                     {value === 0 && (
@@ -259,7 +262,7 @@ function Connect({ mode }) {
                         flexDirection: 'column',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        backgroundColor: mode === 'light' ? light : bluegrey,
+                        backgroundColor: mode === 'light' ? lMode2 : dMode2,
                     }}
                 >
                     <img
@@ -273,9 +276,8 @@ function Connect({ mode }) {
                     />
                     <Typography
                         sx={{
-                            fontWeight: '700',
-                            fontSize: '2rem',
-                            color: mode === 'light' ? deepDark : medium,
+                            font: '600 2rem Popins, sans-serif',
+                            color: mode === 'light' ? lMode6 : dMode6,
                             textAlign: 'center',
                         }}
                     >

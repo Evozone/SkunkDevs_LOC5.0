@@ -18,7 +18,10 @@ import {
     selectPeers,
 } from '@100mslive/hms-video-react';
 
-import { bluegrey, light, deepDark } from '../utils/colors';
+import {
+    lMode1, lMode2, lMode3, lMode4, lMode5, lMode6,
+    dMode1, dMode2, dMode3, dMode4, dMode5, dMode6
+} from '../utils/colors';
 import PeerInRoom from './PeerInRoom';
 
 function StageRoom({ mode }) {
@@ -57,7 +60,7 @@ function StageRoom({ mode }) {
         <Box
             sx={{
                 height: '100vh',
-                backgroundColor: mode === 'light' ? light : bluegrey,
+                backgroundColor: mode === 'light' ? 'whitesmoke' : 'black',
                 color: 'text.primary',
                 px: '5rem',
                 pt: '5rem',
@@ -69,7 +72,7 @@ function StageRoom({ mode }) {
             <Paper
                 sx={{
                     p: 2,
-                    backgroundColor: deepDark,
+                    backgroundColor: mode === 'light' ? lMode2 : dMode2,
                     height: 'calc(100vh - 170px)',
                     width: '100%',
                     mb: '1rem',
@@ -90,7 +93,7 @@ function StageRoom({ mode }) {
                 sx={{
                     p: 1,
                     borderRadius: '30px',
-                    backgroundColor: deepDark,
+                    backgroundColor: lMode4,
                 }}
             >
                 <Stack direction='row' spacing={2}>
