@@ -41,57 +41,59 @@ const ExplorerListings = ({ mode, shift, onDeleteListing }) => {
             }}
         >
             {prevlistings.length > 0 ? (
-                prevlistings.map((listing) => (
-                    <Box
-                        key={listing._id}
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            p: 3,
-                            borderRadius: '1rem',
-                            bgcolor: mode === 'light' ? lMode3 : dMode3,
-                            boxShadow: 2,
-                            mb: 2,
-                        }}
-                    >
-                        <Typography
-                            variant='h4'
-                            component='h2'
+                prevlistings.map((listing) =>
+                    listing.authorEmail === email ? (
+                        <Box
+                            key={listing._id}
                             sx={{
-                                color: mode === 'light' ? lMode1 : dMode2,
-                                font: '600 1.5rem Poppins, sans-serif',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                p: 3,
+                                borderRadius: '1rem',
+                                bgcolor: mode === 'light' ? lMode3 : dMode3,
+                                boxShadow: 2,
+                                mb: 2,
                             }}
                         >
-                            {listing.city}
-                        </Typography>
-                        <Typography variant='subtitle1' component='p'>
-                            Budget: {'$ '}
-                            {listing.budgetAmount}
-                        </Typography>
-                        <Typography variant='subtitle1' component='p'>
-                            From: {listing.fromDateTime}
-                        </Typography>
-                        <Typography variant='subtitle1' component='p'>
-                            To: {listing.toDateTime}
-                        </Typography>
-                        <Typography variant='subtitle1' component='p'>
-                            Tags: {listing.tags.join(', ')}
-                        </Typography>
-                        <Button
-                            variant='contained'
-                            color='error'
-                            onClick={() => onDeleteListing(listing._id)}
-                            sx={{
-                                mt: 2,
-                                color: 'white',
-                            }}
-                        >
-                            Delete Listing
-                        </Button>
-                    </Box>
-                ))
+                            <Typography
+                                variant='h4'
+                                component='h2'
+                                sx={{
+                                    color: mode === 'light' ? lMode1 : dMode2,
+                                    font: '600 1.5rem Poppins, sans-serif',
+                                }}
+                            >
+                                {listing.city}
+                            </Typography>
+                            <Typography variant='subtitle1' component='p'>
+                                Budget: {'$ '}
+                                {listing.budgetAmount}
+                            </Typography>
+                            <Typography variant='subtitle1' component='p'>
+                                From: {listing.fromDateTime}
+                            </Typography>
+                            <Typography variant='subtitle1' component='p'>
+                                To: {listing.toDateTime}
+                            </Typography>
+                            <Typography variant='subtitle1' component='p'>
+                                Tags: {listing.tags.join(', ')}
+                            </Typography>
+                            <Button
+                                variant='contained'
+                                color='error'
+                                onClick={() => onDeleteListing(listing._id)}
+                                sx={{
+                                    mt: 2,
+                                    color: 'white',
+                                }}
+                            >
+                                Delete Listing
+                            </Button>
+                        </Box>
+                    ) : null
+                )
             ) : (
                 <Typography
                     variant='h4'
