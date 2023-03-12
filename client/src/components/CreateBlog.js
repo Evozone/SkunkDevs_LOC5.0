@@ -259,17 +259,11 @@ function CreateBlog({ mode }) {
                         modules={modules}
                         value={content}
                         onChange={(newValue) => setContent(newValue)}
-                        sx={{
-                            backgroundColor:
-                                mode === 'light' ? 'whitesmoke' : richBlack,
-                            borderRadius: '6px',
-                            mb: 3,
-                            '& .ql-editor': {
-                                p: 1,
-                            },
-                            '& .ql-container': {
-                                p: 1,
-                            },
+                        style={{
+                            backgroundColor: mode === 'light' ? 'whitesmoke' : richBlack,
+                            borderRadius: '10px',
+                            border: `1px solid ${deepDark.concat('a4')}`,
+                            color: mode === 'light' ? 'black' : 'white',
                         }}
                     />
 
@@ -281,8 +275,8 @@ function CreateBlog({ mode }) {
                             color: bluegrey,
                             font: '500 0.9rem Poppins, sans-serif',
                             ':hover': {
-                                backgroundColor: medium,
-                                color: 'black',
+                                backgroundColor: mode === 'light' ? lMode3 : dMode3,
+                                color: mode === 'light' ? lMode1 : dMode1,
                             },
                         }}
                         variant='contained'
