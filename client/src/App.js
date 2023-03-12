@@ -178,6 +178,7 @@ function App() {
                 <Route
                     path='/profile'
                     element={<Profile themeChange={themeChange} mode={mode} />}
+
                 />
             </Routes>
         </ThemeProvider>

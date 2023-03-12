@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { useEffect, useState } from 'react';
 
-import { lMode2, dMode2, lMode1, dMode1 } from '../utils/colors';
+import { lMode2, dMode2, lMode1, dMode1, lMode3, dMode3 } from '../utils/colors';
 import axios from 'axios';
 
 const ExplorerListings = ({ mode, listings, onDeleteListing }) => {
@@ -21,7 +21,14 @@ const ExplorerListings = ({ mode, listings, onDeleteListing }) => {
     }, []);
     return (
         // The listings here are explorer's listings
-        <Box>
+        <Box
+            sx={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                gap: '1rem',
+                width: '100%',
+            }}
+        >
             {prevlistings.length > 0 ? (
                 prevlistings.map((listing) => (
                     <Box
@@ -33,12 +40,17 @@ const ExplorerListings = ({ mode, listings, onDeleteListing }) => {
                             alignItems: 'center',
                             p: 3,
                             borderRadius: '1rem',
-                            bgcolor: mode === 'light' ? lMode2 : dMode2,
+                            bgcolor: mode === 'light' ? lMode3 : dMode3,
                             boxShadow: 2,
                             mb: 2,
                         }}
                     >
-                        <Typography variant='h4' component='h2'>
+                        <Typography variant='h4' component='h2'
+                            sx={{
+                                color: mode === 'light' ? lMode1 : dMode2,
+                                font: '600 1.5rem Poppins, sans-serif',
+                            }}
+                        >
                             {listing.city}
                         </Typography>
                         <Typography variant='subtitle1' component='p'>
@@ -55,9 +67,13 @@ const ExplorerListings = ({ mode, listings, onDeleteListing }) => {
                             Tags: {listing.tags.join(', ')}
                         </Typography>
                         <Button
-                            variant='outlined'
+                            variant='contained'
                             color='error'
                             onClick={() => onDeleteListing(listing._id)}
+                            sx={{
+                                mt: 2,
+                                color: 'white',
+                            }}
                         >
                             Delete Listing
                         </Button>
