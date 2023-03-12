@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 // import { getFilteredListings } from '../api/listings'; // assuming you have an API function to fetch listings
 
 import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
+import Box from '@mui/material/Box';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
+
+import { lMode2, dMode2, lMode1, dMode1, lMode3, dMode3 } from '../utils/colors';
 
 export default function PhotographerListings({
     mode,
@@ -41,11 +42,33 @@ export default function PhotographerListings({
         getList();
     }, []);
     return (
-        <div>
+        <Box
+            sx={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                gap: '1rem',
+                width: '100%',
+            }}
+        >
             {listings.map((listing) => (
-                <Card key={listing.id} sx={{ mb: 2 }}>
+                <Card key={listing.id}
+                    sx={{
+                        mb: 2,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: '1rem',
+                        bgcolor: mode === 'light' ? lMode3 : dMode3,
+                        boxShadow: 2,
+                    }}>
                     <CardContent>
-                        <Typography variant='body1' sx={{ mb: 1 }}>
+                        <Typography variant='h4' component='h2'
+                            sx={{
+                                color: mode === 'light' ? lMode1 : dMode2,
+                                font: '600 1.2rem Poppins, sans-serif',
+                                mb: 1,
+                            }}>
                             {listing.description}
                         </Typography>
                         <Typography variant='body2' color='text.secondary'>
@@ -72,6 +95,6 @@ export default function PhotographerListings({
                     </CardContent>
                 </Card>
             ))}
-        </div>
+        </Box>
     );
 }

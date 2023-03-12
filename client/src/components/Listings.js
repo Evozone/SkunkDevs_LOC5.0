@@ -9,13 +9,7 @@ import Button from '@mui/material/Button';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 import Slider from '@mui/material/Slider';
-import Input from '@mui/material/Input';
-
-import Chip from '@mui/material/Chip';
-import Checkbox from '@mui/material/Checkbox';
-import ListItemText from '@mui/material/ListItemText';
 
 import ExplorerListings from './ExplorerListings';
 import PhotographerListings from './PhotographerListings';
@@ -316,7 +310,6 @@ export default function Listings({ mode }) {
                                 display: 'flex',
                                 flexDirection: 'row',
                                 justifyContent: 'flex-start',
-                                alignItems: 'center',
                                 width: '100%',
                                 p: 2,
                             }}
@@ -326,8 +319,9 @@ export default function Listings({ mode }) {
                                 sx={{
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
+                                    justifyContent: 'flex-start',
+                                    alignItems: 'flex-start',
+                                    height: 'fit-content',
                                     p: 3,
                                     borderRadius: '1rem',
                                     bgcolor: mode === 'light' ? lMode2 : dMode2,
@@ -567,7 +561,7 @@ export default function Listings({ mode }) {
                                 display: 'flex',
                                 flexDirection: 'row',
                                 justifyContent: 'flex-start',
-                                alignItems: 'center',
+                                alignItems: 'flex-start',
                                 width: '100%',
                                 p: 2,
                             }}
@@ -601,8 +595,16 @@ export default function Listings({ mode }) {
                                         alignItems: 'center',
                                     }}
                                 >
-                                    Filter Listings
+                                    Filter through Listings
                                 </Typography>
+                                <hr
+                                    style={{
+                                        width: '100%',
+                                        height: '1px',
+                                        backgroundColor: '#000',
+                                        border: 'none',
+                                    }}
+                                ></hr>
                                 <Box sx={{ width: 300 }}>
                                     {/* City Filter */}
                                     <FormControl fullWidth sx={{ my: 2 }}>
