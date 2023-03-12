@@ -20,12 +20,8 @@ import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 import {
-    bluegrey,
-    richBlack,
-    light,
-    medium,
-    dark,
-    deepDark,
+    lMode1, lMode2, lMode3, lMode4, lMode5, lMode6,
+    dMode1, dMode2, dMode3, dMode4, dMode5, dMode6
 } from '../utils/colors';
 import {
     startLoadingAction,
@@ -239,7 +235,7 @@ export default function Stage({ mode }) {
             sx={{
                 overflowY: 'auto',
                 minHeight: '100vh',
-                backgroundColor: mode === 'light' ? light : bluegrey,
+                backgroundColor: mode === 'light' ? lMode : dMode,
                 padding: '5rem',
                 pt: 0,
             }}
@@ -343,9 +339,8 @@ export default function Stage({ mode }) {
                                     }}
                                 >
                                     by{' '}
-                                    {`${space.createdByUsername}  on   ${
-                                        space.createdAt.split('T')[0]
-                                    }`}
+                                    {`${space.createdByUsername}  on   ${space.createdAt.split('T')[0]
+                                        }`}
                                 </Typography>
                                 <Box
                                     sx={{

@@ -10,7 +10,10 @@ import ImageIcon from '@mui/icons-material/Image';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { v4 as uuid } from 'uuid';
 
-import { light, richBlack, deepDark, dark } from '../utils/colors';
+import {
+    lMode1, lMode2, lMode3, lMode4, lMode5, lMode6,
+    dMode1, dMode2, dMode3, dMode4, dMode5, dMode6
+} from '../utils/colors';
 
 export default function MessageInput({
     handleSendMessage,
@@ -128,7 +131,7 @@ export default function MessageInput({
                             <SendIcon
                                 sx={{
                                     fontSize: '33px',
-                                    color: deepDark,
+                                    color: lMode6,
                                 }}
                             />
                         </Tooltip>
@@ -139,7 +142,7 @@ export default function MessageInput({
                 sx={{
                     display: 'flex',
                     alignItems: 'center',
-                    backgroundColor: mode === 'light' ? light : richBlack,
+                    backgroundColor: mode === 'light' ? lMode1 : dMode1,
                     p: 1,
                 }}
             >
@@ -155,18 +158,18 @@ export default function MessageInput({
                             borderRadius: '20px',
                             fontFamily: 'Helvetica',
                             '&.Mui-focused fieldset': {
-                                borderColor: dark,
+                                borderColor: lMode3,
                             },
                         },
                         '& .css-1uyx2m5-MuiFormLabel-root-MuiInputLabel-root.Mui-focused':
-                            {
-                                color: dark,
-                            },
+                        {
+                            color: lMode4,
+                        },
 
                         '& .css-zi2b99-MuiFormLabel-root-MuiInputLabel-root.Mui-focused':
-                            {
-                                color: dark,
-                            },
+                        {
+                            color: lMode4,
+                        },
                     }}
                     color='success'
                     size='small'
@@ -191,7 +194,7 @@ export default function MessageInput({
                                 sx={{
                                     fontSize: '33px',
                                     cursor: 'pointer',
-                                    color: deepDark,
+                                    color: lMode6,
                                 }}
                             />
                         </Tooltip>
@@ -202,7 +205,7 @@ export default function MessageInput({
                         <SendIcon
                             sx={{
                                 fontSize: '33px',
-                                color: deepDark,
+                                color: lMode6,
                             }}
                         />
                     </Tooltip>

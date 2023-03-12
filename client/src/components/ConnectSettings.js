@@ -4,6 +4,11 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import Checkbox from '@mui/material/Checkbox';
 
+import {
+    lMode1, lMode2, lMode3, lMode4, lMode5, lMode6,
+    dMode1, dMode2, dMode3, dMode4, dMode5, dMode6
+} from '../utils/colors';
+
 function ConnectSettings({ setConnectSettings, connectSettings }) {
     const [checkState, setCheckState] = useState({
         showNotifications: connectSettings.showNotifications,
@@ -102,7 +107,7 @@ function ConnectSettings({ setConnectSettings, connectSettings }) {
                         <Checkbox
                             checked={checkState.showNotifications}
                             onChange={handleCheckboxChange}
-                            color='success'
+                            color='primary'
                             name='showNotifications'
                         />
                     }
@@ -116,7 +121,7 @@ function ConnectSettings({ setConnectSettings, connectSettings }) {
                                 <Checkbox
                                     checked={checkState.textContent}
                                     onChange={handleCheckboxChange}
-                                    color='success'
+                                    color='primary'
                                     name='textContent'
                                 />
                             }
@@ -128,7 +133,7 @@ function ConnectSettings({ setConnectSettings, connectSettings }) {
                                 <Checkbox
                                     checked={checkState.playSound}
                                     onChange={handleCheckboxChange}
-                                    color='success'
+                                    color='primary'
                                     name='playSound'
                                 />
                             }
@@ -142,7 +147,7 @@ function ConnectSettings({ setConnectSettings, connectSettings }) {
                         <Checkbox
                             checked={checkState.typingStatus}
                             onChange={handleCheckboxChange}
-                            color='success'
+                            color='primary'
                             name='typingStatus'
                         />
                     }
@@ -154,7 +159,7 @@ function ConnectSettings({ setConnectSettings, connectSettings }) {
                         <Checkbox
                             checked={checkState.onlineStatus}
                             onChange={handleCheckboxChange}
-                            color='success'
+                            color='primary'
                             name='onlineStatus'
                         />
                     }

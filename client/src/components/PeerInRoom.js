@@ -19,7 +19,10 @@ import {
     selectLocalPeer,
 } from '@100mslive/hms-video-react';
 
-import { light, bluegrey, deepDark } from '../utils/colors';
+import {
+    lMode1, lMode2, lMode3, lMode4, lMode5, lMode6,
+    dMode1, dMode2, dMode3, dMode4, dMode5, dMode6
+} from '../utils/colors';
 
 function PeerInRoom({ peer, mode }) {
     const hmsActions = useHMSActions();
@@ -55,7 +58,7 @@ function PeerInRoom({ peer, mode }) {
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: mode === 'light' ? light : bluegrey,
+                backgroundColor: mode === 'light' ? lMode3 : dMode3,
                 padding: '0.9rem',
                 px: '3.5rem',
                 py: '3rem',
@@ -84,7 +87,7 @@ function PeerInRoom({ peer, mode }) {
                         sx={{
                             '& .MuiPaper-root': {
                                 backgroundColor:
-                                    mode === 'light' ? light : bluegrey,
+                                    mode === 'light' ? lMode3 : dMode3,
                             },
                         }}
                     >
@@ -117,9 +120,8 @@ function PeerInRoom({ peer, mode }) {
                         )}
                         {peer.roleName === 'participant' ? (
                             <Tooltip
-                                title={`Make ${
-                                    peer.name.split('@')[0]
-                                } a moderator`}
+                                title={`Make ${peer.name.split('@')[0]
+                                    } a moderator`}
                             >
                                 <MenuItem
                                     onClick={() => changeRole('moderator')}
@@ -133,9 +135,8 @@ function PeerInRoom({ peer, mode }) {
                             </Tooltip>
                         ) : (
                             <Tooltip
-                                title={`Make ${
-                                    peer.name.split('@')[0]
-                                } a participant`}
+                                title={`Make ${peer.name.split('@')[0]
+                                    } a participant`}
                             >
                                 <MenuItem
                                     onClick={() => changeRole('participant')}
@@ -181,7 +182,7 @@ function PeerInRoom({ peer, mode }) {
                 sx={{
                     fontSize: '1.8rem',
                     mt: '0.9rem',
-                    color: mode === 'light' ? deepDark : light,
+                    color: mode === 'light' ? '#000' : '#fff',
                     position: 'absolute',
                     top: '70%',
                 }}
@@ -191,7 +192,7 @@ function PeerInRoom({ peer, mode }) {
             <Typography
                 sx={{
                     fontSize: '1rem',
-                    color: mode === 'light' ? deepDark : light,
+                    color: mode === 'light' ? lMode6 : dMode6,
                     position: 'absolute',
                     top: '10px',
                     left: '10px',
