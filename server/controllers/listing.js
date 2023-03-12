@@ -55,3 +55,21 @@ exports.getListings = async (req, res) => {
         console.log(error);
     }
 };
+exports.deleteListing = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const list = await ListingModel.findById(id);
+        await ListingModel.findByIdAndDelete(id);
+        res.status(200).json({
+            success: true,
+            message: 'List deleted',
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Something went wrong',
+            error: error.message,
+        });
+        console.log(error);
+    }
+};

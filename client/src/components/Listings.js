@@ -138,9 +138,15 @@ export default function Listings({ mode }) {
     };
 
     // define a function to handle deleting a listing
-    const handleDeleteListing = (listingId) => {
-        // your API call to delete the listing
-        // then update the state to remove the deleted listing
+    const handleDeleteListing = async (listingId) => {
+        try {
+            const response = await axios.delete(
+                `${process.env.REACT_APP_SERVER_URL}/api/listing/delete/${listingId}`
+            );
+            setShift((prev) => !prev);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const handleSubmitListing = async () => {
