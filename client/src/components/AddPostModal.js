@@ -162,6 +162,8 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
                 data,
             });
             console.log(response);
+            alert('Post created successfully');
+            toggleModalVisibility();
         } catch (error) {
             console.log(error);
         }

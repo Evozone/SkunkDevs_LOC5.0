@@ -11,7 +11,7 @@ exports.getPosts = async (req, res) => {
         res.status(200).json({
             success: true,
             data: {
-                images,
+                result: images,
             },
         });
     } catch (error) {
