@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Button, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -39,17 +39,26 @@ import {
 } from '../actions/actions';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+
+
 export default function Profile() {
+
     const location = useLocation();
     let token = location?.state?.token;
+
+    // If not first time login, get token from local storage
     if (!token) {
         const auth = window.localStorage.getItem('photoApp');
         const { dnd } = JSON.parse(auth);
         token = dnd;
     }
-    console.log(token);
-    const { sub: uid, email, name, picture: photoURL } = jwtDecode(token);
+
+    const { uid, email, name, avatar } = jwtDecode(token);
+
+    console.log(uid, email, name, avatar);
+
     const username = email.split('@')[0];
+
     const [formData, setFormData] = useState({
         name: name,
         email,
@@ -60,15 +69,50 @@ export default function Profile() {
             pinterest: '',
             portfolio: '',
         },
-        avatar: photoURL,
+        avatar: avatar,
         bio: '',
         username,
         role: '',
         skill_level: '',
         location: '',
     });
+
+    // Check if user already has a profile
+    useEffect(() => {
+        async function checkProfile() {
+            try {
+                const profile = await axios.get(
+
+                );
+                if (profile.data.data) {
+                    // User already has a profile
+                    // Fill in the form with the existing data
+                    const {
+                        name,
+                        email,
+                        uid,
+                        socialLinks,
+                        avatar,
+                        bio,
+                        username,
+                        role,
+                        skill_level,
+                        location,
+                    } = profile.data.data;
+
+                    setFormData(profile.data.data);
+                    // Navigate to home page
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        checkProfile();
+    }, []);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
     const [file, setFile] = useState(null);
     const [uploading, setUploading] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -76,6 +120,7 @@ export default function Profile() {
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
     };
+
     const formSubmit = async (e) => {
         // e.preventDeafults();
         if (!formData.location || !formData.bio) {
@@ -89,6 +134,7 @@ export default function Profile() {
                 'Content-type': 'application/json',
             },
         };
+
         await axios
             .post(
                 `${process.env.REACT_APP_SERVER_URL}/api/user/googleSignUp`,
@@ -120,6 +166,7 @@ export default function Profile() {
             });
         dispatch(stopLoadingAction());
     };
+
     const handleLevelChange = (event) => {
         setFormData({ ...formData, skill_level: event.target.value });
     };
@@ -169,7 +216,7 @@ export default function Profile() {
                             height: '250px',
                             width: '250px',
                         }}
-                        src={photoURL}
+                        src={avatar}
                         alt='Profile Img'
                     />
                     <Typography

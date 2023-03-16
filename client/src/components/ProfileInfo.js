@@ -6,8 +6,20 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
-
-import { light, deepDark, bluegrey } from '../utils/colors';
+import {
+    lMode1,
+    lMode2,
+    lMode3,
+    lMode4,
+    lMode5,
+    lMode6,
+    dMode1,
+    dMode2,
+    dMode3,
+    dMode4,
+    dMode5,
+    dMode6,
+} from '../utils/colors';
 
 function ProfileInfo({ mode, otherUser, setProfileInfoOpen }) {
     return (
@@ -19,7 +31,7 @@ function ProfileInfo({ mode, otherUser, setProfileInfoOpen }) {
                 transform: 'translate(-50%, -50%)',
                 minWidth: 600,
                 maxHeight: '700px',
-                backgroundColor: mode === 'light' ? light : bluegrey,
+                backgroundColor: mode === 'light' ? lMode3 : dMode3,
                 boxShadow: 24,
                 borderRadius: '10px',
                 py: 2,
@@ -41,7 +53,7 @@ function ProfileInfo({ mode, otherUser, setProfileInfoOpen }) {
                 <Typography
                     variant='h5'
                     sx={{
-                        color: mode === 'light' ? deepDark : light,
+                        color: mode === 'light' ? lMode3 : dMode3,
                         fontWeight: 'bold',
                     }}
                 >
@@ -50,7 +62,7 @@ function ProfileInfo({ mode, otherUser, setProfileInfoOpen }) {
                 <IconButton onClick={() => setProfileInfoOpen(false)}>
                     <CloseIcon
                         sx={{
-                            color: mode === 'light' ? deepDark : light,
+                            color: mode === 'light' ? lMode2 : dMode2,
                         }}
                     />
                 </IconButton>
@@ -75,8 +87,8 @@ function ProfileInfo({ mode, otherUser, setProfileInfoOpen }) {
                         alt={otherUser.name.charAt(0).toUpperCase()}
                         src={otherUser.photoURL}
                         sx={{
-                            bgcolor: mode === 'light' ? deepDark : light,
-                            color: mode === 'light' ? light : deepDark,
+                            bgcolor: mode === 'light' ? lMode6 : dMode6,
+                            color: mode === 'light' ? lMode1 : dMode1,
                             height: 150,
                             width: 150,
                             border: '2px solid',
@@ -104,7 +116,7 @@ function ProfileInfo({ mode, otherUser, setProfileInfoOpen }) {
                             variant='subtitle1'
                             sx={{
                                 mr: 1,
-                                color: mode === 'light' ? deepDark : light,
+                                color: mode === 'light' ? lMode6 : dMode6,
                             }}
                         >
                             Name -
@@ -132,7 +144,7 @@ function ProfileInfo({ mode, otherUser, setProfileInfoOpen }) {
                             sx={{
                                 mt: 2,
                                 mr: 1,
-                                color: mode === 'light' ? deepDark : light,
+                                color: mode === 'light' ? lMode6 : dMode6,
                             }}
                         >
                             Username -
@@ -150,45 +162,45 @@ function ProfileInfo({ mode, otherUser, setProfileInfoOpen }) {
             </Box>
             {(otherUser.socialLinks.twitter !== '' ||
                 otherUser.socialLinks.instagram !== '') && (
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'flex-end',
-                        width: '100%',
-                        mb: 2,
-                    }}
-                >
-                    <TwitterIcon
+                    <Box
                         sx={{
-                            color: mode === 'light' ? deepDark : light,
-                            fontSize: '2rem',
-                            mr: 2,
-                            cursor: 'pointer',
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'flex-end',
+                            width: '100%',
+                            mb: 2,
                         }}
-                        onClick={() => {
-                            window.open(
-                                otherUser.socialLinks.twitter,
-                                '_blank'
-                            );
-                        }}
-                    />
-                    <InstagramIcon
-                        sx={{
-                            color: mode === 'light' ? deepDark : light,
-                            fontSize: '2rem',
-                            mr: 1,
-                            cursor: 'pointer',
-                        }}
-                        onClick={() => {
-                            window.open(
-                                otherUser.socialLinks.instagram,
-                                '_blank'
-                            );
-                        }}
-                    />
-                </Box>
-            )}
+                    >
+                        <TwitterIcon
+                            sx={{
+                                color: mode === 'light' ? lMode6 : dMode6,
+                                fontSize: '2rem',
+                                mr: 2,
+                                cursor: 'pointer',
+                            }}
+                            onClick={() => {
+                                window.open(
+                                    otherUser.socialLinks.twitter,
+                                    '_blank'
+                                );
+                            }}
+                        />
+                        <InstagramIcon
+                            sx={{
+                                color: mode === 'light' ? lMode6 : dMode6,
+                                fontSize: '2rem',
+                                mr: 1,
+                                cursor: 'pointer',
+                            }}
+                            onClick={() => {
+                                window.open(
+                                    otherUser.socialLinks.instagram,
+                                    '_blank'
+                                );
+                            }}
+                        />
+                    </Box>
+                )}
         </Box>
     );
 }

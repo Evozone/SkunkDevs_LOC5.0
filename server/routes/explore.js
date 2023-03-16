@@ -6,11 +6,13 @@ const {
     createPost,
     getPosts,
     getPostById,
+    getPostsByFilter,
     deletePostById,
     search,
 } = require('../controllers/explore');
 
 router.get('/getPosts', getPosts);
+router.get('/getPostsByFilter', getPostsByFilter)
 router.post('/createPost', createPost);
 router.get('/get/:id', getPostById);
 router.get('/searchPosts/:monetizeType', search);

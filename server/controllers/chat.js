@@ -34,11 +34,12 @@ exports.createChat = async (req, res) => {
 
 exports.userChats = async (req, res) => {
     const { uid: userId } = req.user;
+    console.log(userId);
     try {
         const keyword = userId
             ? {
-                  $or: [{ chatId: { $regex: userId, $options: 'i' } }],
-              }
+                $or: [{ chatId: { $regex: userId, $options: 'i' } }],
+            }
             : {};
         const chat = await ChatModel.find(keyword);
         res.status(200).json({

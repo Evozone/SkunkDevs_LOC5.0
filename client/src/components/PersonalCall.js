@@ -13,7 +13,10 @@ import VideocamOffIcon from '@mui/icons-material/VideocamOff';
 import MicOffIcon from '@mui/icons-material/MicOff';
 import CallEndIcon from '@mui/icons-material/CallEnd';
 
-import { light, bluegrey, deepDark } from '../utils/colors';
+import {
+    lMode1, lMode2, lMode3, lMode4, lMode5, lMode6
+    , dMode1, dMode2, dMode3, dMode4, dMode5, dMode6
+} from '../utils/colors';
 import { initSocket } from '../socket';
 import { useSelector } from 'react-redux';
 import { notifyAction } from '../actions/actions';
@@ -238,7 +241,7 @@ function PersonalCall({ mode }) {
         <Box
             sx={{
                 height: '100vh',
-                backgroundColor: mode === 'light' ? light : bluegrey,
+                backgroundColor: mode === 'light' ? lMode1 : dMode1,
                 color: 'text.primary',
                 px: '1.5rem',
                 pt: '5.5rem',
@@ -250,7 +253,7 @@ function PersonalCall({ mode }) {
             <Paper
                 sx={{
                     p: 2,
-                    ...(mode === 'light' && { backgroundColor: deepDark }),
+                    ...(mode === 'light' && { backgroundColor: lMode6 }),
                     height: 'calc(100vh - 170px)',
                     width: '100%',
                     mb: '1rem',
@@ -355,7 +358,7 @@ function PersonalCall({ mode }) {
                 sx={{
                     p: 1,
                     borderRadius: '30px',
-                    backgroundColor: deepDark,
+                    backgroundColor: mode === 'light' ? lMode6 : dMode6,
                 }}
             >
                 <Stack direction='row' spacing={2}>

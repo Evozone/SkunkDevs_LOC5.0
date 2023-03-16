@@ -24,17 +24,14 @@ import ListItemText from '@mui/material/ListItemText';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ExploreIcon from '@mui/icons-material/Explore';
 import CommentIcon from '@mui/icons-material/Comment';
-import GavelIcon from '@mui/icons-material/Gavel';
 import Chip from '@mui/material/Chip';
 
-export default function ExploreSearch({ mode }) {
+export default function ExploreSearch({ mode, setPosts, posts, filters, setFilters }) {
     const [searchStatus, setSearchStatus] = useState(null);
-    const [searchResults, setSearchResults] = useState(null);
     const [timer, setTimer] = useState(null);
     const [profileInfoOpen, setProfileInfoOpen] = useState(false);
     const [otherUser, setOtherUser] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
-    const [filters, setFilters] = useState('Free');
 
     const handleFilterClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -53,8 +50,7 @@ export default function ExploreSearch({ mode }) {
                     const { data } = await axios.get(
                         `${process.env.REACT_APP_SERVER_URL}/api/explore/searchPosts/${filters}?search=${event.target.value}`
                     );
-                    setSearchResults(data.result);
-                    console.log(data.result);
+                    setPosts(data.result);
                 } catch (err) {
                     alert('Something went wrong!');
                     console.log(err);
@@ -63,7 +59,7 @@ export default function ExploreSearch({ mode }) {
             }, 1100);
             setTimer(newTimer);
         } else {
-            setSearchResults(null);
+            setPosts(null);
         }
     };
 
@@ -138,10 +134,10 @@ export default function ExploreSearch({ mode }) {
                 <MenuItem
                     onClick={() => {
                         handleMenuClose();
-                        setFilters('Premium');
+                        setFilters('Professional');
                     }}
                 >
-                    <ListItemText sx={{ ml: 1 }} primary='Premium' />
+                    <ListItemText sx={{ ml: 1 }} primary='Professional' />
                 </MenuItem>
             </Menu>
 
@@ -151,14 +147,15 @@ export default function ExploreSearch({ mode }) {
                         alignSelf: 'center',
                         width: '200px',
                         position: 'absolute',
-                        top: '56%',
-                        right: '25%',
+                        top: '96%',
+                        marginTop: '100px',
+                        right: '40%',
                     }}
                     src='/assets/vectors/searching.svg'
                     alt=''
                 />
             )}
-            {searchResults && searchResults.length === 0 && (
+            {posts && posts.length === 0 && (
                 <Typography
                     sx={{
                         fontSize: '1.1rem',

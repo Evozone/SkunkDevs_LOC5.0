@@ -20,6 +20,7 @@ import CreateBlog from './components/CreateBlog';
 import EditBlog from './components/EditBlog';
 import Profile from './components/Profile';
 import PersonalCall from './components/PersonalCall';
+import Loading from './components/Loading';
 
 function App() {
     const dispatch = useDispatch();
@@ -89,17 +90,9 @@ function App() {
     return (
         <ThemeProvider theme={darkTheme}>
             <CssBaseline />
-
+            <Loading />
             {/* if value is profile then don't show MainAppbar */}
 
-            {window.location.href != 'http://localhost:3000/profile' ? (
-                <MainAppbar
-                    {...{
-                        themeChange,
-                        mode,
-                    }}
-                />
-            ) : null}
 
             <Routes>
                 {/*  */}
@@ -181,6 +174,15 @@ function App() {
 
                 />
             </Routes>
+
+            {window.location.href != 'http://localhost:3000/profile' ? (
+                <MainAppbar
+                    {...{
+                        themeChange,
+                        mode,
+                    }}
+                />
+            ) : null}
         </ThemeProvider>
     );
 }

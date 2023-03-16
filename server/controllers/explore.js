@@ -22,6 +22,24 @@ exports.getPosts = async (req, res) => {
     }
 };
 
+exports.getPostsByFilter = async (req, res) => {
+    try {
+        const filter = req.query.filter;
+        const images = await ImageModel.find({ monetizeType: filter });
+        res.status(200).json({
+            success: true,
+            data: {
+                result: images,
+            },
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            data: { error },
+        });
+    }
+}
+
 exports.createPost = async (req, res) => {
     const {
         imageURL,
@@ -103,23 +121,23 @@ exports.search = async (req, res) => {
         const monetizeType = req.params.monetizeType;
         const keyword = req.query.search
             ? {
-                  $or: [
-                      {
-                          tags: {
-                              $elemMatch: {
-                                  $regex: req.query.search,
-                                  $options: 'i',
-                              },
-                          },
-                      },
-                      {
-                          description: {
-                              $regex: req.query.search,
-                              $options: 'i',
-                          },
-                      },
-                  ],
-              }
+                $or: [
+                    {
+                        tags: {
+                            $elemMatch: {
+                                $regex: req.query.search,
+                                $options: 'i',
+                            },
+                        },
+                    },
+                    {
+                        description: {
+                            $regex: req.query.search,
+                            $options: 'i',
+                        },
+                    },
+                ],
+            }
             : {};
         const users = await ImageModel.find(keyword).find({
             monetizeType: monetizeType,

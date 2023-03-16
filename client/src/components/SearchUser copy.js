@@ -15,7 +15,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import AddCommentIcon from '@mui/icons-material/AddComment';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
-import { dark, deepDark, medium } from '../utils/colors';
+import { lMode1, lMode2, lMode3, lMode4, lMode5, lMode6, dMode1, dMode2, dMode3, dMode4, dMode5, dMode6 } from '../utils/colors';
 import { notifyAction } from '../actions/actions';
 import ProfileInfo from './ProfileInfo';
 
@@ -102,11 +102,11 @@ function SearchUser({ mode, handleChatClick }) {
                             borderRadius: '20px',
 
                             '&.Mui-focused fieldset': {
-                                borderColor: dark,
+                                borderColor: lMode3,
                             },
                         },
                         '& .MuiInputLabel-root.Mui-focused': {
-                            color: dark,
+                            color: lMode3,
                         },
                     }}
                     InputProps={{
@@ -144,7 +144,7 @@ function SearchUser({ mode, handleChatClick }) {
                                     width: 50,
                                     height: 50,
                                     backgroundColor:
-                                        mode === 'light' ? deepDark : medium,
+                                        mode === 'light' ? lMode6 : dMode6,
                                 }}
                             >
                                 {user.name[0].toUpperCase()}
@@ -170,7 +170,7 @@ function SearchUser({ mode, handleChatClick }) {
                                     <RemoveRedEyeIcon
                                         sx={{
                                             fontSize: '30px',
-                                            color: deepDark,
+                                            color: lMode2,
                                         }}
                                     />
                                 </IconButton>
@@ -188,7 +188,7 @@ function SearchUser({ mode, handleChatClick }) {
                                     <AddCommentIcon
                                         sx={{
                                             fontSize: '30px',
-                                            color: deepDark,
+                                            color: lMode2,
                                         }}
                                     />
                                 </IconButton>

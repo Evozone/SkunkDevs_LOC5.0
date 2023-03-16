@@ -5,9 +5,11 @@ import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
+import AddCommentIcon from '@mui/icons-material/AddComment';
 import axios from 'axios';
 
 import { lMode2, dMode2, lMode1, dMode1, lMode3, dMode3 } from '../utils/colors';
+import { IconButton } from '@mui/material';
 
 export default function PhotographerListings({
     mode,
@@ -61,8 +63,13 @@ export default function PhotographerListings({
                         borderRadius: '1rem',
                         bgcolor: mode === 'light' ? lMode3 : dMode3,
                         boxShadow: 2,
+                        position: 'relative',
+                        zIndex: 0,
                     }}>
                     <CardContent>
+                        <IconButton sx={{ position: 'absolute', top: '10px', right: '10px' }}>
+                            <AddCommentIcon />
+                        </IconButton>
                         <Typography variant='h4' component='h2'
                             sx={{
                                 color: mode === 'light' ? lMode1 : dMode2,
