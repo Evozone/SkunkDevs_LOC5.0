@@ -87,11 +87,12 @@ export default function Listings({ mode }) {
     ];
 
     const handleCityChange = (event, value) => {
-        setCity(value);
+        setCity(event.target.value);
     };
 
     const handlePriceRangeChange = (event, value) => {
         setPriceRange(value);
+        console.log(value, 'v', priceRange);
     };
 
     const handleTagChange = (event, value) => {
@@ -194,11 +195,6 @@ export default function Listings({ mode }) {
             );
         }
     };
-
-    useEffect(() => {
-        // Effect to be run when userMode changes
-        // fetch explorerListings from backend
-    }, [listing, city, priceRange, selectedTags]);
 
     return (
         <Box

@@ -9,7 +9,7 @@ import AddCommentIcon from '@mui/icons-material/AddComment';
 import axios from 'axios';
 
 import { lMode2, dMode2, lMode1, dMode1, lMode3, dMode3 } from '../utils/colors';
-import { IconButton } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
 
 export default function PhotographerListings({
     mode,
@@ -18,21 +18,28 @@ export default function PhotographerListings({
     selectedTags,
 }) {
     const [listings, setListings] = useState([]);
+    const [showListing, setShowListing] = useState([]);
+    console.log(listings, showListing);
 
-    // useEffect(() => {
-    //     async function fetchListings() {
-    //         // const allListings = await getFilteredListings(); // fetch all listings from the database
-    //         // const filteredListings = allListings.filter(listing => {
-    //         //     // filter the listings based on the passed-in props
-    //         //     const isCityMatched = listing.city.toLowerCase().includes(city.toLowerCase());
-    //         //     const isPriceInRange = listing.price >= priceRange[0] && listing.price <= priceRange[1];
-    //         //     const hasSelectedTags = selectedTags.every(tag => listing.tags.includes(tag));
-    //         //     return isCityMatched && isPriceInRange && hasSelectedTags;
-    //         // });
-    //         // setListings(filteredListings);
-    //     }
-    //     fetchListings();
-    // }, [city, priceRange, selectedTags]);
+    useEffect(() => {
+        console.log(city, priceRange, selectedTags, listings);
+        const filteredcity = listings.filter((listing) => listing.city == city);
+        const pricefilter = filteredcity.filter(
+            (x) =>
+                x.budgetAmount >= priceRange[0] &&
+                x.budgetAmount <= priceRange[1]
+        );
+        console.log(selectedTags);
+        let filteredCards = pricefilter;
+        if (selectedTags.length !== 0) {
+            filteredCards = pricefilter.filter((card) => {
+                return card.tags.some((tag) => selectedTags.includes(tag));
+            });
+            console.log(filteredCards);
+        }
+        setShowListing((prev) => filteredCards);
+    }, [city, priceRange, selectedTags]);
+
     useEffect(() => {
         const getList = async () => {
             const listFromServer = await axios.get(
@@ -40,6 +47,7 @@ export default function PhotographerListings({
             );
             console.log(listFromServer);
             setListings((prev) => listFromServer.data.result);
+            setShowListing((prev) => listFromServer.data.result);
         };
         getList();
     }, []);
@@ -52,8 +60,9 @@ export default function PhotographerListings({
                 width: '100%',
             }}
         >
-            {listings.map((listing) => (
-                <Card key={listing.id}
+            {showListing.map((listing) => (
+                <Card
+                    key={listing.id}
                     sx={{
                         mb: 2,
                         display: 'flex',
@@ -75,7 +84,8 @@ export default function PhotographerListings({
                                 color: mode === 'light' ? lMode1 : dMode2,
                                 font: '600 1.2rem Poppins, sans-serif',
                                 mb: 1,
-                            }}>
+                            }}
+                        >
                             {listing.description}
                         </Typography>
                         <Typography variant='body2' color='text.secondary'>
