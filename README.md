@@ -1,2 +1,2 @@
-# name-yet-to-be-decided
+# ShutterSpaces
 Team Skunk Devs - PS 6-OPEN INNOVATION : Photography
