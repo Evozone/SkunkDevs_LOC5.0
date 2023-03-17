@@ -1,4 +1,3 @@
 # ShutterSpaces
-Team Skunk Devs - PS 6-OPEN INNOVATION : Photography
 
-its private
+Team Skunk Devs - PS 6-OPEN INNOVATION : Photography
