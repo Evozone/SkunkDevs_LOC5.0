@@ -69,11 +69,11 @@ exports.search = async (req, res) => {
         const userId = req.params.userId;
         const keyword = req.query.search
             ? {
-                  $or: [
-                      { name: { $regex: req.query.search, $options: 'i' } },
-                      { username: { $regex: req.query.search, $options: 'i' } },
-                  ],
-              }
+                $or: [
+                    { name: { $regex: req.query.search, $options: 'i' } },
+                    { username: { $regex: req.query.search, $options: 'i' } },
+                ],
+            }
             : {};
         const users = await UserModel.find(keyword).find({
             uid: { $ne: userId },
