@@ -9,13 +9,13 @@ This project is our submission for the L.O.C 5.0 Hackathon by DJSCE ACM Chapter 
   - [Hackathon Details](#hackathon-details)
   - [Team Members](#team-members)
   - [Tech Stack](#tech-stack)
+  - [Installation](#installation)
   - [How to run the project](#how-to-run-the-project)
-    - [Prerequisites](#prerequisites)
-    - [Steps](#steps)
       - [Cloning the repo](#cloning-the-repo)
       - [Starting the server](#starting-the-server)
       - [Starting the client](#starting-the-client)
   - [Contributing](#contributing)
+  - [Project Maintainer(s)](#project-maintainers)
 </details>
 
 ---
@@ -51,15 +51,32 @@ This project is our submission for the L.O.C 5.0 Hackathon by DJSCE ACM Chapter 
   - **Authentication**: jsonwebtoken
   - **Performance Monitoring**: Web Vitals
 
+## Installation
+
+- This project was built with `vite`, so you'll need to have [Node.js](https://nodejs.org/en/) and [npm](https://www.npmjs.com/) installed on your machine to run it.
+- Check out [How to Install Node.js and npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) for instructions on how to install them.
+- Once you have those installed, you can follow these steps to get the project up and running:
+
+  1. Clone this repository to your local machine. [Cloning a repository ↗️](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
+  2. Navigate to the project directory in your terminal. [Navigating the command line ↗️](https://www.digitalcitizen.life/command-prompt-how-use-basic-commands/)
+
+- Note that you will also need to obtain the [environment variables](https://kinsta.com/knowledgebase/what-is-an-environment-variable/) for the server and client in order to run the project. To do this, please contact one of the project maintainers listed below.
+- Add the environment variables to a `.env` file in the server and client directories. The file structure should look like this:
+
+```
+dev-call
+├── client
+│   ├── .env
+│   ├── package.json
+│   └── ...
+├── server
+│   ├── .env
+│   ├── package.json
+│   └── ...
+└── ...
+```
+
 ## How to run the project
-
-### Prerequisites
-
-- Node.js, [Learn how to install](https://nodejs.org/en/download/)
-- [NPM](https://www.npmjs.com/) package manager
-
-### Steps
-
 #### Cloning the repo
 1. Open a terminal window.
 2. Run `git clone https://github.com/Evozone/shutter-spaces.git` to clone the repo.
@@ -81,4 +98,10 @@ Open `http://localhost:5173` in your browser to view the application.
 
 ## Contributing
 
-The project is currently in a closed alpha stage. To make contributions, contact the owners of the repository to get access to the project.
+The project is currently in a closed alpha stage. To make contributions, contact the project maintainers listed below. You will need to be added as a collaborator of the repository to get access to the project.
+
+## Project Maintainer(s)
+
+| <img src="https://github.com/TheBrahmnicBoy.png?size=150" width="150" height="150"> |
+| ----------------------------------------------------------------------------------- |
+| [Bhargav Modak](https://github.com/TheBrahmnicBoy)                                  |
