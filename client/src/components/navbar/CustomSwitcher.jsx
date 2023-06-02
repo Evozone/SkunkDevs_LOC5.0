@@ -2,7 +2,25 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { styled } from '@mui/material/styles';
 
-import { deepDark, light, medium, dark, richBlack, lMode1, lMode2, lMode3, lMode4, lMode5, lMode6, dMode1, dMode2, dMode3, dMode4, dMode5, dMode6 } from '../utils/colors';
+import {
+    deepDark,
+    light,
+    medium,
+    dark,
+    richBlack,
+    lMode1,
+    lMode2,
+    lMode3,
+    lMode4,
+    lMode5,
+    lMode6,
+    dMode1,
+    dMode2,
+    dMode3,
+    dMode4,
+    dMode5,
+    dMode6,
+} from '../../utils/colors';
 
 export const CustomSwitcherGroup = styled(ToggleButtonGroup)(({ theme }) => ({
     borderRadius: '50px',
@@ -14,11 +32,15 @@ export const CustomSwitcherGroup = styled(ToggleButtonGroup)(({ theme }) => ({
         width: '130px',
         '&:not(:first-of-type)': {
             borderRadius: '50px',
-            border: `6px solid ${theme.palette.mode === 'light' ? lMode1 : dMode1}`,
+            border: `6px solid ${
+                theme.palette.mode === 'light' ? lMode1 : dMode1
+            }`,
         },
         '&:first-of-type': {
             borderRadius: '50px',
-            border: `6px solid ${theme.palette.mode === 'light' ? lMode1 : dMode1}`,
+            border: `6px solid ${
+                theme.palette.mode === 'light' ? lMode1 : dMode1
+            }`,
         },
     },
     '& .MuiToggleButton-root': {

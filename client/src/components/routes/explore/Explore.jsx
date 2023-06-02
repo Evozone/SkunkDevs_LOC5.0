@@ -19,11 +19,14 @@ import {
     dMode4,
     dMode5,
     dMode6,
-} from '../utils/colors';
+} from '../../../utils/colors';
 import AddPostModal from './AddPostModal';
 import axios from 'axios';
 import { Box } from '@mui/system';
-import { startLoading, stopLoading } from '../features/loading/loadingSlice';
+import {
+    startLoading,
+    stopLoading,
+} from '../../../features/loading/loadingSlice';
 
 export default function Explore({ mode, themeChange }) {
     const dispatch = useDispatch();

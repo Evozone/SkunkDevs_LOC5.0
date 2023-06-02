@@ -1,6 +1,6 @@
-const BlogModel = require('../models/blogModel');
+import BlogModel from '../models/blogModel.js';
 
-exports.createBlog = async (req, res) => {
+export const createBlog = async (req, res) => {
     const { title, summary, content, cover } = req.body;
     const {
         uid: authorId,
@@ -32,7 +32,7 @@ exports.createBlog = async (req, res) => {
     }
 };
 
-exports.getBlogs = async (req, res) => {
+export const getBlogs = async (req, res) => {
     try {
         const PAGE_SIZE = 6;
         let skip = req.query.page ? parseInt(req.query.page) : 0;
@@ -55,7 +55,7 @@ exports.getBlogs = async (req, res) => {
     }
 };
 
-exports.getBlogById = async (req, res) => {
+export const getBlogById = async (req, res) => {
     const { id } = req.params;
     try {
         const result = await BlogModel.findById(id);
@@ -74,7 +74,7 @@ exports.getBlogById = async (req, res) => {
     }
 };
 
-exports.editBlogById = async (req, res) => {
+export const editBlogById = async (req, res) => {
     const { id } = req.params;
     const { title, summary, content, cover } = req.body;
     const { uid: authorId } = req.user;
@@ -108,7 +108,7 @@ exports.editBlogById = async (req, res) => {
     }
 };
 
-exports.deleteBlogById = async (req, res) => {
+export const deleteBlogById = async (req, res) => {
     const { id } = req.params;
     const { uid: authorId } = req.user;
     try {

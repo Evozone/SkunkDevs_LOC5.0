@@ -1,7 +1,7 @@
-const MessageModel = require('../models/messageModel');
-const ChatModel = require('../models/chatModel');
+import MessageModel from '../models/messageModel.js';
+import ChatModel from '../models/chatModel.js';
 
-exports.addMessage = async (req, res) => {
+export const addMessage = async (req, res) => {
     const { chatId, senderId, senderName, senderEmail, text, timestamp } =
         req.body;
     try {
@@ -34,7 +34,7 @@ exports.addMessage = async (req, res) => {
     }
 };
 
-exports.getMessages = async (req, res) => {
+export const getMessages = async (req, res) => {
     const { chatId } = req.params;
     try {
         const PAGE_SIZE = 10;

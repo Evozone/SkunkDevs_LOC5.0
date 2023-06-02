@@ -18,6 +18,7 @@ import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
 import Typography from '@mui/material/Typography';
 import PhoneInTalkIcon from '@mui/icons-material/PhoneInTalk';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { useHMSActions } from '@100mslive/hms-video-react';
 
 import {
     lMode1,
@@ -32,15 +33,19 @@ import {
     dMode4,
     dMode5,
     dMode6,
-} from '../utils/colors';
-import { startLoading, stopLoading } from '../features/loading/loadingSlice';
+} from '../../../utils/colors';
+import {
+    startLoading,
+    stopLoading,
+} from '../../../features/loading/loadingSlice';
 
-import { notify } from '../features/notify/notifySlice';
+import { notify } from '../../../features/notify/notifySlice';
 
 export default function Stage({ mode }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const currentUser = useSelector((state) => state.auth);
+    const hmsActions = useHMSActions();
 
     const [modalVisible, setModalVisible] = useState(false);
     const [roomId, setRoomId] = useState('');
@@ -51,7 +56,7 @@ export default function Stage({ mode }) {
 
     useEffect(() => {
         console.log(
-            '%cHey if u like this project, consider giving it a star on github :) https://github.com/Evozone/comfortspace',
+            '%cHey if u like this project, consider giving it a star on github :) https://github.com/Evozone/',
             'color: green; font-size: 26px;'
         );
         console.log(
@@ -59,7 +64,7 @@ export default function Stage({ mode }) {
             'font-size: 19px;'
         );
         console.log(
-            '%cPasting anything in here could give attackers access to your Comfort Space account, so do not paste anything here.',
+            '%cPasting anything in here could give attackers access to your account, so do not paste anything here.',
             'color:red; font-size: 19px;'
         );
         console.log('%c-inspired by discord', 'font-size: 17px;');
@@ -130,7 +135,7 @@ export default function Stage({ mode }) {
         try {
             const apiKey = import.meta.env.VITE_UNSPLASH_API_KEY;
             const response = await fetch(
-                `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=1&query=nature`
+                `https://api.unsplash.com/photos/random/?client_id=${apiKey}&count=1&query=photography`
             );
             const data = await response.json();
             const url = data[0].urls.regular;
@@ -142,7 +147,34 @@ export default function Stage({ mode }) {
     };
 
     const joinGroup = (roomId, createdById) => {
-        console.log('joining group');
+        dispatch(startLoading());
+        getToken(roomId, createdById)
+            .then(async (token) => {
+                await hmsActions.join({
+                    userName: `${currentUser.username}@${currentUser.photoURL}`,
+                    authToken: token,
+                    settings: {
+                        isAudioMuted: true,
+                    },
+                    initEndpoint: import.meta.env.VITE_100MS_TOKEN_ENDPOINT,
+                });
+                dispatch(stopLoading());
+                dispatch(
+                    notify(true, 'success', 'Joined a Group successfully!')
+                );
+                navigate(`/room/${roomId}`);
+            })
+            .catch((error) => {
+                dispatch(stopLoading());
+                dispatch(
+                    notify(
+                        true,
+                        'error',
+                        'It seems something is wrong, please log out and log in again. later :('
+                    )
+                );
+                console.log('Token API Error', error);
+            });
     };
 
     const getToken = async (roomId, createdById) => {
@@ -243,7 +275,7 @@ export default function Stage({ mode }) {
             sx={{
                 overflowY: 'auto',
                 minHeight: '100vh',
-                backgroundColor: mode === 'light' ? lMode : dMode,
+                background: mode === 'light' ? 'whitesmoke' : '#121212',
                 padding: '5rem',
                 pt: 0,
             }}
@@ -252,8 +284,8 @@ export default function Stage({ mode }) {
                 variant='h1'
                 component='h2'
                 sx={{
-                    color: mode === 'light' ? deepDark : light,
-                    margin: '2rem',
+                    color: mode === 'light' ? lMode3 : dMode3, // light mode 3
+                    margin: '1rem',
                     marginTop: '5rem',
                     fontWeight: 'bold',
                     fontSize: '3rem',
@@ -273,10 +305,7 @@ export default function Stage({ mode }) {
                 variant='h2'
                 component='h3'
                 sx={{
-                    color:
-                        mode === 'light'
-                            ? deepDark.concat('aa')
-                            : light.concat('aa'),
+                    color: mode === 'light' ? lMode2 : dMode2,
                     margin: '2rem',
                     fontFamily: 'Work Sans',
                     fontWeight: 'medium',
@@ -305,16 +334,13 @@ export default function Stage({ mode }) {
                             key={space.roomId}
                             sx={{
                                 backgroundColor:
-                                    mode === 'light' ? deepDark : richBlack,
-                                color:
-                                    mode === 'light'
-                                        ? light
-                                        : dark.concat('aa'),
+                                    mode === 'light' ? lMode2 : dMode2,
+                                color: mode === 'light' ? lMode6 : dMode6,
                                 borderRadius: '10px',
                                 border:
                                     mode === 'light'
                                         ? 'none'
-                                        : `1px solid ${dark.concat('aa')}`,
+                                        : `1px solid ${lMode3.concat('aa')}`,
                                 height: '100%',
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -332,7 +358,7 @@ export default function Stage({ mode }) {
                                     variant='h5'
                                     sx={{
                                         color:
-                                            mode === 'light' ? light : medium,
+                                            mode === 'light' ? lMode1 : dMode1,
                                         font: '600 1.5rem/1.5rem Poppins, sans-serif',
                                         mb: '0.5rem',
                                     }}
@@ -341,7 +367,7 @@ export default function Stage({ mode }) {
                                 </Typography>
                                 <Typography
                                     variant='subtitle2'
-                                    color='textSecondary'
+                                    color='text.secondary'
                                     sx={{
                                         m: 0,
                                     }}
@@ -373,10 +399,10 @@ export default function Stage({ mode }) {
                                     sx={{
                                         mt: 0,
                                         backgroundColor:
-                                            mode === 'light' ? medium : light,
+                                            mode === 'light' ? lMode3 : dMode3,
                                         color: 'black',
                                         ':hover': {
-                                            backgroundColor: light,
+                                            backgroundColor: lMode1,
                                             color: 'black',
                                         },
                                     }}
@@ -439,8 +465,7 @@ export default function Stage({ mode }) {
                         transform: 'translate(-50%, -50%)',
                         minWidth: 600,
                         maxHeight: '700px',
-                        backgroundColor: mode === 'light' ? light : bluegrey,
-                        boxShadow: 24,
+                        backgroundColor: mode === 'light' ? lMode1 : dMode1,
                         borderRadius: '10px',
                         p: 2,
                         pb: 1,
@@ -470,7 +495,8 @@ export default function Stage({ mode }) {
                         sx={{
                             textAlign: 'center',
                             mb: 3,
-                            color: mode === 'light' ? deepDark : light,
+                            color: mode === 'light' ? lMode4 : dMode4,
+                            font: '600 2rem Poppins, sans-serif',
                         }}
                     >
                         Create New Group
@@ -542,11 +568,11 @@ export default function Stage({ mode }) {
                                 mt: 1,
                                 alignSelf: 'center',
                                 backgroundColor:
-                                    mode === 'light' ? medium : light,
-                                color: 'black',
+                                    mode === 'light' ? lMode6 : dMode6,
+                                color: 'white',
                                 ':hover': {
-                                    backgroundColor: medium,
-                                    color: 'black',
+                                    backgroundColor: lMode3,
+                                    color: 'white',
                                 },
                             }}
                             onClick={generateCoverImgURL}
@@ -562,10 +588,10 @@ export default function Stage({ mode }) {
                                 mb: 1,
                                 alignSelf: 'flex-end',
                                 backgroundColor:
-                                    mode === 'light' ? medium : light,
+                                    mode === 'light' ? lMode4 : dMode4,
                                 color: 'black',
                                 ':hover': {
-                                    backgroundColor: medium,
+                                    backgroundColor: lMode3,
                                     color: 'black',
                                 },
                             }}
@@ -584,12 +610,12 @@ export default function Stage({ mode }) {
                         position: 'fixed',
                         bottom: '2rem',
                         right: '2rem',
-                        color: mode === 'light' ? 'white' : deepDark,
-                        backgroundColor: mode === 'light' ? deepDark : light,
+                        color: mode === 'light' ? 'white' : 'black',
+                        backgroundColor: mode === 'light' ? lMode4 : dMode4,
 
                         borderRadius: '50%',
-                        height: '3.5rem',
-                        width: '3.5rem',
+                        height: '3rem',
+                        width: '3rem',
 
                         display: 'grid',
                         placeItems: 'center',
@@ -598,8 +624,8 @@ export default function Stage({ mode }) {
                         boxShadow: '0 0 10px 0 rgba(78,135,140, 0.5)',
 
                         '&:hover': {
-                            backgroundColor: mode === 'dark' ? light : deepDark,
-                            color: mode === 'dark' ? deepDark : light,
+                            backgroundColor: mode === 'light' ? lMode3 : dMode3,
+                            color: mode === 'light' ? 'white' : 'black',
                             transform: 'scale(1.1) rotate(90deg)',
                             transition: 'transform 0.2s ease-in-out',
                         },

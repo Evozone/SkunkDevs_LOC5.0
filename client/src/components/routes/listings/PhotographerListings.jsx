@@ -15,7 +15,7 @@ import {
     dMode1,
     lMode3,
     dMode3,
-} from '../utils/colors';
+} from '../../../utils/colors';
 import IconButton from '@mui/material/IconButton';
 
 export default function PhotographerListings({

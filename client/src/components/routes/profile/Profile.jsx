@@ -29,11 +29,14 @@ import {
     dMode4,
     dMode5,
     dMode6,
-} from '../utils/colors';
+} from '../../../utils/colors';
 import { border } from '@mui/system';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { signIn } from '../features/auth/authSlice';
-import { startLoading, stopLoading } from '../features/loading/loadingSlice';
+import { signIn } from '../../../features/auth/authSlice';
+import {
+    startLoading,
+    stopLoading,
+} from '../../../features/loading/loadingSlice';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 

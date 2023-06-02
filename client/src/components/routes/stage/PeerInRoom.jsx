@@ -20,9 +20,19 @@ import {
 } from '@100mslive/hms-video-react';
 
 import {
-    lMode1, lMode2, lMode3, lMode4, lMode5, lMode6,
-    dMode1, dMode2, dMode3, dMode4, dMode5, dMode6
-} from '../utils/colors';
+    lMode1,
+    lMode2,
+    lMode3,
+    lMode4,
+    lMode5,
+    lMode6,
+    dMode1,
+    dMode2,
+    dMode3,
+    dMode4,
+    dMode5,
+    dMode6,
+} from '../../../utils/colors';
 
 function PeerInRoom({ peer, mode }) {
     const hmsActions = useHMSActions();
@@ -120,8 +130,9 @@ function PeerInRoom({ peer, mode }) {
                         )}
                         {peer.roleName === 'participant' ? (
                             <Tooltip
-                                title={`Make ${peer.name.split('@')[0]
-                                    } a moderator`}
+                                title={`Make ${
+                                    peer.name.split('@')[0]
+                                } a moderator`}
                             >
                                 <MenuItem
                                     onClick={() => changeRole('moderator')}
@@ -135,8 +146,9 @@ function PeerInRoom({ peer, mode }) {
                             </Tooltip>
                         ) : (
                             <Tooltip
-                                title={`Make ${peer.name.split('@')[0]
-                                    } a participant`}
+                                title={`Make ${
+                                    peer.name.split('@')[0]
+                                } a participant`}
                             >
                                 <MenuItem
                                     onClick={() => changeRole('participant')}

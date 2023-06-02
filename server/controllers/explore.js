@@ -1,6 +1,6 @@
-const ImageModel = require('../models/imagesModel');
+import ImageModel from '../models/imagesModel.js';
 
-exports.getPosts = async (req, res) => {
+export const getPosts = async (req, res) => {
     try {
         const PAGE_SIZE = 10;
         let skip = req.query.page ? parseInt(req.query.page) : 0;
@@ -22,7 +22,7 @@ exports.getPosts = async (req, res) => {
     }
 };
 
-exports.getPostsByFilter = async (req, res) => {
+export const getPostsByFilter = async (req, res) => {
     try {
         const filter = req.query.filter;
         const images = await ImageModel.find({ monetizeType: filter });
@@ -40,7 +40,7 @@ exports.getPostsByFilter = async (req, res) => {
     }
 }
 
-exports.createPost = async (req, res) => {
+export const createPost = async (req, res) => {
     const {
         imageURL,
         thumbnailUrl,
@@ -80,7 +80,7 @@ exports.createPost = async (req, res) => {
     }
 };
 
-exports.getPostById = async (req, res) => {
+export const getPostById = async (req, res) => {
     const { id } = req.params;
     try {
         const result = await ImageModel.findById(id);
@@ -98,7 +98,7 @@ exports.getPostById = async (req, res) => {
     }
 };
 
-exports.deletePostById = async (req, res) => {
+export const deletePostById = async (req, res) => {
     const { id } = req.params;
     try {
         const result = await ImageModel.findByIdAndDelete(id);
@@ -116,7 +116,7 @@ exports.deletePostById = async (req, res) => {
     }
 };
 
-exports.search = async (req, res) => {
+export const search = async (req, res) => {
     try {
         const monetizeType = req.params.monetizeType;
         const keyword = req.query.search

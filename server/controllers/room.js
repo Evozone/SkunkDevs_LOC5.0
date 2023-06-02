@@ -1,6 +1,6 @@
-const RoomModel = require('../models/roomModel');
+import RoomModel from '../models/roomModel.js';
 
-exports.createRoom = async (req, res) => {
+export const createRoom = async (req, res) => {
     const { title, description, roomId, cover } = req.body;
     const {
         uid: createdById,
@@ -32,7 +32,7 @@ exports.createRoom = async (req, res) => {
     }
 };
 
-exports.getRooms = async (req, res) => {
+export const getRooms = async (req, res) => {
     try {
         const result = await RoomModel.find().sort({ createdAt: -1 }).limit(20);
         res.status(200).json({
@@ -50,7 +50,7 @@ exports.getRooms = async (req, res) => {
     }
 };
 
-exports.deleteRoom = async (req, res) => {
+export const deleteRoom = async (req, res) => {
     const { id } = req.params;
     const { uid } = req.user;
     try {

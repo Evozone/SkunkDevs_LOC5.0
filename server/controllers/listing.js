@@ -1,6 +1,6 @@
-const ListingModel = require('../models/listingModel');
+import ListingModel from '../models/listingModel.js';
 
-exports.createListing = async (req, res) => {
+export const createListing = async (req, res) => {
     const { city, budgetAmount, description, tags, fromDateTime, toDateTime } =
         req.body;
     const {
@@ -37,7 +37,7 @@ exports.createListing = async (req, res) => {
     }
 };
 
-exports.getListings = async (req, res) => {
+export const getListings = async (req, res) => {
     try {
         const result = await ListingModel.find();
         console.log(result.length);
@@ -55,7 +55,7 @@ exports.getListings = async (req, res) => {
         console.log(error);
     }
 };
-exports.deleteListing = async (req, res) => {
+export const deleteListing = async (req, res) => {
     const { id } = req.params;
     try {
         const list = await ListingModel.findById(id);

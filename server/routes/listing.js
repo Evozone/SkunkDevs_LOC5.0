@@ -1,15 +1,15 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
-const auth = require('../middleware/auth');
-const {
+import auth from '../middleware/auth.js';
+import {
     createListing,
     getListings,
     deleteListing,
-} = require('../controllers/listing');
+} from '../controllers/listing.js';
 
 router.get('/getList', getListings);
 router.post('/create', auth, createListing);
 router.delete('/delete/:id', deleteListing);
 
-module.exports = router;
+export default router;

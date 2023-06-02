@@ -34,8 +34,8 @@ import {
     deepDark,
     richBlack,
     bluegrey,
-} from '../utils/colors';
-import { notify } from '../features/notify/notifySlice';
+} from '../../../utils/colors';
+import { notify } from '../../../features/notify/notifySlice';
 
 function ViewBlog({ mode }) {
     const navigate = useNavigate();

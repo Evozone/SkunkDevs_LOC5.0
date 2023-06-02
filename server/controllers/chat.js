@@ -1,6 +1,6 @@
-const ChatModel = require('../models/chatModel');
+import ChatModel from '../models/chatModel.js';
 
-exports.createChat = async (req, res) => {
+export const createChat = async (req, res) => {
     try {
         const chat = await ChatModel.findOne({
             chatId: req.body.chatId,
@@ -32,7 +32,7 @@ exports.createChat = async (req, res) => {
     }
 };
 
-exports.userChats = async (req, res) => {
+export const userChats = async (req, res) => {
     const { uid: userId } = req.user;
     console.log(userId);
     try {

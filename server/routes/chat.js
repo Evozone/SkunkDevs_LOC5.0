@@ -1,9 +1,9 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
-const { createChat, userChats } = require('../controllers/chat');
-const auth = require('../middleware/auth');
+import { createChat, userChats } from '../controllers/chat.js';
+import auth from '../middleware/auth.js';
 
 router.post('/', createChat);
 router.get('/', auth, userChats);
-module.exports = router;
+export default router;

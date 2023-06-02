@@ -27,9 +27,9 @@ import {
     dMode4,
     dMode5,
     dMode6,
-} from '../utils/colors';
+} from '../../../utils/colors';
 import axios from 'axios';
-import { notify } from '../features/notify/notifySlice';
+import { notify } from '../../../features/notify/notifySlice';
 import { useDispatch } from 'react-redux';
 
 export default function Listings({ mode }) {

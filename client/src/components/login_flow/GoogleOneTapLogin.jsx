@@ -6,8 +6,8 @@ import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 
 import { useDispatch } from 'react-redux';
-import { signIn } from '../features/auth/authSlice';
-import { startLoading, stopLoading } from '../features/loading/loadingSlice';
+import { signIn } from '../../features/auth/authSlice';
+import { startLoading, stopLoading } from '../../features/loading/loadingSlice';
 
 import {
     lMode1,
@@ -26,7 +26,7 @@ import {
     dMode4,
     dMode5,
     dMode6,
-} from '../utils/colors';
+} from '../../utils/colors';
 
 const GoogleOneTapLogin = () => {
     const navigate = useNavigate();

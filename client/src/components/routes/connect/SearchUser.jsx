@@ -28,9 +28,9 @@ import {
     dMode4,
     dMode5,
     dMode6,
-} from '../utils/colors';
-import { dark, deepDark, medium } from '../utils/colors';
-import { notify } from '../features/notify/notifySlice';
+} from '../../../utils/colors';
+import { dark, deepDark, medium } from '../../../utils/colors';
+import { notify } from '../../../features/notify/notifySlice';
 import ProfileInfo from './ProfileInfo';
 
 function SearchUser({ mode, handleChatClick }) {

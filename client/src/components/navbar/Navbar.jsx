@@ -17,7 +17,7 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 
-import GoogleOneTapLogin from './GoogleOneTapLogin';
+import GoogleOneTapLogin from '../login_flow/GoogleOneTapLogin';
 
 import { CustomSwitcherGroup, CustomSwitcherButton } from './CustomSwitcher';
 
@@ -38,18 +38,19 @@ import {
     dMode4,
     dMode5,
     dMode6,
-} from '../utils/colors';
+} from '../../utils/colors';
 
-import { signOut } from '../features/auth/authSlice';
+import { signOut } from '../../features/auth/authSlice';
 import { Avatar, Icon } from '@mui/material';
 
-function MainAppbar({ mode, themeChange }) {
+function Navbar({ mode, themeChange }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const currentUser = useSelector((state) => state.auth);
     const [anchorEl, setAnchorEl] = useState(null);
+
     const [selected, setSelected] = useState(
-        window.localStorage.getItem('photoAppLastPage') || 'stage'
+        window.localStorage.getItem('photoAppLastPage') || ''
     );
 
     const handleSignOut = () => {
@@ -87,7 +88,6 @@ function MainAppbar({ mode, themeChange }) {
                 width: '100%',
             }}
         >
-            {/* Mode1 as navbar, Mode2 as Textcolor, Mode3 as selctcolor, Mode4 as hovercolor, Mod5 as */}
             <Box
                 sx={{
                     position: 'absolute',
@@ -146,22 +146,6 @@ function MainAppbar({ mode, themeChange }) {
                         <PersonSearchIcon /> Listings
                     </CustomSwitcherButton>
                 </CustomSwitcherGroup>
-
-                {/* <IconButton onClick={handleMenuClick}>
-                        <Avatar
-                            // alt={currentUser.name.charAt(0).toUpperCase()}
-                            // src={currentUser.photoURL}
-                            sx={{
-                                bgcolor: mode === 'light' ? deepDark : light,
-                                color: mode === 'light' ? light : deepDark,
-                                height: 45,
-                                width: 45,
-                                border: '2px solid',
-                            }}
-                        >
-                            {currentUser.name.charAt(0).toUpperCase()}
-                        </Avatar>
-                    </IconButton> */}
 
                 {currentUser?.isSignedIn ? (
                     <IconButton sx={{ p: '6px' }} onClick={handleMenuClick}>
@@ -255,4 +239,4 @@ function MainAppbar({ mode, themeChange }) {
     );
 }
 
-export default MainAppbar;
+export default Navbar;

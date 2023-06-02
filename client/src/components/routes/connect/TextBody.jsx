@@ -6,11 +6,21 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import CancelIcon from '@mui/icons-material/Cancel';
 
-import { formatTime12 } from '../utils/formatTimestamp';
+import { formatTime12 } from '../../../utils/formatTimestamp';
 import {
-    lMode1, lMode2, lMode3, lMode4, lMode5, lMode6,
-    dMode1, dMode2, dMode3, dMode4, dMode5, dMode6
-} from '../utils/colors';
+    lMode1,
+    lMode2,
+    lMode3,
+    lMode4,
+    lMode5,
+    lMode6,
+    dMode1,
+    dMode2,
+    dMode3,
+    dMode4,
+    dMode5,
+    dMode6,
+} from '../../../utils/colors';
 
 export default function TextBody({ message, endRef }) {
     const currentUser = useSelector((state) => state.auth);
@@ -80,19 +90,19 @@ export default function TextBody({ message, endRef }) {
                     alignItems: 'end',
                     ...(currentUser.uid === message.senderId
                         ? {
-                            alignSelf: 'flex-end',
-                            borderBottomLeftRadius: '20px',
-                            borderBottomRightRadius: '1px',
-                            backgroundColor: lMode3,
-                        }
+                              alignSelf: 'flex-end',
+                              borderBottomLeftRadius: '20px',
+                              borderBottomRightRadius: '1px',
+                              backgroundColor: lMode3,
+                          }
                         : { backgroundColor: lMode3, color: lMode6 }),
                     ...(isImage
                         ? {
-                            flexDirection: 'column',
-                        }
+                              flexDirection: 'column',
+                          }
                         : {
-                            flexDirection: 'row',
-                        }),
+                              flexDirection: 'row',
+                          }),
                 }}
             >
                 <Modal
@@ -199,10 +209,10 @@ export default function TextBody({ message, endRef }) {
                                             sx={{
                                                 fontFamily: 'Helvetica',
                                                 ...(currentUser.uid ===
-                                                    message.senderId
+                                                message.senderId
                                                     ? {
-                                                        color: '#00f6ff',
-                                                    }
+                                                          color: '#00f6ff',
+                                                      }
                                                     : { color: '#1769e3' }),
                                                 textDecoration: 'underline',
                                             }}

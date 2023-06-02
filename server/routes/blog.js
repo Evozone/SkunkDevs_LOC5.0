@@ -1,14 +1,14 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
-const auth = require('../middleware/auth');
-const {
+import auth from '../middleware/auth.js';
+import {
     createBlog,
     getBlogs,
     getBlogById,
     editBlogById,
     deleteBlogById,
-} = require('../controllers/blog');
+} from '../controllers/blog.js';
 
 router.get('/getList', getBlogs);
 router.post('/create', auth, createBlog);
@@ -16,4 +16,4 @@ router.get('/get/:id', getBlogById);
 router.patch('/edit/:id', auth, editBlogById);
 router.delete('/delete/:id', auth, deleteBlogById);
 
-module.exports = router;
+export default router;

@@ -4,23 +4,23 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import jwtDecode from 'jwt-decode';
-import ProtectedRoute from './components/ProtectedRoute';
+import ProtectedRoute from './components/helpers/ProtectedRoute';
 import { HMSRoomProvider } from '@100mslive/hms-video-react';
 
 import { signIn } from './features/auth/authSlice';
-import MainAppbar from './components/MainAppbar';
-import Explore from './components/Explore';
-import Blogs from './components/Blogs';
-import Connect from './components/Connect';
-import Listings from './components/Listings';
-import Stage from './components/Stage';
-import StageRoom from './components/StageRoom';
-import ViewBlog from './components/ViewBlog';
-import CreateBlog from './components/CreateBlog';
-import EditBlog from './components/EditBlog';
-import Profile from './components/Profile';
-import PersonalCall from './components/PersonalCall';
-import Loading from './components/Loading';
+import Navbar from './components/navbar/Navbar';
+import Explore from './components/routes/explore/Explore';
+import Blogs from './components/routes/blogs/Blogs';
+import Connect from './components/routes/connect/Connect';
+import Listings from './components/routes/listings/Listings';
+import Stage from './components/routes/stage/Stage';
+import StageRoom from './components/routes/stage/StageRoom';
+import ViewBlog from './components/routes/blogs/ViewBlog';
+import CreateBlog from './components/routes/blogs/CreateBlog';
+import EditBlog from './components/routes/blogs/EditBlog';
+import Profile from './components/routes/profile/Profile';
+import PersonalCall from './components/routes/connect/PersonalCall';
+import Loading from './components/helpers/Loading';
 
 function App() {
     const dispatch = useDispatch();
@@ -46,8 +46,8 @@ function App() {
         setMode(updatedTheme);
     };
 
-    // const isSignedIn = true;
-    const isSignedIn = useSelector((state) => state.auth.isSignedIn);
+    const isSignedIn = true;
+    // const isSignedIn = useSelector((state) => state.auth.isSignedIn);
 
     useEffect(() => {
         const auth = window.localStorage.getItem('photoApp');
@@ -91,7 +91,7 @@ function App() {
         <ThemeProvider theme={darkTheme}>
             <CssBaseline />
             <Loading />
-            {/* if value is profile then don't show MainAppbar */}
+            {/* if value is profile then don't show Navbar */}
 
             <Routes>
                 {/*  */}
@@ -132,7 +132,7 @@ function App() {
                     path='/blog/:id'
                     element={
                         <>
-                            <MainAppbar themeChange={themeChange} mode={mode} />
+                            <Navbar themeChange={themeChange} mode={mode} />
                             <ViewBlog themeChange={themeChange} mode={mode} />
                         </>
                     }
@@ -174,7 +174,7 @@ function App() {
             </Routes>
 
             {window.location.href != 'http://localhost:5173/profile' ? (
-                <MainAppbar
+                <Navbar
                     {...{
                         themeChange,
                         mode,

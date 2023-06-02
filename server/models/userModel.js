@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const socialLinksSchema = new mongoose.Schema({
     twitter: {
@@ -96,4 +96,4 @@ const userSchema = new mongoose.Schema({
     servicesOffered: [],
 });
 
-module.exports = mongoose.model('User', userSchema);
+export default mongoose.model('User', userSchema);

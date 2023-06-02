@@ -19,7 +19,7 @@ import {
     dMode4,
     dMode5,
     dMode6,
-} from '../utils/colors';
+} from '../../../utils/colors';
 
 function ProfileInfo({ mode, otherUser, setProfileInfoOpen }) {
     return (
@@ -162,45 +162,45 @@ function ProfileInfo({ mode, otherUser, setProfileInfoOpen }) {
             </Box>
             {(otherUser.socialLinks.twitter !== '' ||
                 otherUser.socialLinks.instagram !== '') && (
-                    <Box
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        width: '100%',
+                        mb: 2,
+                    }}
+                >
+                    <TwitterIcon
                         sx={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'flex-end',
-                            width: '100%',
-                            mb: 2,
+                            color: mode === 'light' ? lMode6 : dMode6,
+                            fontSize: '2rem',
+                            mr: 2,
+                            cursor: 'pointer',
                         }}
-                    >
-                        <TwitterIcon
-                            sx={{
-                                color: mode === 'light' ? lMode6 : dMode6,
-                                fontSize: '2rem',
-                                mr: 2,
-                                cursor: 'pointer',
-                            }}
-                            onClick={() => {
-                                window.open(
-                                    otherUser.socialLinks.twitter,
-                                    '_blank'
-                                );
-                            }}
-                        />
-                        <InstagramIcon
-                            sx={{
-                                color: mode === 'light' ? lMode6 : dMode6,
-                                fontSize: '2rem',
-                                mr: 1,
-                                cursor: 'pointer',
-                            }}
-                            onClick={() => {
-                                window.open(
-                                    otherUser.socialLinks.instagram,
-                                    '_blank'
-                                );
-                            }}
-                        />
-                    </Box>
-                )}
+                        onClick={() => {
+                            window.open(
+                                otherUser.socialLinks.twitter,
+                                '_blank'
+                            );
+                        }}
+                    />
+                    <InstagramIcon
+                        sx={{
+                            color: mode === 'light' ? lMode6 : dMode6,
+                            fontSize: '2rem',
+                            mr: 1,
+                            cursor: 'pointer',
+                        }}
+                        onClick={() => {
+                            window.open(
+                                otherUser.socialLinks.instagram,
+                                '_blank'
+                            );
+                        }}
+                    />
+                </Box>
+            )}
         </Box>
     );
 }

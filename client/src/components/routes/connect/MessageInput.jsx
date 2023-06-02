@@ -11,9 +11,19 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { v4 as uuid } from 'uuid';
 
 import {
-    lMode1, lMode2, lMode3, lMode4, lMode5, lMode6,
-    dMode1, dMode2, dMode3, dMode4, dMode5, dMode6
-} from '../utils/colors';
+    lMode1,
+    lMode2,
+    lMode3,
+    lMode4,
+    lMode5,
+    lMode6,
+    dMode1,
+    dMode2,
+    dMode3,
+    dMode4,
+    dMode5,
+    dMode6,
+} from '../../../utils/colors';
 
 export default function MessageInput({
     handleSendMessage,
@@ -162,14 +172,14 @@ export default function MessageInput({
                             },
                         },
                         '& .css-1uyx2m5-MuiFormLabel-root-MuiInputLabel-root.Mui-focused':
-                        {
-                            color: lMode4,
-                        },
+                            {
+                                color: lMode4,
+                            },
 
                         '& .css-zi2b99-MuiFormLabel-root-MuiInputLabel-root.Mui-focused':
-                        {
-                            color: lMode4,
-                        },
+                            {
+                                color: lMode4,
+                            },
                     }}
                     color='success'
                     size='small'

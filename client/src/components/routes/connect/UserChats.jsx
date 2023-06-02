@@ -20,11 +20,14 @@ import {
     dMode4,
     dMode5,
     dMode6,
-} from '../utils/colors';
-import { formatDate, formatTime12 } from '../utils/formatTimestamp';
-import { startLoading, stopLoading } from '../features/loading/loadingSlice';
+} from '../../../utils/colors';
+import { formatDate, formatTime12 } from '../../../utils/formatTimestamp';
+import {
+    startLoading,
+    stopLoading,
+} from '../../../features/loading/loadingSlice';
 
-import { notify } from '../features/notify/notifySlice';
+import { notify } from '../../../features/notify/notifySlice';
 
 function UserChats({
     handleChatClick,

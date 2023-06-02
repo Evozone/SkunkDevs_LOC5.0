@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
-const { googleSignUp, search } = require('../controllers/user.js');
+import { googleSignUp, search } from '../controllers/user.js';
 
 router.post('/googleSignUp', googleSignUp);
 router.get('/:userId', search);
-module.exports = router;
+
+export default router;

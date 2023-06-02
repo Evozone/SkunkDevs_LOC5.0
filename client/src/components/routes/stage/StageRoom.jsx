@@ -19,9 +19,19 @@ import {
 } from '@100mslive/hms-video-react';
 
 import {
-    lMode1, lMode2, lMode3, lMode4, lMode5, lMode6,
-    dMode1, dMode2, dMode3, dMode4, dMode5, dMode6
-} from '../utils/colors';
+    lMode1,
+    lMode2,
+    lMode3,
+    lMode4,
+    lMode5,
+    lMode6,
+    dMode1,
+    dMode2,
+    dMode3,
+    dMode4,
+    dMode5,
+    dMode6,
+} from '../../../utils/colors';
 import PeerInRoom from './PeerInRoom';
 
 function StageRoom({ mode }) {

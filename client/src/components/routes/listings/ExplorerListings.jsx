@@ -11,16 +11,23 @@ import {
     dMode1,
     lMode3,
     dMode3,
-} from '../utils/colors';
+} from '../../../utils/colors';
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 
 const ExplorerListings = ({ mode, shift, onDeleteListing }) => {
     const [prevlistings, setPrevlistings] = useState([]);
-    const auth = window.localStorage.getItem('photoApp');
-    const { dnd } = JSON.parse(auth);
-    const { email } = jwtDecode(dnd);
+    const [email, setEmail] = useState('');
+
     useEffect(() => {
+        const getToken = async () => {
+            const auth = window.localStorage.getItem('photoApp') || null;
+            if (auth === null) return;
+            const { dnd } = JSON.parse(auth);
+            const { email } = jwtDecode(dnd);
+            setEmail((prev) => email);
+        };
+
         const getList = async () => {
             const listFromServer = await axios.get(
                 `${import.meta.env.VITE_SERVER_URL}/api/listing/getList`
@@ -29,6 +36,7 @@ const ExplorerListings = ({ mode, shift, onDeleteListing }) => {
             setPrevlistings((prev) => listFromServer.data.result);
         };
         getList();
+        getToken();
     }, [shift]);
     return (
         // The listings here are explorer's listings

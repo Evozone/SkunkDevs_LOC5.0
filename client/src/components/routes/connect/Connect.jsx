@@ -9,11 +9,21 @@ import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import ChatIcon from '@mui/icons-material/Chat';
 import SettingsIcon from '@mui/icons-material/Settings';
 
-import { initSocket } from '../socket';
+import { initSocket } from '../../../socket';
 import {
-    lMode1, lMode2, lMode3, lMode4, lMode5, lMode6,
-    dMode1, dMode2, dMode3, dMode4, dMode5, dMode6
-} from '../utils/colors';
+    lMode1,
+    lMode2,
+    lMode3,
+    lMode4,
+    lMode5,
+    lMode6,
+    dMode1,
+    dMode2,
+    dMode3,
+    dMode4,
+    dMode5,
+    dMode6,
+} from '../../../utils/colors';
 import ChatInterface from './ChatInterface';
 import UserChats from './UserChats';
 import SearchUser from './SearchUser';
@@ -108,9 +118,9 @@ function Connect({ mode }) {
                 const audio = new Audio('/assets/audio/notification.mp3');
                 const body = connectSettings?.textContent
                     ? 'New message from ' +
-                    message.senderName +
-                    ' - ' +
-                    message.text
+                      message.senderName +
+                      ' - ' +
+                      message.text
                     : 'New message from ' + message.senderName;
                 const notification = new Notification('Dev Chat+', {
                     body,
@@ -155,8 +165,7 @@ function Connect({ mode }) {
                         sx={{
                             alignItems: 'center',
                             // boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.5)',
-                            backgroundColor:
-                                mode === 'light' ? lMode3 : dMode3,
+                            backgroundColor: mode === 'light' ? lMode3 : dMode3,
                             '& .MuiTabs-indicator': {
                                 backgroundColor:
                                     mode === 'light' ? lMode6 : dMode6,

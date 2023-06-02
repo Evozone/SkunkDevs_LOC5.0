@@ -1,7 +1,7 @@
-const UserModel = require('../models/userModel');
-const jwt = require('jsonwebtoken');
+import UserModel from '../models/userModel.js';
+import jwt from 'jsonwebtoken';
 
-exports.googleSignUp = async (req, res) => {
+export const googleSignUp = async (req, res) => {
     let {
         uid,
         email,
@@ -64,7 +64,7 @@ exports.googleSignUp = async (req, res) => {
     }
 };
 
-exports.search = async (req, res) => {
+export const search = async (req, res) => {
     try {
         const userId = req.params.userId;
         const keyword = req.query.search

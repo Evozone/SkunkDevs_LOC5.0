@@ -8,7 +8,6 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
-import MessageInput from './MessageInput';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import VideoCallIcon from '@mui/icons-material/VideoCall';
@@ -27,14 +26,18 @@ import {
     dMode4,
     dMode5,
     dMode6,
-} from '../utils/colors';
+} from '../../../utils/colors';
 
-import { formatDate } from '../utils/formatTimestamp';
-import storage from '../appwrite';
+import { formatDate } from '../../../utils/formatTimestamp';
+import storage from '../../../appwrite';
 import TextBody from './TextBody';
-import { notify } from '../features/notify/notifySlice';
-import { startLoading, stopLoading } from '../features/loading/loadingSlice';
+import { notify } from '../../../features/notify/notifySlice';
+import {
+    startLoading,
+    stopLoading,
+} from '../../../features/loading/loadingSlice';
 import ProfileInfo from './ProfileInfo';
+import MessageInput from './MessageInput';
 
 function ChatInterface({ mode, otherUser, socketRef, connectSettings }) {
     const inputRef = useRef();

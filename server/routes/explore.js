@@ -1,15 +1,15 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
-const auth = require('../middleware/auth');
-const {
+import auth from '../middleware/auth.js';
+import {
     createPost,
     getPosts,
     getPostById,
     getPostsByFilter,
     deletePostById,
     search,
-} = require('../controllers/explore');
+} from '../controllers/explore.js';
 
 router.get('/getPosts', getPosts);
 router.get('/getPostsByFilter', getPostsByFilter)
@@ -18,4 +18,4 @@ router.get('/get/:id', getPostById);
 router.get('/searchPosts/:monetizeType', search);
 router.delete('/delete/:id', auth, deletePostById);
 
-module.exports = router;
+export default router;

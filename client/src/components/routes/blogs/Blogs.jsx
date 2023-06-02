@@ -23,7 +23,7 @@ import {
     dMode4,
     dMode5,
     dMode6,
-} from '../utils/colors';
+} from '../../../utils/colors';
 import { Tooltip } from '@mui/material';
 
 function Blogs({ mode }) {

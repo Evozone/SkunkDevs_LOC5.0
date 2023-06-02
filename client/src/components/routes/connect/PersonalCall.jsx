@@ -26,10 +26,10 @@ import {
     dMode4,
     dMode5,
     dMode6,
-} from '../utils/colors';
-import { initSocket } from '../socket';
+} from '../../../utils/colors';
+import { initSocket } from '../../../socket';
 import { useSelector } from 'react-redux';
-import { notify } from '../features/notify/notifySlice';
+import { notify } from '../../../features/notify/notifySlice';
 
 function PersonalCall({ mode }) {
     const socketRef = useRef();

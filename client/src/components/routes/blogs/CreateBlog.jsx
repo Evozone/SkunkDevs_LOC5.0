@@ -1,39 +1,51 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router';
+import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
+import Paper from '@mui/material/Paper';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { v4 as uuid } from 'uuid';
 
 import {
-    bluegrey,
-    richBlack,
+    lMode1,
+    lMode2,
+    lMode3,
+    lMode4,
+    lMode5,
+    lMode6,
+    dMode1,
+    dMode2,
+    dMode3,
+    dMode4,
+    dMode5,
+    dMode6,
     light,
+    superLight,
     medium,
     deepDark,
-    superLight,
-} from '../utils/colors';
-import { notify } from '../features/notify/notifySlice';
+    richBlack,
+    bluegrey,
+} from '../../../utils/colors';
 
-function EditBlog({ mode }) {
-    const location = useLocation();
+import storage from '../../../appwrite';
+import { notify } from '../../../features/notify/notifySlice';
+
+function CreateBlog({ mode }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const blog = location.state.blog;
-
-    const oldTitle = blog.title;
-    const oldContent = blog.content;
-    const oldSummary = blog.summary;
-    const [title, setTitle] = useState(blog.title);
-    const [content, setContent] = useState(blog.content);
-    const [summary, setSummary] = useState(blog.summary);
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+    const [summary, setSummary] = useState('');
+    const [buttonStatus, setButtonStatus] = useState(!true);
+    const [uploadStatus, setUploadStatus] = useState(null);
+    const [coverUrl, setCoverUrl] = useState(null);
 
     const modules = {
         toolbar: [
@@ -50,41 +62,66 @@ function EditBlog({ mode }) {
         ],
     };
 
-    const editPost = async (e) => {
+    const handleImageChange = async (e) => {
+        if (e.target.files[0]) {
+            if (!e.target.files[0].type.match('image.*')) {
+                alert('Please select an image');
+                return;
+            }
+            setUploadStatus('Uploading...');
+            const id = uuid();
+            await storage.createFile(
+                import.meta.env.VITE_APPWRITE_BUCKET_ID,
+                id,
+                e.target.files[0]
+            );
+
+            const result = storage.getFilePreview(
+                import.meta.env.VITE_APPWRITE_BUCKET_ID,
+                id
+            );
+            setUploadStatus('Uploaded successfully ✅');
+            setCoverUrl(result.href);
+            setButtonStatus(false);
+        }
+    };
+
+    const createNewPost = async (e) => {
         e.preventDefault();
         if (!title || !content || !summary) {
             alert('Please fill all the text fields');
             return;
         }
-        if (
-            title === oldTitle &&
-            content === oldContent &&
-            summary === oldSummary
-        ) {
-            alert('No changes made');
+        // if (!coverUrl) {
+        //     alert('Please upload a cover image');
+        //     return;
+        // }
+        if (summary.length > 55) {
+            alert('Summary should be less than 55 characters');
             return;
         }
         const auth = window.localStorage.getItem('photoApp');
         const { dnd } = JSON.parse(auth);
         const data = {
             title,
-            content,
             summary,
+            content,
+            cover: coverUrl,
         };
         try {
-            await axios({
-                method: 'PATCH',
-                url: `${import.meta.env.VITE_SERVER_URL}/api/blog/edit/${
-                    blog._id
-                }`,
+            const response = await axios({
+                method: 'POST',
+                url: `${import.meta.env.VITE_SERVER_URL}/api/blog/create`,
                 headers: {
                     'Content-Type': 'application/json',
                     authorization: `Bearer ${dnd}`,
                 },
                 data,
             });
-            navigate(`/blog/${blog._id}`);
-            dispatch(notify(true, 'success', 'Blog edited successfully!'));
+            dispatch(
+                notify(true, 'success', 'Created a new Blog successfully!')
+            );
+            navigate(`/blog/${response.data.result._id}`);
         } catch (error) {
             console.log(error);
             dispatch(
@@ -101,19 +138,17 @@ function EditBlog({ mode }) {
         <Box
             sx={{
                 overflowY: 'auto',
-                mt: '75px',
-                maxHeight: 'calc(100vh - 75px)',
-                backgroundColor: mode === 'light' ? light : bluegrey,
+                minHeight: '100vh',
+                backgroundColor: mode === 'light' ? 'whitesmoke' : 'black',
                 padding: '5rem',
-                pt: 2,
             }}
         >
             <Paper
                 sx={{
                     p: 2,
                     mt: 2,
-                    backgroundColor: mode === 'light' ? superLight : richBlack,
-                    boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.3)',
+                    backgroundColor: mode === 'light' ? lMode2 : dMode2,
+                    boxShadow: '0 0 2px 0 rgba(0, 0, 0, 0.5)',
                     border: mode === 'light' ? 'none' : `1px solid ${light}`,
                     borderRadius: '15px',
                 }}
@@ -126,7 +161,7 @@ function EditBlog({ mode }) {
                         alignItems: 'center',
                         my: 2,
                         mb: 4,
-                        color: mode === 'light' ? deepDark : light,
+                        color: mode === 'light' ? lMode1 : dMode1,
                         padding: '0',
                         fontWeight: '600',
                         fontSize: '2.5rem',
@@ -135,9 +170,9 @@ function EditBlog({ mode }) {
                     <DriveFileRenameOutlineIcon
                         sx={{ fontSize: '2.5rem', mr: 1 }}
                     />
-                    Edit blog
+                    Create a Blog
                 </Typography>
-                <form onSubmit={editPost}>
+                <form onSubmit={createNewPost}>
                     <TextField
                         fullWidth
                         required
@@ -182,22 +217,63 @@ function EditBlog({ mode }) {
                             },
                         }}
                     />
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            mb: 3,
+                        }}
+                    >
+                        <label
+                            htmlFor='cover'
+                            style={{
+                                fontSize: '1.1rem',
+                                fontWeight: '500',
+                                color: mode === 'light' ? lMode3 : dMode3,
+                            }}
+                        >
+                            Choose cover image -{' '}
+                        </label>
+                        <input
+                            style={{
+                                marginLeft: '5px',
+                                padding: '7px',
+                                backgroundColor:
+                                    mode === 'light' ? 'whitesmoke' : richBlack,
+                                borderRadius: '6px',
+                                border: `1px solid ${deepDark.concat('a4')}`,
+                            }}
+                            title='cover'
+                            placeholder='Cover'
+                            type='file'
+                            accept='image/*'
+                            onChange={handleImageChange}
+                        />
+                        {uploadStatus && (
+                            <Typography
+                                variant='body1'
+                                sx={{
+                                    textAlign: 'center',
+                                    ml: 1,
+                                }}
+                            >
+                                {uploadStatus}
+                            </Typography>
+                        )}
+                    </Box>
+
                     <ReactQuill
                         theme='snow'
                         modules={modules}
                         value={content}
                         onChange={(newValue) => setContent(newValue)}
-                        sx={{
+                        style={{
                             backgroundColor:
                                 mode === 'light' ? 'whitesmoke' : richBlack,
-                            borderRadius: '6px',
-                            mb: 3,
-                            '& .ql-editor': {
-                                p: 1,
-                            },
-                            '& .ql-container': {
-                                p: 1,
-                            },
+                            borderRadius: '10px',
+                            border: `1px solid ${deepDark.concat('a4')}`,
+                            color: mode === 'light' ? 'black' : 'white',
                         }}
                     />
 
@@ -205,18 +281,20 @@ function EditBlog({ mode }) {
                         color='success'
                         sx={{
                             mt: 3,
-                            backgroundColor: mode === 'light' ? medium : light,
+                            backgroundColor: mode === 'light' ? lMode3 : dMode3,
                             color: bluegrey,
                             font: '500 0.9rem Poppins, sans-serif',
                             ':hover': {
-                                backgroundColor: medium,
-                                color: 'black',
+                                backgroundColor:
+                                    mode === 'light' ? lMode3 : dMode3,
+                                color: mode === 'light' ? lMode1 : dMode1,
                             },
                         }}
                         variant='contained'
                         type='submit'
+                        disabled={buttonStatus}
                     >
-                        Save Changes
+                        Create Post
                     </Button>
                 </form>
             </Paper>
@@ -224,4 +302,4 @@ function EditBlog({ mode }) {
     );
 }
 
-export default EditBlog;
+export default CreateBlog;
