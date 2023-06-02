@@ -1,10 +1,17 @@
+// MERN package imports
 import express from 'express';
 import mongoose from 'mongoose';
+
+// Helper packages
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import { v4 as uuid4 } from 'uuid';
-import { Server } from 'socket.io';
 import crypto from 'crypto';
+
+// Socket.io imports
+import { Server } from 'socket.io';
+
+// API route imports
 import userRouter from './routes/user.js';
 import roomsRouter from './routes/room.js';
 import blogRouter from './routes/blog.js';
@@ -13,10 +20,12 @@ import chatRouter from './routes/chat.js';
 import messageRouter from './routes/message.js';
 import listingRouter from './routes/listing.js';
 
+// App configs
 const app = express();
 dotenv.config();
 const PORT = process.env.PORT || 5000;
 
+// Middlewares
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_URL);
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
@@ -27,6 +36,8 @@ app.use((req, res, next) => {
     next();
 });
 app.use(express.json({ limit: '10MB' }));
+
+// Routers
 app.use('/api/blog', blogRouter);
 app.use('/api/user', userRouter);
 app.use('/api/rooms', roomsRouter);
@@ -35,62 +46,7 @@ app.use('/api/message', messageRouter);
 app.use('/api/explore', exploreRouter);
 app.use('/api/listing', listingRouter);
 
-app.get('/mtoken', (req, res) => {
-    var app_access_key = process.env.HMS_ACCESS_KEY;
-    var app_secret = process.env.HMS_SECRET_APP;
-    try {
-        const token = jwt.sign(
-            {
-                access_key: app_access_key,
-                type: 'management',
-                version: 2,
-                iat: Math.floor(Date.now() / 1000),
-                nbf: Math.floor(Date.now() / 1000),
-            },
-            app_secret,
-            {
-                algorithm: 'HS256',
-                expiresIn: '1h',
-                jwtid: uuid4(),
-            }
-        );
-        res.status(200).json({
-            success: true,
-            data: {
-                token,
-            },
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            data: { error },
-        });
-    }
-});
-
-app.get('/auth', (req, res) => {
-    const privateKey = 'private_FcAC/N5RyIU4uPWUJhfPNKn8TY0=';
-    const now = Math.floor(Date.now() / 1000); // Current Unix timestamp in seconds
-    const expire = now + 3400;
-    const signature = crypto
-        .createHmac('sha1', privateKey)
-        .update(`${now}.${expire}` + expire)
-        .digest('hex')
-        .toLowerCase();
-
-    const response = {
-        signature,
-        token: `${now}.${expire}`,
-        expire,
-    };
-
-    res.json(response);
-});
-
-app.get('/', (req, res) => {
-    res.send("Hello, welocme to photo app's API");
-});
-
+// MongoDB connection
 mongoose.set('strictQuery', false);
 mongoose
     .connect(process.env.CONNECTION_URL, {
@@ -100,13 +56,7 @@ mongoose
     .then(() => console.log('MongoDB connected successfully'))
     .catch((error) => console.log(`${error} did not connect`));
 
-const server = app.listen(PORT, () =>
-    console.log(
-        "Hello! This is photo app's backend, listening on port - ",
-        PORT
-    )
-);
-
+// Socket.io configs
 const io = new Server(server, {
     pingTimeout: 60000,
     cors: {
@@ -114,6 +64,7 @@ const io = new Server(server, {
     },
 });
 
+// Socket.io connection for chat
 let online_users = [];
 const chat = io.of('/chat');
 chat.on('connection', (socket) => {
@@ -167,6 +118,7 @@ chat.on('connection', (socket) => {
     });
 });
 
+// Socket.io connection for personal call
 let users = {};
 let socketToRoom = {};
 const maximum = 2;
@@ -255,3 +207,70 @@ personal_call.on('connection', (socket) => {
         // console.log(users);
     });
 });
+
+// HMS Token
+app.get('/mtoken', (req, res) => {
+    var app_access_key = process.env.HMS_ACCESS_KEY;
+    var app_secret = process.env.HMS_SECRET_APP;
+    try {
+        const token = jwt.sign(
+            {
+                access_key: app_access_key,
+                type: 'management',
+                version: 2,
+                iat: Math.floor(Date.now() / 1000),
+                nbf: Math.floor(Date.now() / 1000),
+            },
+            app_secret,
+            {
+                algorithm: 'HS256',
+                expiresIn: '1h',
+                jwtid: uuid4(),
+            }
+        );
+        res.status(200).json({
+            success: true,
+            data: {
+                token,
+            },
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            data: { error },
+        });
+    }
+});
+
+// Agora Token for [???] @Chinu
+app.get('/auth', (req, res) => {
+    const privateKey = 'private_FcAC/N5RyIU4uPWUJhfPNKn8TY0=';
+    const now = Math.floor(Date.now() / 1000); // Current Unix timestamp in seconds
+    const expire = now + 3400;
+    const signature = crypto
+        .createHmac('sha1', privateKey)
+        .update(`${now}.${expire}` + expire)
+        .digest('hex')
+        .toLowerCase();
+
+    const response = {
+        signature,
+        token: `${now}.${expire}`,
+        expire,
+    };
+
+    res.json(response);
+});
+
+// Default route
+app.get('/', (req, res) => {
+    res.send("Hello, welocme to photo app's API");
+});
+
+
+const server = app.listen(PORT, () =>
+    console.log(
+        "Hello! This is photo app's backend, listening on port - ",
+        PORT
+    )
+);
