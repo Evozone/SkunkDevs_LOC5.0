@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import ExploreSearch from './ExploreSearch';
 import Tooltip from '@mui/material/Tooltip';
 import Fab from '@mui/material/Fab';
-import Modal from '@mui/material/Modal';
 import AddIcon from '@mui/icons-material/Add';
 import { useDispatch } from 'react-redux';
 
@@ -28,7 +27,7 @@ import {
     stopLoading,
 } from '../../../features/loading/loadingSlice';
 
-export default function Explore({ mode, themeChange }) {
+export default function Explore({ mode }) {
     const dispatch = useDispatch();
     const [modalVisibility, setModalVisibility] = useState(false);
 
@@ -108,34 +107,11 @@ export default function Explore({ mode, themeChange }) {
     );
 
     return (
-        <>
-            {/* console.log(postsFromServer.data.data.result); */}
-            {/* Use the above to get images */}
-            <Box
-                sx={{
-                    pt: '5rem',
-                    background:
-                        'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%)',
-                    minHeight: '100vh',
-                }}
-            >
-                <Box
-                    sx={{
-                        mb: '15rem',
-                        top: '0',
-                        left: '0',
-                        width: '100%',
-                        zIndex: '100',
-                    }}
-                >
-                    <ExploreSearch
-                        filters={filters}
-                        setFilters={setFilters}
-                        mode={mode}
-                        setPosts={setPosts}
-                        posts={posts}
-                    />
-                </Box>
+        <Box sx={{ width: '100vw', minHeight: '100vh', position: 'relative' }}>
+            <Box sx={{ pt: '5rem' }}>
+                <ExploreSearch
+                    {...{ filters, setFilters, mode, setPosts, posts }}
+                />
 
                 <Box
                     sx={{
@@ -215,43 +191,41 @@ export default function Explore({ mode, themeChange }) {
                 </Box>
             </Box>
 
-            <Tooltip title='Post an Image'>
-                <Fab
-                    color='primary'
-                    aria-label='add'
-                    sx={{
-                        position: 'fixed',
-                        bottom: '2rem',
-                        right: '2rem',
+            <Fab
+                color='primary'
+                aria-label='add a new post'
+                sx={{
+                    position: 'fixed',
+                    bottom: '2rem',
+                    right: '2rem',
+                    color: mode === 'light' ? 'white' : 'black',
+                    backgroundColor: mode === 'light' ? lMode4 : dMode4,
+
+                    borderRadius: '50%',
+                    height: '3rem',
+                    width: '3rem',
+
+                    display: 'grid',
+                    placeItems: 'center',
+                    cursor: 'pointer',
+
+                    boxShadow: '0 0 10px 0 rgba(78,135,140, 0.5)',
+
+                    '&:hover': {
+                        backgroundColor: mode === 'light' ? lMode3 : dMode3,
                         color: mode === 'light' ? 'white' : 'black',
-                        backgroundColor: mode === 'light' ? lMode4 : dMode4,
-
-                        borderRadius: '50%',
-                        height: '3rem',
-                        width: '3rem',
-
-                        display: 'grid',
-                        placeItems: 'center',
-                        cursor: 'pointer',
-
-                        boxShadow: '0 0 10px 0 rgba(78,135,140, 0.5)',
-
-                        '&:hover': {
-                            backgroundColor: mode === 'light' ? lMode3 : dMode3,
-                            color: mode === 'light' ? 'white' : 'black',
-                            transform: 'scale(1.1) rotate(90deg)',
-                            transition: 'transform 0.2s ease-in-out',
-                        },
-                    }}
-                    onClick={toggleModalVisibility}
-                >
-                    <AddIcon />
-                </Fab>
-            </Tooltip>
+                        transform: 'scale(1.1) rotate(90deg)',
+                        transition: 'transform 0.2s ease-in-out',
+                    },
+                }}
+                onClick={toggleModalVisibility}
+            >
+                <AddIcon />
+            </Fab>
             <AddPostModal
                 toggleModalVisibility={toggleModalVisibility}
                 modalVisibility={modalVisibility}
             />
-        </>
+        </Box>
     );
 }

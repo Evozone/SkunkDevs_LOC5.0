@@ -56,18 +56,12 @@ export default function Stage({ mode }) {
 
     useEffect(() => {
         console.log(
-            '%cHey if u like this project, consider giving it a star on github :) https://github.com/Evozone/',
-            'color: green; font-size: 26px;'
+            'Hey if u like this project, consider giving it a star on github :) https://github.com/Evozone/'
         );
         console.log(
-            "%cIf someone told you to copy/paste something here, there's an 11/10 chance you're being scammed.",
-            'font-size: 19px;'
+            "If someone told you to copy/paste something here, there's an 11/10 chance you're being scammed. Pasting anything in here could give attackers access to your account, so do not paste anything here."
         );
-        console.log(
-            '%cPasting anything in here could give attackers access to your account, so do not paste anything here.',
-            'color:red; font-size: 19px;'
-        );
-        console.log('%c-inspired by discord', 'font-size: 17px;');
+        console.log();
         const getGroups = async () => {
             dispatch(startLoading());
             try {
@@ -271,18 +265,10 @@ export default function Stage({ mode }) {
     };
 
     return (
-        <Box
-            sx={{
-                overflowY: 'auto',
-                minHeight: '100vh',
-                background: mode === 'light' ? 'whitesmoke' : '#121212',
-                padding: '5rem',
-                pt: 0,
-            }}
-        >
+        <Box className='route-container'>
             <Typography
                 variant='h1'
-                component='h2'
+                component='h1'
                 sx={{
                     color: mode === 'light' ? lMode3 : dMode3, // light mode 3
                     margin: '1rem',

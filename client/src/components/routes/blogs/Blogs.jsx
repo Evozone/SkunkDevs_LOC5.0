@@ -80,17 +80,7 @@ function Blogs({ mode }) {
     );
 
     return (
-        <Box
-            sx={{
-                overflowY: 'auto',
-                minHeight: '100vh',
-                backgroundColor: mode === 'light' ? 'whitesmoke' : '#121212',
-                padding: '5rem',
-                display: 'flex',
-                flexDirection: 'column',
-                pt: 0,
-            }}
-        >
+        <Box className='route-container'>
             <Typography
                 variant='h1'
                 component='h2'
@@ -106,12 +96,11 @@ function Blogs({ mode }) {
                     alignItems: 'center',
                 }}
             >
-                Read Blogs
+                Blogs
                 <ChromeReaderModeIcon
                     sx={{ fontSize: '3rem', marginLeft: '1rem' }}
                 />
             </Typography>
-
             <Typography
                 variant='h2'
                 component='h3'
@@ -129,7 +118,6 @@ function Blogs({ mode }) {
             >
                 You can share your experience or read others' experiences here.
             </Typography>
-
             <Box
                 sx={{
                     display: 'grid',

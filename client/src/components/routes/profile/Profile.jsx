@@ -53,8 +53,6 @@ export default function Profile() {
 
     const { uid, email, name, avatar } = jwtDecode(token);
 
-    console.log(uid, email, name, avatar);
-
     const username = email.split('@')[0];
 
     const [formData, setFormData] = useState({
@@ -79,8 +77,10 @@ export default function Profile() {
     useEffect(() => {
         async function checkProfile() {
             try {
-                const profile = await axios.get();
-                if (profile.data.data) {
+                const profile = await axios.get(
+                    `${import.meta.env.VITE_SERVER_URL}/api/user/${uid}`
+                );
+                if (profile?.data?.data) {
                     // User already has a profile
                     // Fill in the form with the existing data
                     const {
@@ -98,11 +98,14 @@ export default function Profile() {
 
                     setFormData(profile.data.data);
                     // Navigate to home page
+                } else {
+                    return null;
                 }
             } catch (err) {
                 console.log(err);
             }
         }
+
         checkProfile();
     }, []);
 

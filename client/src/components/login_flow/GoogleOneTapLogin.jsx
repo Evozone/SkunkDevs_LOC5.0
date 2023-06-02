@@ -9,24 +9,7 @@ import { useDispatch } from 'react-redux';
 import { signIn } from '../../features/auth/authSlice';
 import { startLoading, stopLoading } from '../../features/loading/loadingSlice';
 
-import {
-    lMode1,
-    lMode2,
-    lMode3,
-    lMode4,
-    lMode5,
-    lMode6,
-    light,
-    deepDark,
-    richBlack,
-    dMode1,
-    bluegrey,
-    dMode2,
-    dMode3,
-    dMode4,
-    dMode5,
-    dMode6,
-} from '../../utils/colors';
+import { lMode1, lMode4, lMode5, lMode6 } from '../../utils/colors';
 
 const GoogleOneTapLogin = () => {
     const navigate = useNavigate();
@@ -83,15 +66,8 @@ const GoogleOneTapLogin = () => {
                 startIcon={<Google />}
                 sx={{
                     display: displayType,
-                    width: '120px',
                     height: '35px',
-                    backgroundColor: lMode5,
-                    color: lMode1,
                     borderRadius: '15px',
-                    '&:hover': {
-                        color: lMode6,
-                        backgroundColor: lMode4,
-                    },
                 }}
                 onClick={handleGoogleLogIn}
             >

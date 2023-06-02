@@ -151,15 +151,14 @@ function Connect({ mode }) {
     };
 
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                overflowY: 'auto',
-                mt: '75px',
-                maxHeight: 'calc(100vh - 75px)',
-            }}
-        >
-            <Box sx={{ width: '400px' }}>
+        <Box className='route-container' sx={{ display: 'flex', p: 2, pt: 8 }}>
+            <Box
+                sx={{
+                    width: '400px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
+            >
                 <AppBar elevation={0} color='inherit' position='static'>
                     <Tabs
                         sx={{
@@ -170,6 +169,7 @@ function Connect({ mode }) {
                                 backgroundColor:
                                     mode === 'light' ? lMode6 : dMode6,
                             },
+                            borderRadius: '10px 0 0 0',
                         }}
                         value={value}
                         onChange={handleChange}
@@ -225,13 +225,14 @@ function Connect({ mode }) {
                 <Box
                     sx={{
                         width: '100%',
-                        height: 'calc(100vh - 136px)',
                         overflowY: 'auto',
+                        flexGrow: 1,
                         borderRight:
                             mode === 'light'
                                 ? '1px solid rgba(0, 0, 0, 0.12)'
                                 : '1px solid rgba(255, 255, 255, 0.12)',
                         backgroundColor: mode === 'light' ? lMode2 : dMode2,
+                        borderRadius: '0 0 0 10px',
                     }}
                 >
                     {value === 0 && (
@@ -265,13 +266,13 @@ function Connect({ mode }) {
             {!otherUser ? (
                 <Box
                     sx={{
-                        height: 'calc(100vh - 75px)',
                         flex: 1,
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'center',
                         alignItems: 'center',
                         backgroundColor: mode === 'light' ? lMode2 : dMode2,
+                        borderRadius: '0 10px 10px 0',
                     }}
                 >
                     <img

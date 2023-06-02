@@ -49,12 +49,16 @@ app.use('/api/listing', listingRouter);
 // MongoDB connection
 mongoose.set('strictQuery', false);
 mongoose
-    .connect(process.env.CONNECTION_URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    })
+    .connect(process.env.CONNECTION_URL)
     .then(() => console.log('MongoDB connected successfully'))
     .catch((error) => console.log(`${error} did not connect`));
+
+const server = app.listen(PORT, () =>
+    console.log(
+        "Hello! This is photo app's backend, listening on port - ",
+        PORT
+    )
+);
 
 // Socket.io configs
 const io = new Server(server, {
@@ -266,11 +270,3 @@ app.get('/auth', (req, res) => {
 app.get('/', (req, res) => {
     res.send("Hello, welocme to photo app's API");
 });
-
-
-const server = app.listen(PORT, () =>
-    console.log(
-        "Hello! This is photo app's backend, listening on port - ",
-        PORT
-    )
-);
