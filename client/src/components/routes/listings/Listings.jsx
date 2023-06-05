@@ -31,6 +31,7 @@ import {
 import axios from 'axios';
 import { notify } from '../../../features/notify/notifySlice';
 import { useDispatch } from 'react-redux';
+import { Container } from '@mui/material';
 
 export default function Listings({ mode }) {
     // define state for listings
@@ -92,7 +93,6 @@ export default function Listings({ mode }) {
 
     const handlePriceRangeChange = (event, value) => {
         setPriceRange(value);
-        console.log(value, 'v', priceRange);
     };
 
     const handleTagChange = (event, value) => {
@@ -195,34 +195,14 @@ export default function Listings({ mode }) {
     };
 
     return (
-        <Box
-            sx={{
-                overflowY: 'auto',
-                minHeight: '100vh',
-                background: mode === 'light' ? 'whitesmoke' : 'black',
-                padding: '3rem',
-                pt: 1,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
-            {/* Button at corner of screen swtiching between explorer and photographer */}
-            {/* @TODO: DELETE THIS BUTTON */}
+        <Box className='route-container'>
             <button
-                style={{
-                    position: 'absolute',
-                    top: '1rem',
-                    right: '1rem',
-                    background: 'none',
-                }}
+                className='always-on-top'
+                style={{ top: '1rem', right: '1rem' }}
                 onClick={() => {
-                    if (userMode === 'explorer') {
-                        setUserMode('photographer');
-                    } else {
-                        setUserMode('explorer');
-                    }
+                    userMode === 'explorer'
+                        ? setUserMode('photographer')
+                        : setUserMode('explorer');
                 }}
             >
                 {userMode}

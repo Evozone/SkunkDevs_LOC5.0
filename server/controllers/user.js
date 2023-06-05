@@ -75,14 +75,38 @@ export const search = async (req, res) => {
                 ],
             }
             : {};
-        const users = await UserModel.find(keyword).find({
-            uid: { $ne: userId },
-        });
-        res.status(200).json({
-            success: true,
-            result: users,
-            message: 'User found',
-        });
+
+        if (req.query.search) {
+            const users = await UserModel.find(keyword).find({
+                uid: { $ne: userId },
+            });
+
+            // Not decided yet
+            // Return status 418
+
+            res.status(418).json({
+                success: true,
+                result: { teapot: true },
+                message: 'This is a teapot',
+            });
+        }
+        else {
+            const users = await UserModel.find({ uid: userId }).exec();
+
+            if (users.length === 0) {
+                res.status(200).json({
+                    success: false,
+                    result: null,
+                    message: 'No such user',
+                });
+            } else {
+                res.status(200).json({
+                    success: true,
+                    result: users[0],
+                    message: 'User found',
+                });
+            }
+        }
     } catch (error) {
         res.status(500).json({
             success: false,

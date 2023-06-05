@@ -1,24 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import ExploreSearch from './ExploreSearch';
-import Tooltip from '@mui/material/Tooltip';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import { useDispatch } from 'react-redux';
 
-import {
-    lMode1,
-    lMode2,
-    lMode3,
-    lMode4,
-    lMode5,
-    lMode6,
-    dMode1,
-    dMode2,
-    dMode3,
-    dMode4,
-    dMode5,
-    dMode6,
-} from '../../../utils/colors';
+import heroImg from '../../../assets/hero.jpg';
+
+import { lMode3, lMode4, dMode3, dMode4 } from '../../../utils/colors';
 import AddPostModal from './AddPostModal';
 import axios from 'axios';
 import { Box } from '@mui/system';
@@ -26,10 +13,12 @@ import {
     startLoading,
     stopLoading,
 } from '../../../features/loading/loadingSlice';
+import GlobalSearch from '../../navbar/search/GlobalSearch';
 
 export default function Explore({ mode }) {
     const dispatch = useDispatch();
     const [modalVisibility, setModalVisibility] = useState(false);
+    const [showSearch, setShowSearch] = useState(true);
 
     const toggleModalVisibility = () => {
         setModalVisibility(!modalVisibility);
@@ -92,6 +81,19 @@ export default function Explore({ mode }) {
         getPosts();
     }, [filters, modalVisibility]);
 
+    useEffect(() => {
+        function checkScroll() {
+            if (window.scrollY > 0) {
+                setShowSearch(false);
+            } else {
+                setShowSearch(true);
+            }
+        }
+
+        window.addEventListener('scroll', checkScroll);
+        return () => window.removeEventListener('scroll', checkScroll);
+    }, []);
+
     const lastPostRef = useCallback(
         (node) => {
             if (loading) return;
@@ -107,45 +109,35 @@ export default function Explore({ mode }) {
     );
 
     return (
-        <Box sx={{ width: '100vw', minHeight: '100vh', position: 'relative' }}>
-            <Box sx={{ pt: '5rem' }}>
-                <ExploreSearch
-                    {...{ filters, setFilters, mode, setPosts, posts }}
-                />
-
-                <Box
-                    sx={{
-                        display: 'grid',
-                        gridTemplateColumns:
-                            'repeat(auto-fit, minmax(300px, 1fr))',
-                        gridGap: '1rem',
-                        placeItems: 'center',
-                        padding: '0rem',
-                        maxWidth: '1200px',
-                    }}
-                >
-                    {posts &&
-                        posts.map((post, index) => {
-                            if (posts.length === index + 1) {
-                                if (post.monetizeType !== 'Free') {
-                                    return (
-                                        <img
-                                            src={`${post.imageUrl}?tr=ot-Shutter%Sphere,otc-FFFFFF,otbg-FF0000,or-4,otp-8_8,ox-1335,oy-980,ott-bold,ots-90`}
-                                            alt='post'
-                                            key={post._id}
-                                            ref={lastPostRef}
-                                            style={{
-                                                width: '100%',
-                                                height: '100%',
-                                                objectFit: 'cover',
-                                                borderRadius: '1rem',
-                                            }}
-                                        />
-                                    );
-                                }
+        <Box sx={{ minHeight: '100vh', position: 'relative' }}>
+            <Box
+                sx={{
+                    pt: '5rem',
+                    background: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${heroImg}) no-repeat center center/cover`,
+                    minHeight: '80vh',
+                    display: 'grid',
+                    placeItems: 'center',
+                }}
+            >
+                {showSearch && <GlobalSearch />}
+            </Box>
+            <Box
+                sx={{
+                    p: 3,
+                    backgroundColor: 'whitesmoke',
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                    gridGap: '1rem',
+                    placeItems: 'center',
+                }}
+            >
+                {posts &&
+                    posts.map((post, index) => {
+                        if (posts.length === index + 1) {
+                            if (post.monetizeType !== 'Free') {
                                 return (
                                     <img
-                                        src={post.imageUrl}
+                                        src={`${post.imageUrl}?tr=ot-Shutter%Sphere,otc-FFFFFF,otbg-FF0000,or-4,otp-8_8,ox-1335,oy-980,ott-bold,ots-90`}
                                         alt='post'
                                         key={post._id}
                                         ref={lastPostRef}
@@ -157,25 +149,26 @@ export default function Explore({ mode }) {
                                         }}
                                     />
                                 );
-                            } else {
-                                if (post.monetizeType !== 'Free') {
-                                    return (
-                                        <img
-                                            src={`${post.imageUrl}?tr=ot-Shutter%Sphere,otc-FFFFFF,otbg-FF0000,or-4,otp-8_8,ox-1335,oy-980,ott-bold,ots-90`}
-                                            alt='post'
-                                            key={post._id}
-                                            style={{
-                                                width: '100%',
-                                                height: '100%',
-                                                objectFit: 'cover',
-                                                borderRadius: '1rem',
-                                            }}
-                                        />
-                                    );
-                                }
+                            }
+                            return (
+                                <img
+                                    src={post.imageUrl}
+                                    alt='post'
+                                    key={post._id}
+                                    ref={lastPostRef}
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'cover',
+                                        borderRadius: '1rem',
+                                    }}
+                                />
+                            );
+                        } else {
+                            if (post.monetizeType !== 'Free') {
                                 return (
                                     <img
-                                        src={post.imageUrl}
+                                        src={`${post.imageUrl}?tr=ot-Shutter%Sphere,otc-FFFFFF,otbg-FF0000,or-4,otp-8_8,ox-1335,oy-980,ott-bold,ots-90`}
                                         alt='post'
                                         key={post._id}
                                         style={{
@@ -187,8 +180,21 @@ export default function Explore({ mode }) {
                                     />
                                 );
                             }
-                        })}
-                </Box>
+                            return (
+                                <img
+                                    src={post.imageUrl}
+                                    alt='post'
+                                    key={post._id}
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'cover',
+                                        borderRadius: '1rem',
+                                    }}
+                                />
+                            );
+                        }
+                    })}
             </Box>
 
             <Fab

@@ -1,15 +1,19 @@
+// React
 import React, { useState, useRef } from 'react';
-import { Button, Typography } from '@mui/material';
-import { Google } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+
+// Material UI
+import { Button } from '@mui/material';
+import { Google } from '@mui/icons-material';
+
+// External Packages
 import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 
+// Redux
 import { useDispatch } from 'react-redux';
 import { signIn } from '../../features/auth/authSlice';
 import { startLoading, stopLoading } from '../../features/loading/loadingSlice';
-
-import { lMode1, lMode4, lMode5, lMode6 } from '../../utils/colors';
 
 const GoogleOneTapLogin = () => {
     const navigate = useNavigate();
@@ -21,9 +25,44 @@ const GoogleOneTapLogin = () => {
     const [gBtnDisplay, setGBtnDisplay] = useState('none');
 
     const handleResponse = async (response) => {
+        // Get token from Google
         const token = response.credential;
+        dispatch(startLoading());
 
-        navigate('/profile', { state: { token } });
+        const decodedToken = jwtDecode(token);
+
+        try {
+            const { data } = await axios.get(
+                `${import.meta.env.VITE_SERVER_URL}/api/user/${
+                    decodedToken.sub
+                }`
+            );
+            const user = data.result;
+            if (user === null) {
+                console.log('User does not exist');
+                navigate('/profile', { state: { token } });
+            } else {
+                dispatch(
+                    signIn({
+                        uid: user.uid,
+                        bio: user.bio,
+                        socialLinks: user.socialLinks,
+                        location: user.location,
+                        email: user.email,
+                        name: user.name,
+                        avatar: user.avatar,
+                        username: user.email,
+                        mid: user._id,
+                        token: token,
+                    })
+                );
+
+                navigate('/' + window.localStorage.getItem('photoAppLastPage'));
+            }
+            dispatch(stopLoading());
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const handleGoogleLogIn = () => {
@@ -71,7 +110,7 @@ const GoogleOneTapLogin = () => {
                 }}
                 onClick={handleGoogleLogIn}
             >
-                Sign In
+                Continue with Google
             </Button>
             <div style={{ display: gBtnDisplay }} ref={googleButton}></div>
         </React.Fragment>

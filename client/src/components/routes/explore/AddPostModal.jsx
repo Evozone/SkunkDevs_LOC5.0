@@ -22,6 +22,7 @@ import ImageIcon from '@mui/icons-material/Image';
 import CancelIcon from '@mui/icons-material/Cancel';
 import ImageKit from 'imagekit-javascript';
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 import { v4 as uuid } from 'uuid';
 
 const SytledModal = styled(Modal)({
@@ -138,7 +139,7 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
         }
         let assignId = uuid();
         const auth = window.localStorage.getItem('photoApp');
-        const { dnd } = JSON.parse(auth);
+        const { dnd } = jwtDecode(auth);
         const data = {
             imageURL: imageRemoteURL,
             thumbnailUrl,
@@ -296,7 +297,7 @@ const PostModal = ({ toggleModalVisibility, modalVisibility }) => {
                                 />
                             </Grid>
                             {tags.map((tag) => (
-                                <Grid item>
+                                <Grid item key={uuid()}>
                                     <Chip
                                         key={uuid()}
                                         label={tag}

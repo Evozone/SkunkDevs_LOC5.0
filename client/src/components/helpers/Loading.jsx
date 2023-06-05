@@ -1,6 +1,8 @@
-import { Backdrop } from '@mui/material';
-
+// React
 import { useSelector } from 'react-redux';
+
+// Material UI
+import Backdrop from '@mui/material/Backdrop';
 
 const Loading = () => {
     const loading = useSelector((state) => state.loading.isLoading);

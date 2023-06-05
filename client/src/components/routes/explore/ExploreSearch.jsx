@@ -80,8 +80,10 @@ export default function ExploreSearch({
                 label='Search Images'
                 onChange={handleSearch}
                 sx={{
+                    color: 'white',
+                    backgroundColor: 'white',
                     position: 'absolute',
-                    mt: '5rem',
+                    mt: '20rem',
                     mb: '1rem',
                     left: '25%',
                     width: '50%',
@@ -90,11 +92,11 @@ export default function ExploreSearch({
                         borderRadius: '20px',
 
                         '&.Mui-focused fieldset': {
-                            borderColor: 'black',
+                            borderColor: 'white',
                         },
                     },
                     '& .MuiInputLabel-root.Mui-focused': {
-                        color: 'black',
+                        color: 'white',
                     },
                 }}
                 InputProps={{

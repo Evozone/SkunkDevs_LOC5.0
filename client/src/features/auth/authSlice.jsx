@@ -19,10 +19,6 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         signIn: (state, action) => {
-            window.localStorage.setItem(
-                'photoApp',
-                JSON.stringify({ dnd: action.payload.token, isSignedIn: true })
-            );
             state.isSignedIn = true;
             state.uid = action.payload.uid;
             state.bio = action.payload.bio;
@@ -32,8 +28,9 @@ const authSlice = createSlice({
             state.name = action.payload.name;
             state.avatar = action.payload.avatar;
             state.username = action.payload.email.split('@')[0];
-            state.mid = action.payload.mid;
+            state.mid = action.payload._id;
             state.token = action.payload.token;
+            window.localStorage.setItem('photoApp', action.payload.token);
         },
         signOut: (state) => {
             window.localStorage.removeItem('photoApp');

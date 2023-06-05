@@ -8,29 +8,12 @@ import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import LinearProgress from '@mui/material/LinearProgress';
-import Snackbar from '@mui/material/Snackbar';
 import jwtDecode from 'jwt-decode';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import PinterestIcon from '@mui/icons-material/Pinterest';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-import {
-    lMode1,
-    lMode2,
-    lMode3,
-    lMode4,
-    lMode5,
-    lMode6,
-    dMode1,
-    dMode2,
-    dMode3,
-    dMode4,
-    dMode5,
-    dMode6,
-} from '../../../utils/colors';
-import { border } from '@mui/system';
+import { lMode1, lMode3, lMode6 } from '../../../utils/colors';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { signIn } from '../../../features/auth/authSlice';
 import {
@@ -41,22 +24,26 @@ import { useDispatch } from 'react-redux';
 import axios from 'axios';
 
 export default function Profile() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    // Get token from Google, passed from GoogleOneTapLogin in state
     const location = useLocation();
     let token = location?.state?.token;
-
-    // If not first time login, get token from local storage
     if (!token) {
         const auth = window.localStorage.getItem('photoApp');
-        const { dnd } = JSON.parse(auth);
-        token = dnd;
+        // Reassign token to the token from localStorage
+        token = jwtDecode(auth);
     }
 
-    const { uid, email, name, avatar } = jwtDecode(token);
-
+    // To fill the form with the data from the token
+    const { sub: uid, email, name, picture } = jwtDecode(token);
+    // Change picture from s-96 to s-512
+    const avatar = picture.replace('s96-c', 's512-c');
     const username = email.split('@')[0];
 
     const [formData, setFormData] = useState({
-        name: name,
+        name,
         email,
         uid,
         socialLinks: {
@@ -65,7 +52,7 @@ export default function Profile() {
             pinterest: '',
             portfolio: '',
         },
-        avatar: avatar,
+        avatar,
         bio: '',
         username,
         role: '',
@@ -80,26 +67,17 @@ export default function Profile() {
                 const profile = await axios.get(
                     `${import.meta.env.VITE_SERVER_URL}/api/user/${uid}`
                 );
-                if (profile?.data?.data) {
-                    // User already has a profile
-                    // Fill in the form with the existing data
-                    const {
-                        name,
-                        email,
-                        uid,
-                        socialLinks,
-                        avatar,
-                        bio,
-                        username,
-                        role,
-                        skill_level,
-                        location,
-                    } = profile.data.data;
-
-                    setFormData(profile.data.data);
-                    // Navigate to home page
-                } else {
-                    return null;
+                if (profile.data.result !== null) {
+                    // Fill the form with the data from the profile
+                    const profileData = profile.data.result;
+                    setFormData((prev) => ({
+                        ...prev,
+                        socialLinks: profileData.socialLinks,
+                        bio: profileData.bio,
+                        role: profileData.role,
+                        skill_level: profileData.skill_level,
+                        location: profileData.location,
+                    }));
                 }
             } catch (err) {
                 console.log(err);
@@ -109,19 +87,8 @@ export default function Profile() {
         checkProfile();
     }, []);
 
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
-    const [file, setFile] = useState(null);
-    const [uploading, setUploading] = useState(false);
-    const [success, setSuccess] = useState(false);
-
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
-    };
-
     const formSubmit = async (e) => {
-        // e.preventDeafults();
+        e.preventDefault();
         if (!formData.location || !formData.bio) {
             alert('Please fill all the required fields.');
             return;
@@ -140,21 +107,21 @@ export default function Profile() {
                 formData,
                 config
             )
-            .then((result) => {
-                const user = result.data.result;
+            .then((response) => {
+                const user = response.data.result;
                 dispatch(
-                    signInAction(
-                        user.uid,
-                        user.bio,
-                        user.socialLinks,
-                        user.location,
-                        user.email,
-                        user.name,
-                        user.avatar,
-                        user.username,
-                        user._id,
-                        user.token
-                    )
+                    signIn({
+                        uid: user.uid,
+                        bio: user.bio,
+                        socialLinks: user.socialLinks,
+                        location: user.location,
+                        email: user.email,
+                        name: user.name,
+                        avatar: user.avatar,
+                        username: user.email,
+                        mid: user._id,
+                        token: token,
+                    })
                 );
                 window.localStorage.setItem('photoAppLastPage', '');
                 navigate('/');
