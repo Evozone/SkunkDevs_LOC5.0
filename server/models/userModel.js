@@ -55,7 +55,7 @@ const userSchema = new mongoose.Schema({
     },
     skill_level: {
         type: String,
-        default: 'beginner',
+        default: null,
     },
     postImagesRef: [
         {
@@ -69,10 +69,6 @@ const userSchema = new mongoose.Schema({
             ref: 'Image',
         },
     ],
-    userIsNew: {
-        type: Boolean,
-        default: true,
-    },
     premiumCollection: [
         {
             name: {

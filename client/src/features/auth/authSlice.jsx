@@ -5,6 +5,8 @@ const initialState = {
     uid: null,
     bio: null,
     socialLinks: null,
+    skill_level: null,
+    role: null,
     location: null,
     email: null,
     name: null,
@@ -23,6 +25,8 @@ const authSlice = createSlice({
             state.uid = action.payload.uid;
             state.bio = action.payload.bio;
             state.socialLinks = action.payload.socialLinks;
+            state.skill_level = action.payload.skill_level;
+            state.role = action.payload.role;
             state.location = action.payload.location;
             state.email = action.payload.email;
             state.name = action.payload.name;

@@ -6,11 +6,7 @@ export const googleSignUp = async (req, res) => {
         uid,
         email,
         name,
-        photoURL,
         username,
-        socialLinks,
-        location,
-        bio,
         avatar,
     } = req.body;
     try {
@@ -33,13 +29,8 @@ export const googleSignUp = async (req, res) => {
                 uid,
                 email,
                 name,
-                avatar: photoURL,
-                username,
-                socialLinks,
-                userIsNew: false,
-                location,
-                bio,
                 avatar,
+                username,
             });
             const token = jwt.sign(
                 { ...user._doc },

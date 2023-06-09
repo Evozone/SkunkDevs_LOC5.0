@@ -18,6 +18,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 // Other Components
 import Navbar from './components/navbar/Navbar';
 import Loading from './components/helpers/Loading';
+import Notify from './components/helpers/Notify';
 
 // Route Components
 import Explore from './components/routes/explore/Explore';
@@ -29,7 +30,7 @@ import StageRoom from './components/routes/stage/StageRoom';
 import ViewBlog from './components/routes/blogs/ViewBlog';
 import CreateBlog from './components/routes/blogs/CreateBlog';
 import EditBlog from './components/routes/blogs/EditBlog';
-import Profile from './components/routes/profile/Profile';
+import Account from './components/routes/account/Account';
 import PersonalCall from './components/routes/connect/PersonalCall';
 
 function App() {
@@ -40,9 +41,9 @@ function App() {
 
     const [mode, setMode] = useState(localTheme ? localTheme : 'light');
 
-    const darkTheme = createTheme({
+    const theme = createTheme({
         palette: {
-            mode: 'dark',
+            mode: mode,
         },
     });
 
@@ -84,11 +85,11 @@ function App() {
     }, []);
 
     return (
-        <ThemeProvider theme={darkTheme}>
+        <ThemeProvider {...{ theme }}>
             <CssBaseline />
             <Loading />
-            {/* if value is profile then don't show Navbar */}
-
+            <Notify />
+            <Navbar {...{ themeChange, mode }} />
             <Routes>
                 <Route path='/' element={<Explore />} />
 
@@ -133,13 +134,9 @@ function App() {
                 {/* Listings */}
                 <Route path='/listings' element={<Listings />} />
 
-                {/* Profile */}
-                <Route path='/profile' element={<Profile />} />
+                {/* Account Data */}
+                <Route path='/account' element={<Account />} />
             </Routes>
-
-            {window.location.href != 'http://localhost:5173/profile' ? (
-                <Navbar {...{ themeChange, mode }} />
-            ) : null}
         </ThemeProvider>
     );
 }

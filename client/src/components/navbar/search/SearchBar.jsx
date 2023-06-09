@@ -7,7 +7,12 @@ import { TextField, InputAdornment, IconButton } from '@mui/material';
 // Material UI Icons
 import { Search } from '@mui/icons-material';
 
-export default function SearchBar({ search, setSearch, handleSearch }) {
+export default function SearchBar({
+    search,
+    setSearch,
+    handleSearch,
+    lightModeColor,
+}) {
     return (
         <TextField
             id='outlined-basic'
@@ -22,6 +27,9 @@ export default function SearchBar({ search, setSearch, handleSearch }) {
                 }
             }}
             sx={{
+                input: {
+                    color: lightModeColor,
+                },
                 flexGrow: 1,
                 '& .MuiOutlinedInput-root': {
                     borderRadius: '0 2rem 2rem 0',
@@ -34,6 +42,9 @@ export default function SearchBar({ search, setSearch, handleSearch }) {
                             edge='end'
                             aria-label='search'
                             onClick={handleSearch}
+                            sx={{
+                                color: lightModeColor,
+                            }}
                         >
                             <Search />
                         </IconButton>

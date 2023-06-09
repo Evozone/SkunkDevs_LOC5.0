@@ -5,13 +5,17 @@ import { FormControl } from '@mui/material';
 import CategorySelect from './CategorySelect';
 import SearchBar from './SearchBar';
 
-export default function GlobalSearch() {
+export default function GlobalSearch({ lightModeColor }) {
     const [search, setSearch] = useState('');
     const [category, setCategory] = useState('Free');
 
     const handleSearch = () => {
         console.log('searching for', search, 'in', category);
     };
+
+    const mode = window.localStorage.getItem('photoAppTheme') || 'light';
+    const givenColor =
+        mode === 'dark' || lightModeColor === 'white' ? 'white' : 'black';
 
     return (
         <FormControl
@@ -22,7 +26,7 @@ export default function GlobalSearch() {
                 flexDirection: 'row',
                 alignItems: 'center',
                 // The first child has border radius on the left
-                '& > *:first-child': {
+                '& > *:first-of-type': {
                     borderRadius: '2rem 0 0 2rem',
                 },
                 // The last child has border radius on the right
@@ -31,19 +35,21 @@ export default function GlobalSearch() {
                 },
                 '& .MuiOutlinedInput-root': {
                     '& fieldset': {
-                        border: '1px solid white',
+                        border: `1px solid ${givenColor}`,
                     },
                     '&:hover fieldset': {
-                        border: '1px solid white',
+                        border: `1px solid ${givenColor}`,
                     },
                     '&.Mui-focused fieldset': {
-                        border: '2px solid white',
+                        border: `1px solid ${givenColor}`,
                     },
                 },
             }}
         >
-            <CategorySelect {...{ category, setCategory }} />
-            <SearchBar {...{ search, setSearch, handleSearch }} />
+            <CategorySelect {...{ category, setCategory, lightModeColor }} />
+            <SearchBar
+                {...{ search, setSearch, handleSearch, lightModeColor }}
+            />
         </FormControl>
     );
 }

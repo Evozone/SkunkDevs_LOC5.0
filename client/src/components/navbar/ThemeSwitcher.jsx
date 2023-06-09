@@ -1,5 +1,5 @@
 // React
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 // Local Icons
 import LightModeIcon from '../../assets/sun.svg';
@@ -11,7 +11,7 @@ import { styled } from '@mui/material/styles';
 // Material UI components
 import Swtich from '@mui/material/Switch';
 
-const ThemeSwitch = styled(Swtich)(({ theme }) => ({
+const ThemeSwitch = styled(Swtich)((props) => ({
     width: 70,
     height: 50,
     padding: 7,
@@ -22,6 +22,10 @@ const ThemeSwitch = styled(Swtich)(({ theme }) => ({
         '&.Mui-checked': {
             '& .MuiSwitch-thumb:before': {
                 background: `url(${DarkModeIcon}) no-repeat center center`,
+            },
+            '& + .MuiSwitch-track': {
+                opacity: 0.5,
+                backgroundColor: 'transparent',
             },
         },
     },
@@ -37,20 +41,30 @@ const ThemeSwitch = styled(Swtich)(({ theme }) => ({
             left: 0,
             top: 0,
             background: `url(${LightModeIcon}) no-repeat center center`,
-            border: '2px solid #fff',
+            backgroundColor: `${props.btnbackground}`,
+            border: `2px solid ${props.givencolor}`,
             borderRadius: '50%',
         },
     },
     '& .MuiSwitch-track': {
-        border: '2px solid #fff',
+        border: `2px solid ${props.givencolor}`,
         backgroundColor: 'transparent',
         borderRadius: 50 / 2,
     },
-    '.Mui-checked+ .MuiSwitch-track': {
-        backgroundColor: 'transparent',
-    },
 }));
 
-export default function ThemeSwitcher({ mode, themeChange }) {
-    return <ThemeSwitch checked={mode === 'dark'} onChange={themeChange} />;
+export default function ThemeSwitcher({ mode, themeChange, lightModeColor }) {
+    const givenColor =
+        mode === 'dark' || lightModeColor === 'white' ? 'white' : 'black';
+
+    const btnBackground = lightModeColor === 'white' ? 'transparent' : 'black';
+
+    return (
+        <ThemeSwitch
+            checked={mode === 'dark'}
+            onChange={themeChange}
+            givencolor={givenColor}
+            btnbackground={btnBackground}
+        />
+    );
 }

@@ -31,34 +31,6 @@ export default function Explore({ mode }) {
     const [loading, setLoading] = useState(false);
     const [filters, setFilters] = useState('Free');
 
-    // useEffect(() => {
-    //     async function getPosts() {
-    //         try {
-    //             dispatch(startLoading());
-    //             const postsFromServer = await axios.get(
-    //                 `${import.meta.env.VITE_SERVER_URL}/api/explore/getPosts/?page=${pageNum}`
-    //             );
-    //             setPosts((prev) => {
-    //                 if (!prev || prev.length === 0) {
-    //                     return postsFromServer.data.data.result;
-    //                 } else {
-    //                     return [...prev, ...postsFromServer.data.data.result];
-    //                 }
-    //             });
-    //             console.log(posts);
-    //             if (postsFromServer.data.data.result.length < 10) {
-    //                 setHasMore(false);
-    //             }
-    //             setLoading(false);
-    //             dispatch(stopLoading())
-    //         } catch (err) {
-    //             console.log(err);
-    //             dispatch(stopLoading())
-    //         }
-    //     }
-    //     getPosts();
-    // }, [modalVisibility, pageNum]);
-
     useEffect(() => {
         async function getPosts() {
             try {
@@ -109,26 +81,25 @@ export default function Explore({ mode }) {
     );
 
     return (
-        <Box sx={{ minHeight: '100vh', position: 'relative' }}>
+        <Box className='route-container'>
             <Box
                 sx={{
-                    pt: '5rem',
-                    background: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${heroImg}) no-repeat center center/cover`,
                     minHeight: '80vh',
                     display: 'grid',
                     placeItems: 'center',
                 }}
             >
-                {showSearch && <GlobalSearch />}
+                {showSearch && <GlobalSearch lightModeColor='white' />}
             </Box>
             <Box
                 sx={{
                     p: 3,
-                    backgroundColor: 'whitesmoke',
+                    minHeight: '20vh',
                     display: 'grid',
                     gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
                     gridGap: '1rem',
                     placeItems: 'center',
+                    backgroundColor: 'background.paper',
                 }}
             >
                 {posts &&

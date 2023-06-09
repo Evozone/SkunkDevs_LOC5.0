@@ -12,8 +12,12 @@ import PostAddIcon from '@mui/icons-material/PostAdd';
 import PeopleIcon from '@mui/icons-material/People';
 import ListIcon from '@mui/icons-material/List';
 
-export default function RouteSwticher() {
+export default function RouteSwticher({ lightModeColor }) {
     const navigate = useNavigate();
+
+    const mode = window.localStorage.getItem('photoAppTheme') || 'light';
+    const givenColor =
+        mode === 'dark' || lightModeColor === 'white' ? 'white' : 'black';
 
     const routes = [
         { name: 'Explore', path: '', icon: <ExploreIcon /> },
@@ -44,15 +48,15 @@ export default function RouteSwticher() {
                 '& .MuiOutlinedInput-root': {
                     borderRadius: '2rem',
                     height: '35px',
-                    border: '1px solid grey',
+                    border: `1px solid ${givenColor}`,
                     '& fieldset': {
-                        borderColor: 'white',
+                        borderColor: givenColor,
                     },
                     '&:hover fieldset': {
-                        borderColor: 'white',
+                        borderColor: givenColor,
                     },
                     '&.Mui-focused fieldset': {
-                        borderColor: 'white',
+                        borderColor: givenColor,
                     },
                 },
             }}
@@ -62,6 +66,21 @@ export default function RouteSwticher() {
                 id='demo-select-small'
                 value={currentRouteName}
                 onChange={handleChange}
+                sx={{
+                    color: givenColor,
+                    '.MuiOutlinedInput-notchedOutline': {
+                        borderColor: givenColor,
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: givenColor,
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                        borderColor: givenColor,
+                    },
+                    '.MuiSvgIcon-root ': {
+                        fill: givenColor,
+                    },
+                }}
                 startAdornment={
                     <InputAdornment position='start'>
                         {

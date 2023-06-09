@@ -14,6 +14,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { signIn } from '../../features/auth/authSlice';
 import { startLoading, stopLoading } from '../../features/loading/loadingSlice';
+import { notify } from '../../features/notify/notifySlice';
 
 const GoogleOneTapLogin = () => {
     const navigate = useNavigate();
@@ -27,21 +28,57 @@ const GoogleOneTapLogin = () => {
     const handleResponse = async (response) => {
         // Get token from Google
         const token = response.credential;
-        dispatch(startLoading());
 
+        // Decode token to get user data
         const decodedToken = jwtDecode(token);
 
         try {
+            dispatch(startLoading());
+            // Check if user exists in database
             const { data } = await axios.get(
                 `${import.meta.env.VITE_SERVER_URL}/api/user/${
                     decodedToken.sub
                 }`
             );
             const user = data.result;
+
+            // Two cases:
             if (user === null) {
-                console.log('User does not exist');
-                navigate('/profile', { state: { token } });
+                // If user does not exist, create a new user, and redirect to account page
+                const config = {
+                    headers: {
+                        'Content-type': 'application/json',
+                    },
+                };
+
+                const formData = {
+                    uid: decodedToken.sub,
+                    email: decodedToken.email,
+                    name: decodedToken.name,
+                    username: decodedToken.email.split('@')[0],
+                    avatar: decodedToken.picture,
+                };
+
+                await axios
+                    .post(
+                        `${
+                            import.meta.env.VITE_SERVER_URL
+                        }/api/user/googleSignUp`,
+                        formData,
+                        config
+                    )
+                    .then((response) => {
+                        const user = response.data.result;
+                        dispatch(signIn({ ...user, token }));
+                        window.localStorage.setItem('photoAppLastPage', '');
+                        navigate('/');
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        alert('Something went wrong, please try again later.');
+                    });
             } else {
+                // If user exists, sign in user, and redirect to last page
                 dispatch(
                     signIn({
                         uid: user.uid,
@@ -61,7 +98,15 @@ const GoogleOneTapLogin = () => {
             }
             dispatch(stopLoading());
         } catch (error) {
+            dispatch(
+                notify({
+                    open: true,
+                    severity: 'error',
+                    message: 'Sign In with Google failed. Please try again.',
+                })
+            );
             console.log(error);
+            dispatch(stopLoading());
         }
     };
 
@@ -110,7 +155,7 @@ const GoogleOneTapLogin = () => {
                 }}
                 onClick={handleGoogleLogIn}
             >
-                Continue with Google
+                Sign in
             </Button>
             <div style={{ display: gBtnDisplay }} ref={googleButton}></div>
         </React.Fragment>

@@ -12,8 +12,8 @@ const notifySlice = createSlice({
     reducers: {
         notify: (state, action) => {
             state.open = action.payload.open;
-            state.message = action.payload.message;
             state.severity = action.payload.severity;
+            state.message = action.payload.message;
         },
     },
 });
