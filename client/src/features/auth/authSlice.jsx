@@ -50,8 +50,18 @@ const authSlice = createSlice({
             state.mid = null;
             state.token = null;
         },
+        updateCurrentUser: (state, action) => {
+            // Only update the fields that are passed in
+            for (const [key, value] of Object.entries(action.payload)) {
+                // If key is a member of state, update it
+                if (key in state) {
+                    state[key] = value;
+                    continue;
+                }
+            }
+        },
     },
 });
 
-export const { signIn, signOut } = authSlice.actions;
+export const { signIn, signOut, updateCurrentUser } = authSlice.actions;
 export default authSlice.reducer;

@@ -59,9 +59,15 @@ export const googleSignUp = async (req, res) => {
 // Return all users, paginated with query.
 export const searchAll = async (req, res) => {
     try {
-        const { page = 1, limit = 10, role, skill } = req.query;
+        const { page = 1, limit = 10, role, skill, uid } = req.query;
         let users, count;
-        if (role) {
+        if (uid) {
+            users = await UserModel.find({ uid: uid })
+                .limit(limit * 1)
+                .skip((page - 1) * limit)
+                .exec();
+            count = await UserModel.countDocuments({ uid: uid });
+        } else if (role) {
             if (role == 'photographer' && skill) {
                 users = await UserModel.find({ role: role, skill_level: skill })
                     .limit(limit * 1)
@@ -132,7 +138,7 @@ export const searchOneByUid = async (req, res) => {
 
 // Update user
 export const updateUser = async (req, res) => {
-    let { name, username, avatar, role, skill_level, location } = req.body;
+    let { name, username, avatar, bio, socialLinks, role, skill_level, location } = req.body;
     try {
         const userId = req.params.userId;
         const user = await UserModel.findOne({ uid: userId }).exec();
@@ -148,6 +154,8 @@ export const updateUser = async (req, res) => {
                 name,
                 username,
                 avatar,
+                bio,
+                socialLinks,
                 role,
                 skill_level,
                 location,

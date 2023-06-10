@@ -67,7 +67,9 @@ function App() {
                     const uid = decodedToken.sub;
                     try {
                         const profile = await axios.get(
-                            `${import.meta.env.VITE_SERVER_URL}/api/user/${uid}`
+                            `${
+                                import.meta.env.VITE_SERVER_URL
+                            }/api/users/${uid}`
                         );
                         if (profile.data.result !== null) {
                             dispatch(signIn({ ...profile.data.result, token }));

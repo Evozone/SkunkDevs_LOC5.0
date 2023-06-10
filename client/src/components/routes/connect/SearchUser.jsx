@@ -49,7 +49,7 @@ function SearchUser({ mode, handleChatClick }) {
             const newTimer = setTimeout(async () => {
                 try {
                     const { data } = await axios.get(
-                        `${import.meta.env.VITE_SERVER_URL}/api/user/${
+                        `${import.meta.env.VITE_SERVER_URL}/api/users/${
                             currentUser.uid
                         }?search=${event.target.value}`
                     );

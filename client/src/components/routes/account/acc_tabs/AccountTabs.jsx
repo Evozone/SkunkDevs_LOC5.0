@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 // Material UI
-import { Box, Tabs, Tab } from '@mui/material';
+import { Box } from '@mui/material';
 
 // Icons
 import {
@@ -13,7 +13,7 @@ import {
 
 // Components
 import AccPprTabPanel from './AccPprTabPanel';
-import Bio from '../sections/bio/Bio';
+import Profile from '../sections/profile/Profile';
 import Settings from '../sections/Settings';
 import { StyledTabs, StyledTab } from './CustomTabs';
 
@@ -26,13 +26,16 @@ function allyProps(index) {
 }
 
 const tabs = [
-    { label: 'Profile', icon: <PersonIcon />, component: <Bio /> },
+    { label: 'Profile', icon: <PersonIcon />, component: <Profile /> },
     { label: 'Settings', icon: <SettingsIcon />, component: <Settings /> },
 ];
 
 export default function AccountTabs() {
     const location = useLocation();
-    const tabValue = tabs.findIndex((tab) => tab.label === location.state.tab);
+    let tabValue = 0;
+    if (location.state && location.state.tab) {
+        tabValue = tabs.findIndex((tab) => tab.label === location.state.tab);
+    }
 
     const [value, setValue] = useState(tabValue);
 
@@ -55,7 +58,7 @@ export default function AccountTabs() {
                 onChange={handleChange}
                 aria-label='Your Account Tabs'
                 sx={{
-                    width: '9rem',
+                    flex: '0 0 10rem',
                     borderRight: 1,
                     borderColor: 'divider',
                 }}

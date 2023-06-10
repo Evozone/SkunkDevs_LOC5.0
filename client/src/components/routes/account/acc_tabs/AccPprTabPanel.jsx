@@ -18,7 +18,7 @@ export default function AccPprTabPanel(props) {
         >
             {value === index && (
                 <Box sx={{ p: 3, height: '60vh', overflowY: 'auto' }}>
-                    <div>{children}</div>
+                    {children}
                 </Box>
             )}
         </div>

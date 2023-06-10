@@ -36,14 +36,14 @@ const GoogleOneTapLogin = () => {
             dispatch(startLoading());
             // Check if user exists in database
             const { data } = await axios.get(
-                `${import.meta.env.VITE_SERVER_URL}/api/user/${
+                `${import.meta.env.VITE_SERVER_URL}/api/users?uid=${
                     decodedToken.sub
                 }`
             );
-            const user = data.result;
+            const users = data.result;
 
             // Two cases:
-            if (user === null) {
+            if (users.length === 0) {
                 // If user does not exist, create a new user, and redirect to account page
                 const config = {
                     headers: {
@@ -61,9 +61,7 @@ const GoogleOneTapLogin = () => {
 
                 await axios
                     .post(
-                        `${
-                            import.meta.env.VITE_SERVER_URL
-                        }/api/user/googleSignUp`,
+                        `${import.meta.env.VITE_SERVER_URL}/api/users`,
                         formData,
                         config
                     )
@@ -78,6 +76,7 @@ const GoogleOneTapLogin = () => {
                         alert('Something went wrong, please try again later.');
                     });
             } else {
+                const user = users[0];
                 // If user exists, sign in user, and redirect to last page
                 dispatch(
                     signIn({
