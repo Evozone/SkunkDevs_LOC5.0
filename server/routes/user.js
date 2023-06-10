@@ -1,9 +1,12 @@
 import express from 'express';
 const router = express.Router();
 
-import { googleSignUp, search } from '../controllers/user.js';
+import { googleSignUp, searchOneByUid, searchAll, updateUser, deleteUserById } from '../controllers/user.js';
 
-router.post('/googleSignUp', googleSignUp);
-router.get('/:userId', search);
+router.post('/', googleSignUp);
+router.get('/', searchAll);
+router.get('/:userId', searchOneByUid);
+router.patch('/:userId', updateUser);
+router.delete('/:userId', deleteUserById);
 
 export default router;

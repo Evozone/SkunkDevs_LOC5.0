@@ -1,6 +1,7 @@
 import UserModel from '../models/userModel.js';
 import jwt from 'jsonwebtoken';
 
+// Create a new user
 export const googleSignUp = async (req, res) => {
     let {
         uid,
@@ -55,49 +56,41 @@ export const googleSignUp = async (req, res) => {
     }
 };
 
-export const search = async (req, res) => {
+// Return all users, paginated with query.
+export const searchAll = async (req, res) => {
     try {
-        const userId = req.params.userId;
-        const keyword = req.query.search
-            ? {
-                $or: [
-                    { name: { $regex: req.query.search, $options: 'i' } },
-                    { username: { $regex: req.query.search, $options: 'i' } },
-                ],
-            }
-            : {};
-
-        if (req.query.search) {
-            const users = await UserModel.find(keyword).find({
-                uid: { $ne: userId },
-            });
-
-            // Not decided yet
-            // Return status 418
-
-            res.status(418).json({
-                success: true,
-                result: { teapot: true },
-                message: 'This is a teapot',
-            });
-        }
-        else {
-            const users = await UserModel.find({ uid: userId }).exec();
-
-            if (users.length === 0) {
-                res.status(200).json({
-                    success: false,
-                    result: null,
-                    message: 'No such user',
+        const { page = 1, limit = 10, role, skill } = req.query;
+        let users, count;
+        if (role) {
+            if (role == 'photographer' && skill) {
+                users = await UserModel.find({ role: role, skill_level: skill })
+                    .limit(limit * 1)
+                    .skip((page - 1) * limit)
+                    .exec();
+                count = await UserModel.countDocuments({
+                    role: role,
+                    skill: skill,
                 });
             } else {
-                res.status(200).json({
-                    success: true,
-                    result: users[0],
-                    message: 'User found',
-                });
+                users = await UserModel.find({ role: role })
+                    .limit(limit * 1)
+                    .skip((page - 1) * limit)
+                    .exec();
+                count = await UserModel.countDocuments({ role: role });
             }
+        } else {
+            users = await UserModel.find()
+                .limit(limit * 1)
+                .skip((page - 1) * limit)
+                .exec();
+            count = await UserModel.countDocuments();
         }
+        res.status(200).json({
+            success: true,
+            result: users,
+            totalPages: Math.ceil(count / limit) || 0,
+            currentPage: page,
+        });
     } catch (error) {
         res.status(500).json({
             success: false,
@@ -107,3 +100,98 @@ export const search = async (req, res) => {
         console.log(error);
     }
 };
+
+// Search one user by uid
+export const searchOneByUid = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const user = await UserModel.findOne({ uid: userId }).exec();
+
+        if (user) {
+            res.status(200).json({
+                success: true,
+                result: user,
+                message: 'User found',
+            });
+        } else {
+            res.status(404).json({
+                success: false,
+                message: 'User not found',
+            });
+        }
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Something went wrong',
+            error: error.message,
+        });
+        console.log(error);
+    }
+};
+
+// Update user
+export const updateUser = async (req, res) => {
+    let { name, username, avatar, role, skill_level, location } = req.body;
+    try {
+        const userId = req.params.userId;
+        const user = await UserModel.findOne({ uid: userId }).exec();
+
+        if (!user) {
+            res.status(404).json({
+                success: false,
+                message: 'User not found',
+            });
+        } else {
+            // Update user
+            const updatedUser = await UserModel.findOneAndUpdate(userId, {
+                name,
+                username,
+                avatar,
+                role,
+                skill_level,
+                location,
+            }, { new: true }).exec();
+
+            res.status(200).json({
+                success: true,
+                result: updatedUser,
+                message: 'User updated',
+            });
+        }
+    } catch (error) {
+        res.status(304).json({
+            success: false,
+            message: 'Something went wrong',
+            error: error.message,
+        });
+    }
+};
+
+// Delete user
+export const deleteUserById = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const user = await UserModel.findOne({ uid: userId }).exec();
+
+        if (user) {
+            const result = await UserModel.deleteOne({ uid: userId }).exec();
+            res.status(200).json({
+                success: true,
+                result: result,
+                message: 'User deleted',
+            });
+        } else {
+            res.status(404).json({
+                success: false,
+                message: 'User not found',
+            });
+        }
+    } catch (error) {
+        res.status(304).json({
+            success: false,
+            message: 'Something went wrong',
+            error: error.message,
+        });
+    }
+}

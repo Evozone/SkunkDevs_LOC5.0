@@ -39,7 +39,7 @@ app.use(express.json({ limit: '10MB' }));
 
 // Routers
 app.use('/api/blog', blogRouter);
-app.use('/api/user', userRouter);
+app.use('/api/users', userRouter);
 app.use('/api/rooms', roomsRouter);
 app.use('/api/chat', chatRouter);
 app.use('/api/message', messageRouter);
