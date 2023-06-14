@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 
 // Material UI components
 import Swtich from '@mui/material/Switch';
+import Button from '@mui/material/Button';
 
 export const StyledSwitch = styled(Swtich)(() => ({
     width: 65,
@@ -24,5 +25,18 @@ export const StyledSwitch = styled(Swtich)(() => ({
     },
     '& .MuiSwitch-track': {
         borderRadius: 50 / 2,
+    },
+}));
+
+export const StyledButton = styled(Button)(() => ({
+    borderColor: 'background.paper',
+    borderRadius: '50px',
+    borderWidth: '2px',
+    height: '35px',
+    '&:hover': {
+        borderWidth: '2px',
+    },
+    '&:disabled': {
+        borderWidth: '2px',
     },
 }));

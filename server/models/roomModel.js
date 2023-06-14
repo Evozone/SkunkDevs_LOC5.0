@@ -4,12 +4,13 @@ const roomSchema = new mongoose.Schema(
     {
         title: {
             type: String,
-            required: [true, 'Title for blog is required'],
+            required: [true, 'Title for a room is required'],
+            maxLength: [55, 'Title cannot exceed 55 characters'],
         },
         description: {
             type: String,
-            required: [true, 'Summary for blog is required'],
-            maxLength: [55, 'Summary cannot exceed 55 characters'],
+            required: [true, 'Summary for room is required'],
+            maxLength: [255, 'Summary cannot exceed 255 characters'],
         },
         roomId: {
             type: String,
@@ -18,16 +19,16 @@ const roomSchema = new mongoose.Schema(
         },
         cover: {
             type: String,
-            required: [true, 'Cover for blog is required'],
+            required: [true, 'Cover for room is required'],
         },
         createdById: {
             type: String,
-            required: [true, 'Author is required'],
+            required: [true, 'Moderator id is required'],
             unique: false,
         },
         createdByUsername: {
             type: String,
-            required: [true, 'Author is required'],
+            required: [true, 'Moderator username is required'],
             unique: false,
         },
         createdByName: {

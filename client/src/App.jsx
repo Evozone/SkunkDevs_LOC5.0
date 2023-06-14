@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { signIn } from './features/auth/authSlice';
 
 // External Packages
-import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import { HMSRoomProvider } from '@100mslive/hms-video-react';
 
@@ -19,16 +18,17 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Navbar from './components/navbar/Navbar';
 import Loading from './components/helpers/Loading';
 import Notify from './components/helpers/Notify';
+import ProtectedRoute from './components/helpers/ProtectedRoute';
 
 // Route Components
 import Explore from './components/routes/explore/Explore';
 import Blogs from './components/routes/blogs/Blogs';
 import Connect from './components/routes/connect/Connect';
 import Listings from './components/routes/listings/Listings';
-import Stage from './components/routes/stage/Stage';
-import StageRoom from './components/routes/stage/StageRoom';
-import ViewBlog from './components/routes/blogs/ViewBlog';
-import CreateBlog from './components/routes/blogs/CreateBlog';
+import Spaces from './components/routes/spaces/Spaces';
+import SpaceRoom from './components/routes/spaces/space_room/SpaceRoom';
+import ViewBlog from './components/routes/blogs/view_blog/ViewBlog';
+import CreateBlog from './components/routes/blogs/create_blog/CreateBlog';
 import EditBlog from './components/routes/blogs/EditBlog';
 import Account from './components/routes/account/Account';
 import PersonalCall from './components/routes/connect/PersonalCall';
@@ -64,15 +64,12 @@ function App() {
                     localStorage.removeItem('photoApp');
                     navigate('/');
                 } else {
-                    const uid = decodedToken.sub;
                     try {
-                        const profile = await axios.get(
-                            `${
-                                import.meta.env.VITE_SERVER_URL
-                            }/api/users/${uid}`
-                        );
-                        if (profile.data.result !== null) {
-                            dispatch(signIn({ ...profile.data.result, token }));
+                        dispatch(signIn({ ...decodedToken, token }));
+                        if (window.location.pathname === '/') {
+                            navigate(
+                                '/' + localStorage.getItem('photoAppLastPage')
+                            );
                         }
                     } catch (err) {
                         console.log(err);
@@ -100,44 +97,64 @@ function App() {
                     path='/spaces'
                     element={
                         <HMSRoomProvider>
-                            <Stage />
+                            <Spaces />
                         </HMSRoomProvider>
                     }
                 />
 
-                {/* Stage Room */}
+                {/* Spaces Room */}
                 <Route
                     path='/room/:id'
                     element={
                         <HMSRoomProvider>
-                            <StageRoom />
+                            <SpaceRoom />
                         </HMSRoomProvider>
                     }
                 />
 
                 {/* Blogs */}
                 <Route path='/blogs' element={<Blogs />} />
-                <Route
-                    path='/blog/:id'
-                    element={
-                        <>
-                            <Navbar />
-                            <ViewBlog />
-                        </>
-                    }
-                />
-                <Route path='/createBlog' element={<CreateBlog />} />
-                <Route path='/editBlog/:id' element={<EditBlog />} />
+                <Route path='/blog/:id' element={<ViewBlog />} />
+                <Route path='/blogs/create' element={<CreateBlog />} />
+                <Route path='/blog/:id/edit' element={<EditBlog />} />
 
                 {/* Connect */}
-                <Route path='/connect' element={<Connect />} />
-                <Route path='/connect/pc/:id' element={<PersonalCall />} />
+                <Route
+                    path='/connect'
+                    element={
+                        <ProtectedRoute>
+                            <Connect />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path='/connect/pc/:id'
+                    element={
+                        <ProtectedRoute>
+                            <PersonalCall />
+                        </ProtectedRoute>
+                    }
+                />
 
                 {/* Listings */}
-                <Route path='/listings' element={<Listings />} />
+                <Route
+                    path='/listings'
+                    element={
+                        <ProtectedRoute>
+                            <Listings />
+                        </ProtectedRoute>
+                    }
+                />
 
                 {/* Account Data */}
-                <Route path='/account' element={<Account />} />
+                <Route
+                    path='/account'
+                    element={
+                        <ProtectedRoute>
+                            <Account />
+                        </ProtectedRoute>
+                    }
+                />
             </Routes>
         </ThemeProvider>
     );

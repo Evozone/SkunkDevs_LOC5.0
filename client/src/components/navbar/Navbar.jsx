@@ -24,6 +24,14 @@ function Navbar({ mode, themeChange }) {
 
     const currentUser = useSelector((state) => state.auth);
 
+    const routeDropdownPaths = [
+        '/',
+        '/blogs',
+        '/connect',
+        '/listings',
+        '/spaces',
+    ];
+
     useEffect(() => {
         const checkScroll = () => {
             if (window.scrollY > 0) {
@@ -59,7 +67,7 @@ function Navbar({ mode, themeChange }) {
                     ) : (
                         <Box sx={{ flexGrow: 1 }} />
                     )}
-                    {window.location.pathname !== '/account' ? (
+                    {routeDropdownPaths.includes(window.location.pathname) ? (
                         <RouteSwticher {...{ lightModeColor }} />
                     ) : (
                         // Go back to explore button

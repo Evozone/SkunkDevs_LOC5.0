@@ -1,10 +1,12 @@
 // React
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Material UI
 import { Typography } from '@mui/material';
 
 export default function Brand({ lightModeColor }) {
+    const navigate = useNavigate();
     return (
         <Typography
             variant='h6'
@@ -15,7 +17,7 @@ export default function Brand({ lightModeColor }) {
                 cursor: 'pointer',
                 font: 'bold 1.5rem Reem Kufi, sans-serif',
             }}
-            onClick={() => handleNavigation('')}
+            onClick={() => navigate('/')}
         >
             ShutterSpaces
         </Typography>

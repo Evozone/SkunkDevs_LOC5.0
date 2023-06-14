@@ -1,27 +1,27 @@
+// React
 import { useState } from 'react';
-import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router';
 import { useDispatch } from 'react-redux';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
+
+// Material UI - Components (named imports)
+import { Box, Paper, Button, Typography, TextField } from '@mui/material';
+
+// Material UI - Icons (named imports)
+import { DriveFileRenameOutline } from '@mui/icons-material';
+
+// External Packages
+import axios from 'axios';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-import {
-    bluegrey,
-    richBlack,
-    light,
-    medium,
-    deepDark,
-    superLight,
-} from '../../../utils/colors';
+// Redux
 import { notify } from '../../../features/notify/notifySlice';
 
-function EditBlog({ mode }) {
+// Components
+import RouteHeader from '../layout/RouteHeader';
+import RouteContent from '../layout/RouteContent';
+
+function EditBlog() {
     const location = useLocation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -98,45 +98,19 @@ function EditBlog({ mode }) {
     };
 
     return (
-        <Box
-            sx={{
-                overflowY: 'auto',
-                mt: '75px',
-                maxHeight: 'calc(100vh - 75px)',
-                backgroundColor: mode === 'light' ? light : bluegrey,
-                padding: '5rem',
-                pt: 2,
-            }}
-        >
+        <Box className='route-container'>
+            <RouteHeader
+                title='Edit your blog'
+                icon={<DriveFileRenameOutline sx={{ fontSize: 60 }} />}
+            />
             <Paper
                 sx={{
                     p: 2,
                     mt: 2,
-                    backgroundColor: mode === 'light' ? superLight : richBlack,
                     boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.3)',
-                    border: mode === 'light' ? 'none' : `1px solid ${light}`,
                     borderRadius: '15px',
                 }}
             >
-                <Typography
-                    variant='h3'
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        my: 2,
-                        mb: 4,
-                        color: mode === 'light' ? deepDark : light,
-                        padding: '0',
-                        fontWeight: '600',
-                        fontSize: '2.5rem',
-                    }}
-                >
-                    <DriveFileRenameOutlineIcon
-                        sx={{ fontSize: '2.5rem', mr: 1 }}
-                    />
-                    Edit blog
-                </Typography>
                 <form onSubmit={editPost}>
                     <TextField
                         fullWidth
@@ -147,8 +121,6 @@ function EditBlog({ mode }) {
                         color='success'
                         onChange={(e) => setTitle(e.target.value)}
                         sx={{
-                            backgroundColor:
-                                mode === 'light' ? 'whitesmoke' : richBlack,
                             borderRadius: '6px',
                             mb: 3,
                             '& .MuiInputBase-input': {
@@ -169,8 +141,6 @@ function EditBlog({ mode }) {
                         color='success'
                         onChange={(e) => setSummary(e.target.value)}
                         sx={{
-                            backgroundColor:
-                                mode === 'light' ? 'whitesmoke' : richBlack,
                             borderRadius: '6px',
                             mb: 3,
                             '& .MuiInputBase-input': {
@@ -188,8 +158,6 @@ function EditBlog({ mode }) {
                         value={content}
                         onChange={(newValue) => setContent(newValue)}
                         sx={{
-                            backgroundColor:
-                                mode === 'light' ? 'whitesmoke' : richBlack,
                             borderRadius: '6px',
                             mb: 3,
                             '& .ql-editor': {
@@ -205,11 +173,8 @@ function EditBlog({ mode }) {
                         color='success'
                         sx={{
                             mt: 3,
-                            backgroundColor: mode === 'light' ? medium : light,
-                            color: bluegrey,
                             font: '500 0.9rem Poppins, sans-serif',
                             ':hover': {
-                                backgroundColor: medium,
                                 color: 'black',
                             },
                         }}

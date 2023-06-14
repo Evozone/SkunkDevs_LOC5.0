@@ -27,74 +27,61 @@ const GoogleOneTapLogin = () => {
 
     const handleResponse = async (response) => {
         // Get token from Google
-        const token = response.credential;
+        const googleToken = response.credential;
 
-        // Decode token to get user data
-        const decodedToken = jwtDecode(token);
+        // Decode token to get user uid
+        const decodedToken = jwtDecode(googleToken);
+        const uid = decodedToken.sub;
+
+        const formData = {
+            uid: decodedToken.sub,
+            email: decodedToken.email,
+            name: decodedToken.name,
+            username: decodedToken.email.split('@')[0],
+            avatar: decodedToken.picture,
+        };
 
         try {
             dispatch(startLoading());
             // Check if user exists in database
             const { data } = await axios.get(
-                `${import.meta.env.VITE_SERVER_URL}/api/users?uid=${
-                    decodedToken.sub
-                }`
+                `${import.meta.env.VITE_SERVER_URL}/api/users?uid=${uid}`
             );
             const users = data.result;
 
+            // Configure headers
+            const config = {
+                headers: {
+                    'Content-type': 'application/json',
+                },
+            };
+
+            // Make the post request to login
+            await axios
+                .post(
+                    `${import.meta.env.VITE_SERVER_URL}/api/users`,
+                    formData,
+                    config
+                )
+                .then((response) => {
+                    const user = response.data.result;
+                    dispatch(signIn({ ...user }));
+                    window.localStorage.setItem('photoAppLastPage', '');
+                })
+                .catch((err) => {
+                    console.log(err);
+                    alert('Something went wrong, please try again later.');
+                });
+
             // Two cases:
             if (users.length === 0) {
-                // If user does not exist, create a new user, and redirect to account page
-                const config = {
-                    headers: {
-                        'Content-type': 'application/json',
-                    },
-                };
-
-                const formData = {
-                    uid: decodedToken.sub,
-                    email: decodedToken.email,
-                    name: decodedToken.name,
-                    username: decodedToken.email.split('@')[0],
-                    avatar: decodedToken.picture,
-                };
-
-                await axios
-                    .post(
-                        `${import.meta.env.VITE_SERVER_URL}/api/users`,
-                        formData,
-                        config
-                    )
-                    .then((response) => {
-                        const user = response.data.result;
-                        dispatch(signIn({ ...user, token }));
-                        window.localStorage.setItem('photoAppLastPage', '');
-                        navigate('/');
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                        alert('Something went wrong, please try again later.');
-                    });
+                // 1. User is new
+                navigate('/account');
             } else {
-                const user = users[0];
-                // If user exists, sign in user, and redirect to last page
-                dispatch(
-                    signIn({
-                        uid: user.uid,
-                        bio: user.bio,
-                        socialLinks: user.socialLinks,
-                        location: user.location,
-                        email: user.email,
-                        name: user.name,
-                        avatar: user.avatar,
-                        username: user.email,
-                        mid: user._id,
-                        token: token,
-                    })
-                );
-
+                // 2. User already exists
                 navigate('/' + window.localStorage.getItem('photoAppLastPage'));
             }
+
             dispatch(stopLoading());
         } catch (error) {
             dispatch(

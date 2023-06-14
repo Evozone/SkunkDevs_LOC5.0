@@ -12,13 +12,13 @@ import crypto from 'crypto';
 import { Server } from 'socket.io';
 
 // API route imports
-import userRouter from './routes/user.js';
-import roomsRouter from './routes/room.js';
-import blogRouter from './routes/blog.js';
+import userRouter from './routes/users.js';
+import roomsRouter from './routes/rooms.js';
+import blogRouter from './routes/blogs.js';
 import exploreRouter from './routes/explore.js';
-import chatRouter from './routes/chat.js';
-import messageRouter from './routes/message.js';
-import listingRouter from './routes/listing.js';
+import chatRouter from './routes/chats.js';
+import messageRouter from './routes/messages.js';
+import listingRouter from './routes/listings.js';
 
 // App configs
 const app = express();
@@ -38,13 +38,13 @@ app.use((req, res, next) => {
 app.use(express.json({ limit: '10MB' }));
 
 // Routers
-app.use('/api/blog', blogRouter);
+app.use('/api/blogs', blogRouter);
 app.use('/api/users', userRouter);
 app.use('/api/rooms', roomsRouter);
-app.use('/api/chat', chatRouter);
-app.use('/api/message', messageRouter);
+app.use('/api/chats', chatRouter);
+app.use('/api/messages', messageRouter);
 app.use('/api/explore', exploreRouter);
-app.use('/api/listing', listingRouter);
+app.use('/api/listings', listingRouter);
 
 // MongoDB connection
 mongoose.set('strictQuery', false);
@@ -222,8 +222,8 @@ app.get('/mtoken', (req, res) => {
                 access_key: app_access_key,
                 type: 'management',
                 version: 2,
-                iat: Math.floor(Date.now() / 1000),
-                nbf: Math.floor(Date.now() / 1000),
+                iat: Math.floor(Date.now() / 1000) - 30,
+                nbf: Math.floor(Date.now() / 1000) - 30,
             },
             app_secret,
             {

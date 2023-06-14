@@ -18,24 +18,28 @@ export default function Notify() {
     };
 
     return (
-        <Snackbar
-            open={notifyState.open}
-            autoHideDuration={6000}
-            onClose={handleClose}
-            sx={{ bottom: '20px' }}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-            TransitionComponent={(props) => (
-                <Slide {...props} direction='left' />
+        <>
+            {notifyState.open && (
+                <Snackbar
+                    open={notifyState.open}
+                    autoHideDuration={6000}
+                    onClose={handleClose}
+                    sx={{ bottom: '20px' }}
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                    TransitionComponent={(props) => (
+                        <Slide {...props} direction='left' />
+                    )}
+                >
+                    <Alert
+                        onClose={handleClose}
+                        severity={notifyState.severity}
+                        sx={{ width: '100%' }}
+                        elevation={6}
+                    >
+                        {notifyState.message}
+                    </Alert>
+                </Snackbar>
             )}
-        >
-            <Alert
-                onClose={handleClose}
-                severity={notifyState.severity}
-                sx={{ width: '100%' }}
-                elevation={6}
-            >
-                {notifyState.message}
-            </Alert>
-        </Snackbar>
+        </>
     );
 }

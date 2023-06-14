@@ -1,5 +1,31 @@
 import BlogModel from '../models/blogModel.js';
 
+// Get a list of all blogs
+// The list should be sorted by createdAt in descending order
+export const getBlogs = async (req, res) => {
+    try {
+        const PAGE_SIZE = 6;
+        let skip = req.query.page ? parseInt(req.query.page) : 0;
+        const result = await BlogModel.find()
+            .sort({ createdAt: -1 })
+            .skip(skip * PAGE_SIZE)
+            .limit(PAGE_SIZE);
+        res.status(200).json({
+            success: true,
+            result,
+            message: '6 blogs fetched',
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Something went wrong',
+            error: error.message,
+        });
+        console.log(error);
+    }
+};
+
+// Create a new blog
 export const createBlog = async (req, res) => {
     const { title, summary, content, cover } = req.body;
     const {
@@ -32,29 +58,7 @@ export const createBlog = async (req, res) => {
     }
 };
 
-export const getBlogs = async (req, res) => {
-    try {
-        const PAGE_SIZE = 6;
-        let skip = req.query.page ? parseInt(req.query.page) : 0;
-        const result = await BlogModel.find()
-            .sort({ createdAt: -1 })
-            .skip(skip * PAGE_SIZE)
-            .limit(PAGE_SIZE);
-        res.status(200).json({
-            success: true,
-            result,
-            message: '6 blogs fetched',
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: 'Something went wrong',
-            error: error.message,
-        });
-        console.log(error);
-    }
-};
-
+// Fetch one blog by id
 export const getBlogById = async (req, res) => {
     const { id } = req.params;
     try {
@@ -74,6 +78,7 @@ export const getBlogById = async (req, res) => {
     }
 };
 
+// Update a blog by id
 export const editBlogById = async (req, res) => {
     const { id } = req.params;
     const { title, summary, content, cover } = req.body;
@@ -108,6 +113,7 @@ export const editBlogById = async (req, res) => {
     }
 };
 
+// Delete a blog by id
 export const deleteBlogById = async (req, res) => {
     const { id } = req.params;
     const { uid: authorId } = req.user;

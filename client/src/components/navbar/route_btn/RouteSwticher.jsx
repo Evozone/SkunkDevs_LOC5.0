@@ -7,7 +7,7 @@ import { FormControl, InputAdornment, MenuItem, Select } from '@mui/material';
 
 // Material UI Icons
 import ExploreIcon from '@mui/icons-material/Explore';
-import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
+import PodcastsIcon from '@mui/icons-material/Podcasts';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import PeopleIcon from '@mui/icons-material/People';
 import ListIcon from '@mui/icons-material/List';
@@ -21,7 +21,7 @@ export default function RouteSwticher({ lightModeColor }) {
 
     const routes = [
         { name: 'Explore', path: '', icon: <ExploreIcon /> },
-        { name: 'Spaces', path: 'spaces', icon: <SpaceDashboardIcon /> },
+        { name: 'Spaces', path: 'spaces', icon: <PodcastsIcon /> },
         { name: 'Blogs', path: 'blogs', icon: <PostAddIcon /> },
         { name: 'Connect', path: 'connect', icon: <PeopleIcon /> },
         { name: 'Listings', path: 'listings', icon: <ListIcon /> },
@@ -38,7 +38,7 @@ export default function RouteSwticher({ lightModeColor }) {
 
         window.localStorage.setItem('photoAppLastPage', path.path);
 
-        navigate(path.path);
+        navigate('/' + path.path);
     };
 
     return (

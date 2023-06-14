@@ -1,28 +1,25 @@
+// React
 import { useState, useEffect, useCallback, useRef } from 'react';
-import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
 import { useDispatch } from 'react-redux';
 
-import heroImg from '../../../assets/hero.jpg';
-
-import { lMode3, lMode4, dMode3, dMode4 } from '../../../utils/colors';
-import AddPostModal from './AddPostModal';
-import axios from 'axios';
+// Material UI - Components
 import { Box } from '@mui/system';
+
+// External Packages
+import axios from 'axios';
+
+// Redux
 import {
     startLoading,
     stopLoading,
 } from '../../../features/loading/loadingSlice';
-import GlobalSearch from '../../navbar/search/GlobalSearch';
 
-export default function Explore({ mode }) {
+// Components
+import Hero from './Hero';
+import AddPost from './addPost/AddPost';
+
+export default function Explore() {
     const dispatch = useDispatch();
-    const [modalVisibility, setModalVisibility] = useState(false);
-    const [showSearch, setShowSearch] = useState(true);
-
-    const toggleModalVisibility = () => {
-        setModalVisibility(!modalVisibility);
-    };
 
     const observer = useRef();
     const [posts, setPosts] = useState(null);
@@ -51,20 +48,7 @@ export default function Explore({ mode }) {
             }
         }
         getPosts();
-    }, [filters, modalVisibility]);
-
-    useEffect(() => {
-        function checkScroll() {
-            if (window.scrollY > 0) {
-                setShowSearch(false);
-            } else {
-                setShowSearch(true);
-            }
-        }
-
-        window.addEventListener('scroll', checkScroll);
-        return () => window.removeEventListener('scroll', checkScroll);
-    }, []);
+    }, [filters]);
 
     const lastPostRef = useCallback(
         (node) => {
@@ -82,127 +66,16 @@ export default function Explore({ mode }) {
 
     return (
         <Box className='route-container'>
-            <Box
-                sx={{
-                    minHeight: '80vh',
-                    display: 'grid',
-                    placeItems: 'center',
-                }}
-            >
-                {showSearch && <GlobalSearch lightModeColor='white' />}
-            </Box>
+            <Hero />
             <Box
                 sx={{
                     p: 3,
                     minHeight: '20vh',
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                    gridGap: '1rem',
                     placeItems: 'center',
                     backgroundColor: 'background.paper',
                 }}
-            >
-                {posts &&
-                    posts.map((post, index) => {
-                        if (posts.length === index + 1) {
-                            if (post.monetizeType !== 'Free') {
-                                return (
-                                    <img
-                                        src={`${post.imageUrl}?tr=ot-Shutter%Sphere,otc-FFFFFF,otbg-FF0000,or-4,otp-8_8,ox-1335,oy-980,ott-bold,ots-90`}
-                                        alt='post'
-                                        key={post._id}
-                                        ref={lastPostRef}
-                                        style={{
-                                            width: '100%',
-                                            height: '100%',
-                                            objectFit: 'cover',
-                                            borderRadius: '1rem',
-                                        }}
-                                    />
-                                );
-                            }
-                            return (
-                                <img
-                                    src={post.imageUrl}
-                                    alt='post'
-                                    key={post._id}
-                                    ref={lastPostRef}
-                                    style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        objectFit: 'cover',
-                                        borderRadius: '1rem',
-                                    }}
-                                />
-                            );
-                        } else {
-                            if (post.monetizeType !== 'Free') {
-                                return (
-                                    <img
-                                        src={`${post.imageUrl}?tr=ot-Shutter%Sphere,otc-FFFFFF,otbg-FF0000,or-4,otp-8_8,ox-1335,oy-980,ott-bold,ots-90`}
-                                        alt='post'
-                                        key={post._id}
-                                        style={{
-                                            width: '100%',
-                                            height: '100%',
-                                            objectFit: 'cover',
-                                            borderRadius: '1rem',
-                                        }}
-                                    />
-                                );
-                            }
-                            return (
-                                <img
-                                    src={post.imageUrl}
-                                    alt='post'
-                                    key={post._id}
-                                    style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        objectFit: 'cover',
-                                        borderRadius: '1rem',
-                                    }}
-                                />
-                            );
-                        }
-                    })}
-            </Box>
-
-            <Fab
-                color='primary'
-                aria-label='add a new post'
-                sx={{
-                    position: 'fixed',
-                    bottom: '2rem',
-                    right: '2rem',
-                    color: mode === 'light' ? 'white' : 'black',
-                    backgroundColor: mode === 'light' ? lMode4 : dMode4,
-
-                    borderRadius: '50%',
-                    height: '3rem',
-                    width: '3rem',
-
-                    display: 'grid',
-                    placeItems: 'center',
-                    cursor: 'pointer',
-
-                    boxShadow: '0 0 10px 0 rgba(78,135,140, 0.5)',
-
-                    '&:hover': {
-                        backgroundColor: mode === 'light' ? lMode3 : dMode3,
-                        color: mode === 'light' ? 'white' : 'black',
-                        transform: 'scale(1.1) rotate(90deg)',
-                        transition: 'transform 0.2s ease-in-out',
-                    },
-                }}
-                onClick={toggleModalVisibility}
-            >
-                <AddIcon />
-            </Fab>
-            <AddPostModal
-                toggleModalVisibility={toggleModalVisibility}
-                modalVisibility={modalVisibility}
-            />
+            ></Box>
+            <AddPost {...{ posts, setPosts }} />
         </Box>
     );
 }
