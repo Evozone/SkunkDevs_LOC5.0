@@ -9,6 +9,9 @@ import { notify } from '../../../../features/notify/notifySlice';
 // Material UI - Components (named imports)
 import { CardActions, Stack } from '@mui/material';
 
+// MUI Icons
+import { Delete, Edit } from '@mui/icons-material';
+
 // External Packages
 import axios from 'axios';
 
@@ -36,7 +39,9 @@ export default function VB_CardActions({ blog, blogId }) {
                     },
                 }
             );
-            dispatch(notify({ open: true, type: 'success', msg: 'Deleted!' }));
+            dispatch(
+                notify({ open: true, severity: 'success', message: 'Deleted!' })
+            );
             navigate('/blogs');
         } catch (error) {
             console.log(error);
@@ -56,8 +61,13 @@ export default function VB_CardActions({ blog, blogId }) {
     };
 
     const buttons = [
-        { name: 'Edit this blog', onClick: goToEditBlog, color: 'info' },
-        { name: 'Delete', onClick: deleteBlog, color: 'error' },
+        { name: 'Edit', onClick: goToEditBlog, color: 'info', icon: <Edit /> },
+        {
+            name: 'Delete',
+            onClick: deleteBlog,
+            color: 'error',
+            icon: <Delete />,
+        },
     ];
 
     return (
@@ -75,7 +85,7 @@ export default function VB_CardActions({ blog, blogId }) {
                             key={button.name}
                             {...button}
                         >
-                            {button.name}
+                            {button.icon} &nbsp; {button.name}
                         </StyledButton>
                     ))}
                 </Stack>

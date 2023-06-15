@@ -29,7 +29,7 @@ import Spaces from './components/routes/spaces/Spaces';
 import SpaceRoom from './components/routes/spaces/space_room/SpaceRoom';
 import ViewBlog from './components/routes/blogs/view_blog/ViewBlog';
 import CreateBlog from './components/routes/blogs/create_blog/CreateBlog';
-import EditBlog from './components/routes/blogs/EditBlog';
+import EditBlog from './components/routes/blogs/edit_blog/EditBlog';
 import Account from './components/routes/account/Account';
 import PersonalCall from './components/routes/connect/PersonalCall';
 

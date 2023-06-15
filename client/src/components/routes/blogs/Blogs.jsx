@@ -15,6 +15,7 @@ import RouteContent from '../layout/RouteContent';
 
 // External Libraries
 import axios from 'axios';
+import BlogCard from './BlogCard';
 
 function Blogs() {
     const navigate = useNavigate();
@@ -50,10 +51,6 @@ function Blogs() {
         getBlogs();
     }, []);
 
-    const handleClick = (id) => {
-        navigate(`/blog/${id}`);
-    };
-
     const lastBlogRef = useCallback(
         (node) => {
             if (loading) return;
@@ -76,33 +73,18 @@ function Blogs() {
             />
             <RouteContent>
                 {blogs && (
-                    <Stack spacing={2}>
+                    <Stack spacing={2} sx={{ width: '100%' }}>
                         {blogs.map((blog, index) => {
                             if (blogs.length === index + 1) {
                                 return (
-                                    <div
-                                        ref={lastBlogRef}
+                                    <BlogCard
                                         key={blog._id}
-                                        onClick={() => handleClick(blog._id)}
-                                        className='blog-card'
-                                    >
-                                        <h2>{blog.title}</h2>
-                                        <p>{blog.summary}</p>
-                                        <p>{blog.authorName}</p>
-                                    </div>
+                                        blog={blog}
+                                        ref={lastBlogRef}
+                                    />
                                 );
                             } else {
-                                return (
-                                    <div
-                                        key={blog._id}
-                                        onClick={() => handleClick(blog._id)}
-                                        className='blog-card'
-                                    >
-                                        <h2>{blog.title}</h2>
-                                        <p>{blog.description}</p>
-                                        <p>{blog.author}</p>
-                                    </div>
-                                );
+                                return <BlogCard key={blog._id} blog={blog} />;
                             }
                         })}
                     </Stack>
