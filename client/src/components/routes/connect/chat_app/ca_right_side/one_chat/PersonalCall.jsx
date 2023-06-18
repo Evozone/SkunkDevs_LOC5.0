@@ -13,23 +13,9 @@ import VideocamOffIcon from '@mui/icons-material/VideocamOff';
 import MicOffIcon from '@mui/icons-material/MicOff';
 import CallEndIcon from '@mui/icons-material/CallEnd';
 
-import {
-    lMode1,
-    lMode2,
-    lMode3,
-    lMode4,
-    lMode5,
-    lMode6,
-    dMode1,
-    dMode2,
-    dMode3,
-    dMode4,
-    dMode5,
-    dMode6,
-} from '../../../utils/colors';
-import { initSocket } from '../../../socket';
+import { initSocket } from '../../../../../../socket';
 import { useSelector } from 'react-redux';
-import { notify } from '../../../features/notify/notifySlice';
+import { notify } from '../../../../../../features/notify/notifySlice';
 
 function PersonalCall({ mode }) {
     const socketRef = useRef();
@@ -246,20 +232,15 @@ function PersonalCall({ mode }) {
     return (
         <Box
             sx={{
-                height: '100vh',
-                backgroundColor: mode === 'light' ? lMode1 : dMode1,
-                color: 'text.primary',
-                px: '1.5rem',
-                pt: '5.5rem',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
+                pt: '5rem',
+                px: 3,
+                pb: 3,
             }}
+            className='route-container'
         >
             <Paper
                 sx={{
                     p: 2,
-                    ...(mode === 'light' && { backgroundColor: lMode6 }),
                     height: 'calc(100vh - 170px)',
                     width: '100%',
                     mb: '1rem',
@@ -282,7 +263,6 @@ function PersonalCall({ mode }) {
                             position: 'absolute',
                             bottom: '6px',
                             left: '36px',
-                            color: mode === 'light' ? 'white' : 'text.primary',
                         }}
                     >
                         {currentUser.name}
@@ -364,7 +344,6 @@ function PersonalCall({ mode }) {
                 sx={{
                     p: 1,
                     borderRadius: '30px',
-                    backgroundColor: mode === 'light' ? lMode6 : dMode6,
                 }}
             >
                 <Stack direction='row' spacing={2}>

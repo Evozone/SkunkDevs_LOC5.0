@@ -1,45 +1,38 @@
+// React
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+// External Packages
 import axios from 'axios';
 import { v4 as uuid } from 'uuid';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
-import Avatar from '@mui/material/Avatar';
+
+// Material UI - Components (named imports)
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import VideoCallIcon from '@mui/icons-material/VideoCall';
-import LoopIcon from '@mui/icons-material/Loop';
 
-import {
-    lMode1,
-    lMode2,
-    lMode3,
-    lMode4,
-    lMode5,
-    lMode6,
-    dMode1,
-    dMode2,
-    dMode3,
-    dMode4,
-    dMode5,
-    dMode6,
-} from '../../../utils/colors';
+// Material UI - Icons (named imports)
+import { Loop as LoopIcon } from '@mui/icons-material';
 
-import { formatDate } from '../../../utils/formatTimestamp';
-import storage from '../../../appwrite';
-import TextBody from './TextBody';
-import { notify } from '../../../features/notify/notifySlice';
+// Utils
+import { formatDate } from '../../../../../../utils/formatTimestamp';
+
+// Appwrite
+import storage from '../../../../../../appwrite';
+
+// Redux
+import { useDispatch, useSelector } from 'react-redux';
+import { notify } from '../../../../../../features/notify/notifySlice';
 import {
     startLoading,
     stopLoading,
-} from '../../../features/loading/loadingSlice';
-import ProfileInfo from './ProfileInfo';
-import MessageInput from './MessageInput';
+} from '../../../../../../features/loading/loadingSlice';
 
-function ChatInterface({ mode, otherUser, socketRef, connectSettings }) {
+// Components
+import TextBody from './TextBody';
+import MessageInput from './msgInput/MessageInput';
+import ChatTopBar from './ChatTopBar';
+
+function ChatInterface({ otherUser, socketRef, connectSettings }) {
     const inputRef = useRef();
     const endRef = useRef();
     const dispatch = useDispatch();
@@ -52,7 +45,6 @@ function ChatInterface({ mode, otherUser, socketRef, connectSettings }) {
     const [prevOtherUser, setPrevOtherUser] = useState(null);
     const [timer, setTimer] = useState(null);
     const [typing, setTyping] = useState(false);
-    const [profileInfoOpen, setProfileInfoOpen] = useState(false);
 
     useEffect(() => {
         if (otherUser.uid === prevOtherUser?.uid) return;
@@ -112,7 +104,7 @@ function ChatInterface({ mode, otherUser, socketRef, connectSettings }) {
             const { data } = await axios.get(
                 `${
                     import.meta.env.VITE_SERVER_URL
-                }/api/message/${chatId}?page=${page}`
+                }/api/messages/${chatId}?page=${page}`
             );
             setPageNum(page);
             if (data.result.length === 0) {
@@ -155,7 +147,7 @@ function ChatInterface({ mode, otherUser, socketRef, connectSettings }) {
         const senderEmail = currentUser.email;
         try {
             const { data } = await axios.post(
-                `${import.meta.env.VITE_SERVER_URL}/api/message`,
+                `${import.meta.env.VITE_SERVER_URL}/api/messages`,
                 {
                     chatId,
                     senderId,
@@ -226,107 +218,21 @@ function ChatInterface({ mode, otherUser, socketRef, connectSettings }) {
         }
     };
 
-    const startPersonalCall = async () => {
-        dispatch(startLoading());
-        const id = uuid();
-        const CALL_TEMPLATE = `Hey, Lets talk more on a video call. Please click on the link below to join the call. \n\n ${
-            import.meta.env.VITE_BASE_URL
-        }/connect/pc/${id}`;
-        await handleSendMessage(CALL_TEMPLATE);
-        dispatch(stopLoading());
-        navigate(`/connect/pc/${id}`);
-    };
-
-    const handleProfileClick = () => {
-        setProfileInfoOpen(true);
-    };
-
     return (
         <Box sx={{ flexGrow: 1, overflowY: 'hidden' }}>
-            <AppBar
-                sx={{
-                    width: '100%',
-                    backgroundColor: mode === 'light' ? lMode4 : dMode4,
-                    height: 61,
-                    display: 'flex',
-                    alignItems: 'center',
-                    flexDirection: 'row',
-                    px: 2,
-                }}
-                elevation={0}
-                color='inherit'
-                position='static'
-            >
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        cursor: 'pointer',
-                    }}
-                    onClick={handleProfileClick}
-                >
-                    <Avatar
-                        alt={otherUser.name.charAt(0).toUpperCase()}
-                        src={otherUser.avatar}
-                        sx={{
-                            bgcolor: mode === 'light' ? lMode2 : dMode2,
-                            height: 50,
-                            width: 50,
-                        }}
-                    >
-                        {otherUser.name.charAt(0).toUpperCase()}
-                    </Avatar>
-                    <Box sx={{ display: 'block' }}>
-                        <Typography
-                            sx={{ fontWeight: '400', ml: 3, fontSize: '1rem' }}
-                        >
-                            {otherUser.name}
-                        </Typography>
-                        <Typography
-                            sx={{
-                                fontWeight: '300',
-                                ml: 3,
-                                fontSize: '0.8rem',
-                                color:
-                                    mode === 'light'
-                                        ? 'rgba(0, 0, 0, 0.54)'
-                                        : 'rgba(255, 255, 255, 0.54)',
-                            }}
-                        >
-                            {typing ? 'typing...' : '@' + otherUser.username}
-                        </Typography>
-                    </Box>
-                </Box>
-                <IconButton
-                    onClick={startPersonalCall}
-                    sx={{ position: 'absolute', right: '10px' }}
-                >
-                    <VideoCallIcon
-                        sx={{
-                            height: 40,
-                            width: 40,
-                            color: mode === 'light' ? lMode2 : dMode2,
-                        }}
-                    />
-                </IconButton>
-            </AppBar>
+            <ChatTopBar {...{ otherUser, typing, handleSendMessage }} />
             <Box
                 sx={{
-                    p: '20px',
+                    p: 1,
                     pb: 0,
-                    height: 'calc(100vh - 204px)',
+                    height: 'calc(100vh - 190px)',
                     overflowY: 'scroll',
                     overflowX: 'hidden',
                     display: 'flex',
                     flexDirection: 'column',
-                    backgroundImage:
-                        mode === 'dark'
-                            ? `url('/assets/vectors/chat-background-dark.svg')`
-                            : `url('/assets/vectors/chat-background.svg')`,
-                    backgroundSize: '115px',
                 }}
             >
+                {/* Load more button */}
                 {messages?.length >= 10 && loadButtonVisible && (
                     <Button
                         onClick={() => loadConversation(pageNum + 1)}
@@ -334,25 +240,18 @@ function ChatInterface({ mode, otherUser, socketRef, connectSettings }) {
                         sx={{
                             alignSelf: 'center',
                             mb: '10px',
-                            backgroundColor: mode === 'light' ? lMode2 : dMode2,
-                            color: lMode5,
                             font: 'Poppins, sans-serif',
-                            ':hover': {
-                                backgroundColor:
-                                    mode === 'light' ? lMode3 : dMode3,
-                                color: 'black',
-                            },
                             borderRadius: '20px',
-                            width: '195px',
                             height: '30px',
                         }}
-                        variant='contained'
+                        variant='outlined'
                         disableElevation
                         color='success'
                     >
                         Load More Chats
                     </Button>
                 )}
+
                 {messages &&
                     messages.map((message, index) => {
                         const msgDate = formatDate(message.timestamp / 1000);
@@ -395,17 +294,12 @@ function ChatInterface({ mode, otherUser, socketRef, connectSettings }) {
                         );
                     })}
             </Box>
-            <Divider />
             <MessageInput
                 handleSendMessage={handleSendMessage}
                 inputRef={inputRef}
-                mode={mode}
                 uploadFile={uploadFile}
                 textfieldOnChange={textfieldOnChange}
             />
-            {profileInfoOpen && (
-                <ProfileInfo {...{ mode, otherUser, setProfileInfoOpen }} />
-            )}
         </Box>
     );
 }

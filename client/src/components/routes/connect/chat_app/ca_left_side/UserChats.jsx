@@ -1,37 +1,29 @@
+// React
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
+
+// Material UI - Components (named imports)
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
+import Typography from '@mui/material/Typography';
 
-import {
-    lMode1,
-    lMode2,
-    lMode3,
-    lMode4,
-    lMode5,
-    lMode6,
-    dMode1,
-    dMode2,
-    dMode3,
-    dMode4,
-    dMode5,
-    dMode6,
-} from '../../../utils/colors';
-import { formatDate, formatTime12 } from '../../../utils/formatTimestamp';
+// External Packages
+import axios from 'axios';
+
+// Redux
+import { useDispatch, useSelector } from 'react-redux';
 import {
     startLoading,
     stopLoading,
-} from '../../../features/loading/loadingSlice';
+} from '../../../../../features/loading/loadingSlice';
+import { notify } from '../../../../../features/notify/notifySlice';
 
-import { notify } from '../../../features/notify/notifySlice';
+// Utils
+import { formatDate, formatTime12 } from '../../../../../utils/formatTimestamp';
 
 function UserChats({
     handleChatClick,
-    mode,
     socketRef,
     otherUser,
     onlineUsers,
@@ -47,11 +39,10 @@ function UserChats({
         const getUserChats = async () => {
             dispatch(startLoading());
             try {
-                const auth = window.localStorage.getItem('photoApp');
-                const { dnd } = JSON.parse(auth);
+                const dnd = window.localStorage.getItem('photoApp');
                 const { data } = await axios({
                     method: 'GET',
-                    url: `${import.meta.env.VITE_SERVER_URL}/api/chat`,
+                    url: `${import.meta.env.VITE_SERVER_URL}/api/chats`,
                     headers: {
                         'Content-Type': 'application/json',
                         authorization: `Bearer ${dnd}`,
@@ -164,13 +155,13 @@ function UserChats({
                         <ListItemButton
                             key={user.uid}
                             sx={{
+                                m: 1,
                                 p: 0,
-                                pl: 2,
-                                height: '70px',
-                                borderBottom:
-                                    mode === 'light'
-                                        ? '1px solid rgba(0, 0, 0, 0.12)'
-                                        : '1px solid rgba(255, 255, 255, 0.12)',
+                                backgroundColor: 'primary.light',
+                                borderRadius: 3,
+                                '&:hover': {
+                                    backgroundColor: 'primary.main',
+                                },
                             }}
                             onClick={() => {
                                 setMessageNotSeen((prev) => {
@@ -191,8 +182,6 @@ function UserChats({
                                 sx={{
                                     width: 50,
                                     height: 50,
-                                    backgroundColor:
-                                        mode === 'light' ? lMode6 : dMode6,
                                 }}
                             >
                                 {user?.name[0]?.toUpperCase()}
@@ -200,6 +189,7 @@ function UserChats({
                             {onlineUsers?.find(
                                 (onlineUser) => onlineUser.userId === user.uid
                             ) && (
+                                // OnlineuserCircle
                                 <Box
                                     sx={{
                                         position: 'absolute',
@@ -215,11 +205,12 @@ function UserChats({
                             <Box
                                 sx={{
                                     display: 'block',
+                                    color: 'primary.contrastText',
                                 }}
                             >
                                 <Typography
                                     sx={{
-                                        fontSize: '1rem',
+                                        font: '400 1rem Geologica, sans-serif',
                                         ml: 2,
                                     }}
                                 >
@@ -229,10 +220,6 @@ function UserChats({
                                     sx={{
                                         fontSize: '14px',
                                         fontFamily: 'Helvetica',
-                                        color:
-                                            mode === 'light'
-                                                ? 'rgba(0, 0, 0, 0.54)'
-                                                : 'rgba(255, 255, 255, 0.54)',
                                         ml: 2,
                                     }}
                                 >
@@ -245,10 +232,6 @@ function UserChats({
                                     sx={{
                                         fontSize: '12px',
                                         fontFamily: 'Helvetica',
-                                        color:
-                                            mode === 'light'
-                                                ? 'rgba(0, 0, 0, 0.54)'
-                                                : 'rgba(255, 255, 255, 0.54)',
                                         ml: 2,
                                         position: 'absolute',
                                         right: '15px',
@@ -260,10 +243,6 @@ function UserChats({
                                 <Typography
                                     sx={{
                                         fontSize: '11px',
-                                        color:
-                                            mode === 'light'
-                                                ? 'rgba(0, 0, 0, 0.54)'
-                                                : 'rgba(255, 255, 255, 0.54)',
                                         ml: 2,
                                         position: 'absolute',
                                         right: '15px',

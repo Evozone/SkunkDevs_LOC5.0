@@ -11,7 +11,6 @@ export default function RouteContent({ children }) {
                 minHeight: '65vh',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'center',
                 alignItems: 'center',
                 padding: '2rem',
                 backgroundColor: 'background.paper',

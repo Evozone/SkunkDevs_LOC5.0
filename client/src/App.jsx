@@ -31,7 +31,7 @@ import ViewBlog from './components/routes/blogs/view_blog/ViewBlog';
 import CreateBlog from './components/routes/blogs/create_blog/CreateBlog';
 import EditBlog from './components/routes/blogs/edit_blog/EditBlog';
 import Account from './components/routes/account/Account';
-import PersonalCall from './components/routes/connect/PersonalCall';
+import PersonalCall from './components/routes/connect/chat_app/ca_right_side/one_chat/PersonalCall';
 
 function App() {
     const dispatch = useDispatch();
@@ -128,7 +128,7 @@ function App() {
                     }
                 />
                 <Route
-                    path='/connect/pc/:id'
+                    path='/connect/call/:id'
                     element={
                         <ProtectedRoute>
                             <PersonalCall />

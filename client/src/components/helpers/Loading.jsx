@@ -14,8 +14,8 @@ const Loading = () => {
             <img
                 data-testid='loading-spinner'
                 style={{ alignSelf: 'center', width: '160px', height: '160px' }}
-                src='/assets/vectors/page-loading-1.svg'
-                alt=''
+                src='/assets/vectors/loading.svg'
+                alt='loading'
             />
         </Backdrop>
     );

@@ -59,9 +59,15 @@ export const googleSignUp = async (req, res) => {
 // Return all users, paginated with query.
 export const searchAll = async (req, res) => {
     try {
-        const { page = 1, limit = 10, role, skill, uid } = req.query;
+        const { page = 1, limit = 10, role, skill, uid, search } = req.query;
         let users, count;
-        if (uid) {
+        if (search) {
+            users = await UserModel.find({ name: { $regex: search, $options: 'i' } })
+                .limit(limit * 1)
+                .skip((page - 1) * limit)
+                .exec();
+            count = await UserModel.countDocuments({ name: { $regex: search, $options: 'i' } });
+        } else if (uid) {
             users = await UserModel.find({ uid: uid })
                 .limit(limit * 1)
                 .skip((page - 1) * limit)

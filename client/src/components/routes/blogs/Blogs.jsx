@@ -102,7 +102,7 @@ function Blogs() {
                     zIndex: 1000,
                 }}
             >
-                <CreateIcon /> &nbsp;&nbsp; Create
+                <CreateIcon /> &nbsp;&nbsp; Create a new blog
             </Fab>
         </Box>
     );

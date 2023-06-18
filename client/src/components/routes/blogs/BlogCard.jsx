@@ -14,6 +14,9 @@ import {
 export default function BlogCard({ blog, index, lastBlogRef = null }) {
     const navigate = useNavigate();
 
+    // Get the mode
+    const mode = localStorage.getItem('photoAppTheme') || 'light';
+
     // What happens when you click on a blog card
     const handleClick = (id) => {
         navigate(`/blog/${id}`);
@@ -25,8 +28,9 @@ export default function BlogCard({ blog, index, lastBlogRef = null }) {
                 display: 'flex',
                 flexDirection: 'row',
                 width: '100%',
-                borderRadius: 5,
                 cursor: 'pointer',
+                borderRadius: 5,
+                border: mode === 'light' ? '1px solid black' : 'none',
                 '&:hover': { boxShadow: 10 },
             }}
             elevation={4}

@@ -11,7 +11,7 @@ import AccountTabs from './acc_tabs/AccountTabs';
 const mode = window.localStorage.getItem('photoAppTheme') || 'light';
 
 const paperStyles = {
-    opacity: 0.85,
+    opacity: 0.9,
     mt: 10,
     minHeight: '80vh',
     width: '95%',

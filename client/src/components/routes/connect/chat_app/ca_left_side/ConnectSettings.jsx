@@ -17,7 +17,7 @@ import {
     dMode4,
     dMode5,
     dMode6,
-} from '../../../utils/colors';
+} from '../../../../../utils/colors';
 
 function ConnectSettings({ setConnectSettings, connectSettings }) {
     const [checkState, setCheckState] = useState({
