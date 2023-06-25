@@ -8,8 +8,8 @@ import {
     deleteListing,
 } from '../controllers/listing.js';
 
-router.get('/getList', getListings);
-router.post('/create', auth, createListing);
-router.delete('/delete/:id', deleteListing);
+router.get('/', getListings);
+router.post('/', auth, createListing);
+router.delete('/:id', deleteListing);
 
 export default router;

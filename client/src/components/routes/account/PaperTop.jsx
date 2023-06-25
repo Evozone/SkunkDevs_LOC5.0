@@ -5,7 +5,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 // Material UI
-import { Box, Avatar, Typography } from '@mui/material';
+import { Box, Avatar, Typography, Stack } from '@mui/material';
 
 export default function PaperTop() {
     const currentUser = useSelector((state) => state.auth);
@@ -39,15 +39,21 @@ export default function PaperTop() {
                 src={currentUser.avatar}
                 alt={currentUser.name}
             />
-            <Typography
-                variant='h4'
-                sx={{
-                    my: 3,
-                    fontFamily: 'Geologica, sans-serif',
-                }}
-            >
-                Welcome, {currentUser.name}!
-            </Typography>
+            <Stack spacing={0} sx={{ my: 3 }}>
+                <Typography
+                    variant='h4'
+                    sx={{ fontFamily: 'Geologica, sans-serif' }}
+                >
+                    Welcome, {currentUser.name}!
+                </Typography>
+                <Typography variant='subtitle2'>
+                    {currentUser.role === 'explorer'
+                        ? 'Explorer'
+                        : 'Photographer'}
+                    {' | '}
+                    {currentUser.username}
+                </Typography>
+            </Stack>
         </Box>
     );
 }

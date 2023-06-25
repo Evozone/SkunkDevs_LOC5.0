@@ -1,9 +1,8 @@
 // React
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 // Material UI
-import { FormControl, Grid, Typography, Button, Stack } from '@mui/material';
+import { FormControl, Grid, Typography, TextField, Stack } from '@mui/material';
 
 // External Packages
 import axios from 'axios';
@@ -21,6 +20,7 @@ import { updateCurrentUser } from '../../../../../features/auth/authSlice';
 import RoleSwitch from './RoleSwtich';
 import SocialStack from './SocialStack';
 import Bio from './Bio';
+import { StyledButton } from '../../../../helpers/StyledMUI';
 
 export default function Profile() {
     const dispatch = useDispatch();
@@ -28,6 +28,8 @@ export default function Profile() {
     const currentUser = useSelector((state) => state.auth);
 
     const [formData, setFormData] = useState({
+        name: currentUser.name || '',
+        username: currentUser.username || '',
         bio: currentUser.bio || '',
         socialLinks: {
             twitter: '',
@@ -35,7 +37,12 @@ export default function Profile() {
             pinterest: '',
             portfolio: '',
         },
-        location: '',
+        location: {
+            city: '',
+            country: '',
+            cityId: null,
+            loc: null,
+        },
         role: '',
         skill_level: 'beginner',
     });
@@ -44,6 +51,8 @@ export default function Profile() {
         // Update formData with currentUser data
         setFormData({
             ...formData,
+            name: currentUser.name,
+            username: currentUser.username,
             bio: currentUser.bio || '',
             socialLinks: {
                 twitter: currentUser.socialLinks?.twitter || '',
@@ -51,7 +60,12 @@ export default function Profile() {
                 pinterest: currentUser.socialLinks?.pinterest || '',
                 portfolio: currentUser.socialLinks?.portfolio || '',
             },
-            location: currentUser.location || '',
+            location: {
+                city: currentUser.location?.city || '',
+                country: currentUser.location?.country || '',
+                cityId: currentUser.location?.cityId || null,
+                loc: currentUser.location?.loc || null,
+            },
             role: currentUser.role || '',
             skill_level: currentUser.skill_level || '',
         });
@@ -105,9 +119,16 @@ export default function Profile() {
         }
     };
 
+    // Array of buttons to be rendered
     const buttons = [
         { name: 'Save Changes', color: 'success', onClick: handleSubmit },
         { name: 'Cancel', color: 'primary', onClick: handleCancel },
+    ];
+
+    // Array of name related fields
+    const fields = [
+        { id: 'name', label: 'Name', xs: 5 },
+        { id: 'username', label: 'Username', xs: 7 },
     ];
 
     return (
@@ -125,15 +146,41 @@ export default function Profile() {
 
             <FormControl sx={{ width: '100%' }} component='form'>
                 <Grid container spacing={2}>
+                    {/* Names */}
+                    {fields.map((field) => (
+                        <Grid item xs={field.xs} key={field.id}>
+                            <TextField
+                                id={field.id}
+                                label={field.label}
+                                variant='outlined'
+                                fullWidth
+                                value={formData[field.id]}
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        [field.id]: e.target.value,
+                                    })
+                                }
+                            />
+                        </Grid>
+                    ))}
+
+                    {/* Bio */}
                     <Grid item xs={5}>
                         <Bio {...{ formData, setFormData }} />
                     </Grid>
+
+                    {/* Social Links and Location */}
                     <Grid item xs={7}>
                         <SocialStack {...{ formData, setFormData }} />
                     </Grid>
+
+                    {/* Role */}
                     <Grid item xs={12}>
                         <RoleSwitch {...{ formData, setFormData }} />
                     </Grid>
+
+                    {/* Buttons */}
                     <Grid item xs={12}>
                         <Stack
                             direction='row'
@@ -141,13 +188,13 @@ export default function Profile() {
                             justifyContent='flex-end'
                         >
                             {buttons.map((button) => (
-                                <Button
+                                <StyledButton
                                     key={button.name}
                                     {...button}
-                                    variant='contained'
+                                    variant='outlined'
                                 >
                                     {button.name}
-                                </Button>
+                                </StyledButton>
                             ))}
                         </Stack>
                     </Grid>

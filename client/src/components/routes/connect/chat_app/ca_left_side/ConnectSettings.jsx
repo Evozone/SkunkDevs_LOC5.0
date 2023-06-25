@@ -4,21 +4,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import Checkbox from '@mui/material/Checkbox';
 
-import {
-    lMode1,
-    lMode2,
-    lMode3,
-    lMode4,
-    lMode5,
-    lMode6,
-    dMode1,
-    dMode2,
-    dMode3,
-    dMode4,
-    dMode5,
-    dMode6,
-} from '../../../../../utils/colors';
-
 function ConnectSettings({ setConnectSettings, connectSettings }) {
     const [checkState, setCheckState] = useState({
         showNotifications: connectSettings.showNotifications,

@@ -14,6 +14,7 @@ import { Server } from 'socket.io';
 // API route imports
 import userRouter from './routes/users.js';
 import roomsRouter from './routes/rooms.js';
+import cityRouter from './routes/cities.js';
 import blogRouter from './routes/blogs.js';
 import exploreRouter from './routes/explore.js';
 import chatRouter from './routes/chats.js';
@@ -42,6 +43,7 @@ app.use('/api/blogs', blogRouter);
 app.use('/api/users', userRouter);
 app.use('/api/rooms', roomsRouter);
 app.use('/api/chats', chatRouter);
+app.use('/api/cities', cityRouter);
 app.use('/api/messages', messageRouter);
 app.use('/api/explore', exploreRouter);
 app.use('/api/listings', listingRouter);

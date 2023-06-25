@@ -55,6 +55,8 @@ export const getListings = async (req, res) => {
         console.log(error);
     }
 };
+
+
 export const deleteListing = async (req, res) => {
     const { id } = req.params;
     try {

@@ -20,6 +20,9 @@ const socials = [
     { name: 'pinterest', icon: <Pinterest /> },
 ];
 
+// Components
+import Location from './Location';
+
 export default function SocialStack({ formData, setFormData }) {
     return (
         <Stack spacing={2} sx={{ flexGrow: 1 }}>
@@ -52,22 +55,7 @@ export default function SocialStack({ formData, setFormData }) {
                 />
             ))}
 
-            {/* Location */}
-            <TextField
-                id='location'
-                label='Location'
-                placeholder='Where are you from?'
-                variant='standard'
-                value={formData.location}
-                size='small'
-                onChange={(e) =>
-                    setFormData({
-                        ...formData,
-                        location: e.target.value,
-                    })
-                }
-                fullWidth
-            />
+            <Location {...{ formData, setFormData }} />
         </Stack>
     );
 }
