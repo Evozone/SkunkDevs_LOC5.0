@@ -17,7 +17,7 @@ export default function ExplorerListings() {
             sx={{ width: '100%' }}
         >
             <AddListing />
-            <Box>
+            <Box sx={{ flexGrow: 1 }}>
                 <Typography variant='h6'>Your Listings</Typography>
             </Box>
         </Stack>

@@ -10,7 +10,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 // External Libraries
 import axios from 'axios';
 
-export default function Location({ formData, setFormData }) {
+export default function AL_Location({ listingData, setListingData }) {
     const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
 
     const [cities, setCities] = useState([]);
@@ -43,8 +43,8 @@ export default function Location({ formData, setFormData }) {
     const handleLocationChange = (event, value) => {
         setSelectedCity(value);
         if (value) {
-            setFormData({
-                ...formData,
+            setListingData({
+                ...listingData,
                 location: {
                     cityId: value.cityId,
                     city: value.name,
@@ -56,7 +56,8 @@ export default function Location({ formData, setFormData }) {
     };
 
     return (
-        <Stack spacing={2} direction='row'>
+        <Stack spacing={2}>
+            <Typography id='location-title'>Location</Typography>
             <Typography
                 variant='h6'
                 sx={{
@@ -67,8 +68,8 @@ export default function Location({ formData, setFormData }) {
                 }}
             >
                 <LocationOnIcon sx={{ mr: 1 }} fontSize='large' />
-                {formData.location.city},{' '}
-                {regionNames.of(formData.location.country)}
+                {listingData.location.city},{' '}
+                {regionNames.of(listingData.location.country)}
             </Typography>
             <Autocomplete
                 fullWidth
@@ -89,7 +90,7 @@ export default function Location({ formData, setFormData }) {
                     <TextField
                         {...params}
                         label='Location'
-                        placeholder='Where are you from?'
+                        placeholder='Where is the job located?'
                         variant='outlined'
                         size='small'
                     />

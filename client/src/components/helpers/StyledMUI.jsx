@@ -40,3 +40,17 @@ export const StyledButton = styled(Button)(() => ({
         borderWidth: '2px',
     },
 }));
+
+export const dateTimeinputStyle = {
+    width: '250px',
+    height: '35px',
+    borderRadius: '50px',
+    border: '1px solid #000000',
+    padding: '0 10px',
+    fontSize: '1rem',
+    fontWeight: '500',
+    color: '#000000',
+    '&:focus': {
+        outline: 'none',
+    },
+};

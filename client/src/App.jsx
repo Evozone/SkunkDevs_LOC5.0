@@ -45,6 +45,9 @@ function App() {
         palette: {
             mode: mode,
         },
+        typography: {
+            fontFamily: ['Geologica', 'sans-serif'].join(','),
+        },
     });
 
     const themeChange = () => {

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { locationSchema } from './locationModel.js';
 
 const socialLinksSchema = new mongoose.Schema({
     twitter: {
@@ -17,33 +18,6 @@ const socialLinksSchema = new mongoose.Schema({
         type: String,
         default: '',
     },
-});
-
-const locSchema = new mongoose.Schema({
-    type: {
-        type: String,
-        default: 'Point',
-    },
-    coordinates: {
-        type: [Number],
-        index: '2dsphere',
-    },
-});
-
-const locationSchema = new mongoose.Schema({
-    cityId: {
-        type: String,
-        default: '',
-    },
-    city: {
-        type: String,
-        default: '',
-    },
-    country: {
-        type: String,
-        default: '',
-    },
-    loc: locSchema,
 });
 
 const userSchema = new mongoose.Schema({

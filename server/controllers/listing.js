@@ -1,19 +1,52 @@
 import ListingModel from '../models/listingModel.js';
 
+// Function to get Exchange Rates
+const getExchangeRate = async (currency) => {
+    try {
+        const response = await fetch(`https://v6.exchangerate-api.com/v6/${process.env.EXCHANGE_RATE_KEY}/latest/USD`);
+        const data = await response.json();
+        const rate = data.conversion_rates[currency];
+        return rate;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+// Function to convert to USD
+const convertToUSD = async (currency, budget) => {
+    const rate = await getExchangeRate(currency);
+    const convertedBudget = (budget / rate).toFixed(2);
+    return convertedBudget;
+};
+
+// Function to create a new listing
 export const createListing = async (req, res) => {
-    const { city, budgetAmount, description, tags, fromDateTime, toDateTime } =
-        req.body;
+    // Get data from req.body
+    const { title, currency, budget, description, location, tags, fromDateTime, toDateTime } = req.body;
+
+    // Get data from req.user (from auth middleware)
     const {
         uid: authorId,
         name: authorName,
         username: authorUsername,
         email: authorEmail,
     } = req.user;
+
+    // Convert budget to USD if not already
+    let convertedBudget;
+    if (currency !== 'USD') {
+        convertedBudget = await convertToUSD(currency, budget);
+    } else {
+        convertedBudget = budget;
+    }
+
+    // Create new listing
     try {
         const result = await ListingModel.create({
-            city,
-            budgetAmount,
+            title,
+            budget: convertedBudget,
             description,
+            location,
             tags,
             fromDateTime,
             toDateTime,
@@ -37,14 +70,34 @@ export const createListing = async (req, res) => {
     }
 };
 
+// Function to get all Listings with query
 export const getListings = async (req, res) => {
+    const { city, budgetStart, budgetEnd, tags, fromDateTime, toDateTime } = req.query;
     try {
-        const result = await ListingModel.find();
-        console.log(result.length);
+        // Build up query by adding what is available
+        const query = {};
+
+        if (city) {
+            query.city = city;
+        }
+        if (budgetStart && budgetEnd) {
+            query.budgetAmount = { $gte: budgetStart, $lte: budgetEnd };
+        }
+        if (tags) {
+            query.tags = { $in: tags };
+        }
+        if (fromDateTime) {
+            query.fromDateTime = { $gte: fromDateTime };
+        }
+        if (toDateTime) {
+            query.toDateTime = { $lte: toDateTime };
+        }
+
+        const result = await ListingModel.find(query);
         res.status(200).json({
             success: true,
             result,
-            message: '6 blogs fetched',
+            message: 'Listings fetched',
         });
     } catch (error) {
         res.status(500).json({
@@ -56,16 +109,24 @@ export const getListings = async (req, res) => {
     }
 };
 
-
+// Function to delete a listing based on :id
 export const deleteListing = async (req, res) => {
     const { id } = req.params;
     try {
         const list = await ListingModel.findById(id);
-        await ListingModel.findByIdAndDelete(id);
-        res.status(200).json({
-            success: true,
-            message: 'List deleted',
-        });
+        if (!list) {
+            await ListingModel.findByIdAndDelete(id);
+
+            res.status(200).json({
+                success: true,
+                message: 'List deleted',
+            });
+        } else {
+            res.status(404).json({
+                success: false,
+                message: 'List not found',
+            });
+        }
     } catch (error) {
         res.status(500).json({
             success: false,
