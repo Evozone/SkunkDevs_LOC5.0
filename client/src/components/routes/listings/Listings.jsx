@@ -14,11 +14,10 @@ import { List as ListIcon } from '@mui/icons-material';
 import RouteHeader from '../layout/RouteHeader';
 import RouteContent from '../layout/RouteContent';
 import ExplorerListings from './explorer/ExplorerListings';
-import PhotographerListings from './PhotographerListings';
+import PhotographerListings from './photographer/PhotographerListings';
 
 export default function Listings() {
     const currentUser = useSelector((state) => state.auth);
-    const [role, setRole] = React.useState('explorer');
 
     return (
         <Box className='route-container'>
@@ -29,16 +28,7 @@ export default function Listings() {
                 }}
             />
             <RouteContent>
-                <Switch
-                    sx={{ position: 'absolute', top: 70, right: 20 }}
-                    checked={role === 'explorer'}
-                    onChange={() =>
-                        setRole(
-                            role === 'explorer' ? 'photographer' : 'explorer'
-                        )
-                    }
-                />
-                {role === 'explorer' ? (
+                {currentUser.role === 'explorer' ? (
                     <ExplorerListings />
                 ) : (
                     <PhotographerListings />

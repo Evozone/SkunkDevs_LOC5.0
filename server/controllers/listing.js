@@ -72,8 +72,26 @@ export const createListing = async (req, res) => {
 
 // Function to get all Listings with query
 export const getListings = async (req, res) => {
-    const { city, budgetStart, budgetEnd, tags, fromDateTime, toDateTime } = req.query;
+    const { city, budgetStart, budgetEnd, tags, fromDateTime, toDateTime, authorId } = req.query;
     try {
+        // If it's a request for a specific user's listings
+        if (authorId) {
+            const result = await ListingModel.find({ authorId });
+            res.status(200).json({
+                success: true,
+                result,
+                message: 'Listings fetched',
+            });
+            return;
+        } else if (authorId === '') {
+            res.status(400).json({
+                success: false,
+                message: 'Author ID cannot be empty',
+            });
+            return;
+        }
+
+        // Else, it's a request for all listings, so build up query
         // Build up query by adding what is available
         const query = {};
 
@@ -114,7 +132,7 @@ export const deleteListing = async (req, res) => {
     const { id } = req.params;
     try {
         const list = await ListingModel.findById(id);
-        if (!list) {
+        if (list) {
             await ListingModel.findByIdAndDelete(id);
 
             res.status(200).json({

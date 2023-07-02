@@ -14,7 +14,7 @@ import {
     FormControl,
 } from '@mui/material';
 
-export default function AL_Tags({ listingData, setListingData }) {
+export default function AL_Tags({ listingData, handleChange }) {
     const tags = [
         'Wedding',
         'Nature',
@@ -51,14 +51,6 @@ export default function AL_Tags({ listingData, setListingData }) {
         'Maternity',
     ];
 
-    // When tags are selected, update the listingData state
-    const handleTagsChange = (event) => {
-        setListingData({
-            ...listingData,
-            tags: event.target.value,
-        });
-    };
-
     return (
         <Stack spacing={2}>
             <Typography id='tags-title'>Tags</Typography>
@@ -67,9 +59,10 @@ export default function AL_Tags({ listingData, setListingData }) {
                 <Select
                     labelId='tags-label'
                     id='tags'
+                    name='tags'
                     multiple
                     value={listingData.tags}
-                    onChange={handleTagsChange}
+                    onChange={handleChange}
                     inputProps={{ 'aria-label': 'Select Tags' }}
                     input={<OutlinedInput label='Tags' />}
                     renderValue={(selected) => (

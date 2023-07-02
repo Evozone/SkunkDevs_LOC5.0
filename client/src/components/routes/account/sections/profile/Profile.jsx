@@ -104,6 +104,7 @@ export default function Profile() {
             );
             dispatch(stopLoading());
             dispatch(updateCurrentUser({ ...data.result }));
+
             dispatch(
                 notify({ open: true, severity: 'success', message: 'Saved!' })
             );

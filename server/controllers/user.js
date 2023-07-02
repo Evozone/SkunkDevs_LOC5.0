@@ -156,7 +156,7 @@ export const updateUser = async (req, res) => {
             });
         } else {
             // Update user
-            const updatedUser = await UserModel.findOneAndUpdate(userId, {
+            const updatedUser = await UserModel.findOneAndUpdate({ uid: userId }, {
                 name,
                 username,
                 avatar,
@@ -166,6 +166,7 @@ export const updateUser = async (req, res) => {
                 skill_level,
                 location,
             }, { new: true }).exec();
+
 
             res.status(200).json({
                 success: true,

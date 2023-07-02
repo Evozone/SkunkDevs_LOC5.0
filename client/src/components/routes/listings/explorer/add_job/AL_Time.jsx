@@ -7,7 +7,7 @@ import { Stack } from '@mui/material';
 // Custom Components
 import { dateTimeinputStyle } from '../../../../helpers/StyledMUI';
 
-export default function AL_Time({ listingData, setListingData }) {
+export default function AL_Time({ listingData, handleChange }) {
     // To set  fromDateTime and toDateTime, update the listingData state
     return (
         <Stack spacing={2}>
@@ -23,12 +23,7 @@ export default function AL_Time({ listingData, setListingData }) {
                     type='datetime-local'
                     name='fromDateTime'
                     value={listingData.fromDateTime}
-                    onChange={(e) =>
-                        setListingData({
-                            ...listingData,
-                            fromDateTime: e.target.value,
-                        })
-                    }
+                    onChange={handleChange}
                 />
             </Stack>
             <Stack
@@ -43,12 +38,7 @@ export default function AL_Time({ listingData, setListingData }) {
                     type='datetime-local'
                     name='toDateTime'
                     value={listingData.toDateTime}
-                    onChange={(e) =>
-                        setListingData({
-                            ...listingData,
-                            toDateTime: e.target.value,
-                        })
-                    }
+                    onChange={handleChange}
                 />
             </Stack>
         </Stack>

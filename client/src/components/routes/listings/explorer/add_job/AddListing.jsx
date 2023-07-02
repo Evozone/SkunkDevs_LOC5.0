@@ -3,24 +3,26 @@ import React, { useState } from 'react';
 
 // Redux
 import { useSelector, useDispatch } from 'react-redux';
-import { notify } from '../../../../features/notify/notifySlice';
+import { notify } from '../../../../../features/notify/notifySlice';
 
 // Material UI
 import { Paper, FormControl, Typography, Stack } from '@mui/material';
+
+// Material UI Icons
+import PostAddIcon from '@mui/icons-material/PostAdd';
 
 // External Libraries
 import axios from 'axios';
 
 // Custom Components
-import { StyledButton } from '../../../helpers/StyledMUI';
-import AL_TextInput from './add_job/AL_TextInput';
-import AL_BudgetSlider from './add_job/AL_BudgetSlider';
-import AL_Location from './add_job/AL_Location';
-import AL_Buttons from './add_job/AL_Buttons';
-import AL_Tags from './add_job/AL_Tags';
-import AL_Time from './add_job/AL_Time';
+import AL_TextInput from './AL_TextInput';
+import AL_BudgetSlider from './AL_BudgetSlider';
+import AL_Location from './AL_Location';
+import AL_Buttons from './AL_Buttons';
+import AL_Tags from './AL_Tags';
+import AL_Time from './AL_Time';
 
-export default function AddListing() {
+export default function AddListing({ fetchListings }) {
     const dispatch = useDispatch();
     const currentUser = useSelector((state) => state.auth);
 
@@ -72,6 +74,7 @@ export default function AddListing() {
                     })
                 );
             }
+            fetchListings();
         } catch (err) {
             console.log(err);
             dispatch(
@@ -85,9 +88,20 @@ export default function AddListing() {
     };
 
     return (
-        <Paper elevation={3} sx={{ p: 3, width: '400px', borderRadius: 3 }}>
-            <Typography variant='h5' sx={{ mb: 2 }}>
-                Add a Listing
+        <Paper
+            sx={{
+                p: 3,
+                borderRadius: 3,
+                border: '2px solid',
+                borderColor: 'primary.main',
+            }}
+        >
+            <Typography
+                variant='h5'
+                sx={{ mb: 2, display: 'flex', alignItems: 'center' }}
+            >
+                <PostAddIcon sx={{ mr: 1 }} />
+                Create a Job Listing
             </Typography>
             <FormControl
                 fullWidth
@@ -100,8 +114,8 @@ export default function AddListing() {
                         {...{ listingData, handleChange, setListingData }}
                     />
                     <AL_Location {...{ listingData, setListingData }} />
-                    <AL_Tags {...{ listingData, setListingData }} />
-                    <AL_Time {...{ listingData, setListingData }} />
+                    <AL_Tags {...{ listingData, handleChange }} />
+                    <AL_Time {...{ listingData, handleChange }} />
                     <AL_Buttons {...{ handleListingSubmit, setListingData }} />
                 </Stack>
             </FormControl>
