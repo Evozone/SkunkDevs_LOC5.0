@@ -26,12 +26,23 @@ export const googleSignUp = async (req, res) => {
                 message: 'User already exists',
             });
         } else {
+            const location = {
+                cityId: '0',
+                city: 'Unknown',
+                country: 'US',
+                loc: {
+                    type: 'Point',
+                    coordinates: [0, 0],
+                },
+            };
+
             const user = await UserModel.create({
                 uid,
                 email,
                 name,
                 avatar,
                 username,
+                location
             });
             const token = jwt.sign(
                 { ...user._doc },
