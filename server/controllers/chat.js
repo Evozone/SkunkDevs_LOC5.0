@@ -55,3 +55,30 @@ export const userChats = async (req, res) => {
         });
     }
 };
+
+// Check if a chat exists between two users
+export const checkChat = async (req, res) => {
+    const { id } = req.params;
+    try {
+        console.log(id);
+        const chat = await ChatModel.findOne({ chatId: id });
+        if (!chat) {
+            return res.status(200).json({
+                success: true,
+                result: null,
+                message: 'Chat does not exist',
+            });
+        }
+        res.status(200).json({
+            success: true,
+            result: chat,
+            message: 'Chat exists',
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Something went wrong',
+            error: error.message,
+        });
+    }
+}

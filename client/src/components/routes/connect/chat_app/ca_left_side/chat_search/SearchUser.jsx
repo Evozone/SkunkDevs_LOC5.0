@@ -1,27 +1,43 @@
+// React
 import { useState } from 'react';
-import axios from 'axios';
-import { useSelector, useDispatch } from 'react-redux';
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
-import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
-import SearchIcon from '@mui/icons-material/Search';
+import { useNavigate } from 'react-router-dom';
 
+// External Packages
+import axios from 'axios';
+
+// Material UI
+import {
+    Box,
+    Divider,
+    List,
+    Typography,
+    TextField,
+    Tooltip,
+    IconButton,
+    InputAdornment,
+} from '@mui/material';
+
+// MUI Icons
+import { Search as SearchIcon } from '@mui/icons-material';
+
+// Redux
+import { useSelector, useDispatch } from 'react-redux';
 import { notify } from '../../../../../../features/notify/notifySlice';
+
+// Custom Components
 import SearchedUser from './SearchedUser';
 
 function SearchUser({ handleChatClick }) {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    // Current User
     const currentUser = useSelector((state) => state.auth);
+
+    // States
     const [searchStatus, setSearchStatus] = useState(null);
     const [searchResults, setSearchResults] = useState(null);
     const [timer, setTimer] = useState(null);
-    const [profileInfoOpen, setProfileInfoOpen] = useState(false);
-    const [otherUser, setOtherUser] = useState(null);
 
     const handleSearch = (event) => {
         if (event.target.value.length > 0) {
@@ -80,8 +96,8 @@ function SearchUser({ handleChatClick }) {
     };
 
     const handleShowProfileInfo = (user) => {
-        setOtherUser(user);
-        setProfileInfoOpen(true);
+        // Open new page to show user profile
+        window.open(`/profile/${user.username}`, '_blank');
     };
 
     return (

@@ -1,5 +1,6 @@
 // React
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 // Material UI
 import { Box } from '@mui/material';
@@ -34,6 +35,15 @@ export default function LeftSide({
             setValue(0);
         }
     };
+
+    // Sometimes could be redirected from Profile page, state has user
+    // Check location state
+    const location = useLocation();
+    useEffect(() => {
+        if (location.state) {
+            handleChatClick(location.state.user);
+        }
+    }, [location.state]);
 
     return (
         <Box

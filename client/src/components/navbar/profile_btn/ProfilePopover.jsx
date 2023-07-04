@@ -6,19 +6,33 @@ import { useNavigate } from 'react-router-dom';
 import { Menu, MenuItem, ListItemIcon } from '@mui/material';
 
 // Icons
-import { AccountCircle, Logout, Settings } from '@mui/icons-material';
+import {
+    AccountCircle,
+    Logout,
+    Settings,
+    FaceRetouchingNatural,
+} from '@mui/icons-material';
 
 // Redux
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { signOut } from '../../../features/auth/authSlice';
 
 export default function ProfilePopover({ open, menuAnchor, handleClose }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const currentUserName = useSelector((state) => state.auth.username);
+
     const menuItems = [
         {
-            label: 'Profile',
+            label: 'Your Profile',
+            icon: <FaceRetouchingNatural />,
+            onClick: () => {
+                navigate(`/profile/${currentUserName}`);
+            },
+        },
+        {
+            label: 'Account',
             icon: <AccountCircle />,
             onClick: () => {
                 navigate('/account', { state: { tab: 'Profile' } });
@@ -36,6 +50,7 @@ export default function ProfilePopover({ open, menuAnchor, handleClose }) {
             icon: <Logout />,
             onClick: () => {
                 dispatch(signOut());
+                window.localStorage.removeItem('photoAppLastPage');
                 navigate('/');
             },
         },

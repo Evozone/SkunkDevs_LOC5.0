@@ -26,7 +26,7 @@ export default function PhListCard({ listing }) {
                 <StyledButton
                     variant='outlined'
                     color='primary'
-                    href={`/profile/${listing.authorId}`}
+                    href={`/profile/${listing.authorUsername}`}
                     sx={{ textTransform: 'none' }}
                 >
                     Visit @{listing.authorUsername}
