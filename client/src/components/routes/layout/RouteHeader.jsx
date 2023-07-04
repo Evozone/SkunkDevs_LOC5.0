@@ -4,18 +4,19 @@ import React from 'react';
 // Material UI
 import { Box, Typography } from '@mui/material';
 
-export default function RouteHeader({ title, icon }) {
+export default function RouteHeader({ title, icon, children }) {
     return (
         <Box
             sx={{
                 minHeight: '35vh',
                 display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'left',
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
                 padding: '0 2rem',
             }}
         >
+            {children}
             <Typography
                 variant='h2'
                 sx={{

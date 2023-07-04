@@ -32,6 +32,7 @@ import CreateBlog from './components/routes/blogs/create_blog/CreateBlog';
 import EditBlog from './components/routes/blogs/edit_blog/EditBlog';
 import Account from './components/routes/account/Account';
 import PersonalCall from './components/routes/connect/chat_app/ca_right_side/one_chat/PersonalCall';
+import Profile from './components/routes/profile/Profile';
 
 function App() {
     const dispatch = useDispatch();
@@ -118,8 +119,22 @@ function App() {
                 {/* Blogs */}
                 <Route path='/blogs' element={<Blogs />} />
                 <Route path='/blog/:id' element={<ViewBlog />} />
-                <Route path='/blogs/create' element={<CreateBlog />} />
-                <Route path='/blog/:id/edit' element={<EditBlog />} />
+                <Route
+                    path='/blogs/create'
+                    element={
+                        <ProtectedRoute>
+                            <CreateBlog />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path='/blog/:id/edit'
+                    element={
+                        <ProtectedRoute>
+                            <EditBlog />
+                        </ProtectedRoute>
+                    }
+                />
 
                 {/* Connect */}
                 <Route
@@ -158,6 +173,9 @@ function App() {
                         </ProtectedRoute>
                     }
                 />
+
+                {/* Personal Profile Page */}
+                <Route path='/profile/:username' element={<Profile />} />
             </Routes>
         </ThemeProvider>
     );

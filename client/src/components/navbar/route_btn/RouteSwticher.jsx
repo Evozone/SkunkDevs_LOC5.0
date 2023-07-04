@@ -1,6 +1,9 @@
 // React
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+// Redux
+import { useSelector } from 'react-redux';
 
 // Material UI
 import { FormControl, InputAdornment, MenuItem, Select } from '@mui/material';
@@ -14,6 +17,7 @@ import ListIcon from '@mui/icons-material/List';
 
 export default function RouteSwticher({ lightModeColor }) {
     const navigate = useNavigate();
+    const isSignedIn = useSelector((state) => state.auth.isSignedIn);
 
     const mode = window.localStorage.getItem('photoAppTheme') || 'light';
     const givenColor =
@@ -23,13 +27,18 @@ export default function RouteSwticher({ lightModeColor }) {
         { name: 'Explore', path: '', icon: <ExploreIcon /> },
         { name: 'Spaces', path: 'spaces', icon: <PodcastsIcon /> },
         { name: 'Blogs', path: 'blogs', icon: <PostAddIcon /> },
-        { name: 'Connect', path: 'connect', icon: <PeopleIcon /> },
-        { name: 'Listings', path: 'listings', icon: <ListIcon /> },
+        ...(isSignedIn
+            ? [
+                  { name: 'Connect', path: 'connect', icon: <PeopleIcon /> },
+                  { name: 'Listings', path: 'listings', icon: <ListIcon /> },
+              ]
+            : []),
     ];
 
     const currentRoutePath =
         window.localStorage.getItem('photoAppLastPage') || '';
-    const currentRouteName = routes.find(
+
+    let currentRouteName = routes.find(
         (route) => route.path === currentRoutePath
     ).name;
 

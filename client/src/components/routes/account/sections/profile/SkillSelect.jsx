@@ -1,22 +1,28 @@
 // React
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 // MUI Components
-import { Stack, Typography, Select, MenuItem } from '@mui/material';
+import { Select, MenuItem } from '@mui/material';
 
 export default function SkillSelect({ formData, setFormData }) {
+    const [skillLevel, setSkillLevel] = useState('beginner');
+
+    useEffect(() => {
+        setFormData({
+            ...formData,
+            skill_level: skillLevel,
+        });
+    }, [skillLevel]);
+
     return (
         <Select
             labelId='skill-level-label'
             id='skill-level'
-            value={formData.skill_level || 'beginner'}
+            value={skillLevel}
             size='small'
-            onChange={(e) =>
-                setFormData({
-                    ...formData,
-                    skill_level: e.target.value,
-                })
-            }
+            onChange={(e) => {
+                setSkillLevel(e.target.value);
+            }}
         >
             <MenuItem value='beginner'>Beginner</MenuItem>
             <MenuItem value='intermediate'>Intermediate</MenuItem>

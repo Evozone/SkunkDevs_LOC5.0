@@ -1,6 +1,9 @@
 // React
 import React, { useState } from 'react';
 
+// Redux
+import { useSelector } from 'react-redux';
+
 // Material-UI Components
 import { Dialog } from '@mui/material';
 
@@ -12,6 +15,9 @@ import DynamicFab from '../../layout/DynamicFab';
 import AddSpaceDialog from './add_space_dialog/AddSpaceDialog';
 
 export default function AddSpace({ spaces, setSpaces }) {
+    // To check if user is signed in
+    const isSignedIn = useSelector((state) => state.auth.isSignedIn);
+
     const [modalVisible, setModalVisible] = useState(false);
     const [form, setForm] = useState({
         title: '',
@@ -47,11 +53,13 @@ export default function AddSpace({ spaces, setSpaces }) {
                     }}
                 />
             </Dialog>
-            <DynamicFab
-                onClick={() => setModalVisible(true)}
-                icon={<AddIcon />}
-                label='add new space'
-            />
+            {isSignedIn && (
+                <DynamicFab
+                    onClick={() => setModalVisible(true)}
+                    icon={<AddIcon />}
+                    label='add new space'
+                />
+            )}
         </>
     );
 }

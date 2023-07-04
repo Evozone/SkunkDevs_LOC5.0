@@ -13,7 +13,7 @@ import {
 
 // Components
 import AccPprTabPanel from './AccPprTabPanel';
-import Profile from '../sections/profile/Profile';
+import EditProfile from '../sections/profile/EditProfile';
 import Settings from '../sections/Settings';
 import { StyledTabs, StyledTab } from './CustomTabs';
 
@@ -26,7 +26,7 @@ function allyProps(index) {
 }
 
 const tabs = [
-    { label: 'Profile', icon: <PersonIcon />, component: <Profile /> },
+    { label: 'Profile', icon: <PersonIcon />, component: <EditProfile /> },
     { label: 'Settings', icon: <SettingsIcon />, component: <Settings /> },
 ];
 

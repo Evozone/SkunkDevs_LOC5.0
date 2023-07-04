@@ -103,6 +103,7 @@ export default function Profile() {
                 config
             );
             dispatch(stopLoading());
+
             dispatch(updateCurrentUser({ ...data.result }));
 
             dispatch(
@@ -122,7 +123,7 @@ export default function Profile() {
 
     // Array of buttons to be rendered
     const buttons = [
-        { name: 'Save Changes', color: 'success', onClick: handleSubmit },
+        { name: 'Save Changes', color: 'success', type: 'submit' },
         { name: 'Cancel', color: 'primary', onClick: handleCancel },
     ];
 
@@ -145,7 +146,11 @@ export default function Profile() {
                 Your Profile
             </Typography>
 
-            <FormControl sx={{ width: '100%' }} component='form'>
+            <FormControl
+                sx={{ width: '100%' }}
+                component='form'
+                onSubmit={handleSubmit}
+            >
                 <Grid container spacing={2}>
                     {/* Names */}
                     {fields.map((field) => (

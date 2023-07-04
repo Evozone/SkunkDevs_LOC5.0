@@ -10,7 +10,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function GoBackExploreBtn() {
     const navigate = useNavigate();
-    const lastPage = localStorage.getItem('photoAppLastPage');
+    const lastPage = localStorage.getItem('photoAppLastPage') || '';
 
     const [btnTextColor, setBtnTextColor] = useState('white');
 

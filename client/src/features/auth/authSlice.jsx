@@ -59,6 +59,9 @@ const authSlice = createSlice({
                     continue;
                 }
             }
+            if (action.payload.token) {
+                window.localStorage.setItem('photoApp', action.payload.token);
+            }
         },
     },
 });

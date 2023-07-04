@@ -2,6 +2,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// Redux
+import { useSelector } from 'react-redux';
+
 // MUI Components
 import { Box, Fab, Stack } from '@mui/material';
 
@@ -19,6 +22,9 @@ import BlogCard from './BlogCard';
 
 function Blogs() {
     const navigate = useNavigate();
+
+    // Check if user is signed in
+    const isSignedIn = useSelector((state) => state.auth.isSignedIn);
 
     const observer = useRef();
     const [blogs, setBlogs] = useState(null);
@@ -90,20 +96,23 @@ function Blogs() {
                     </Stack>
                 )}
             </RouteContent>
-            <Fab
-                variant='extended'
-                onClick={goToCreateBlog}
-                color='primary'
-                aria-label='Create a new blog'
-                sx={{
-                    position: 'fixed',
-                    bottom: 16,
-                    right: 16,
-                    zIndex: 1000,
-                }}
-            >
-                <CreateIcon /> &nbsp;&nbsp; Create a new blog
-            </Fab>
+
+            {isSignedIn && (
+                <Fab
+                    variant='extended'
+                    onClick={goToCreateBlog}
+                    color='primary'
+                    aria-label='Create a new blog'
+                    sx={{
+                        position: 'fixed',
+                        bottom: 16,
+                        right: 16,
+                        zIndex: 1000,
+                    }}
+                >
+                    <CreateIcon /> &nbsp;&nbsp; Create a new blog
+                </Fab>
+            )}
         </Box>
     );
 }

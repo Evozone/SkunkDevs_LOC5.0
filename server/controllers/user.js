@@ -113,6 +113,36 @@ export const searchAll = async (req, res) => {
     }
 };
 
+// Search one user by username
+export const searchOneByUsername = async (req, res) => {
+    try {
+        const username = req.params.username;
+
+        const user = await UserModel.findOne({ username: username }).exec();
+
+        if (user) {
+            res.status(200).json({
+                success: true,
+                result: user,
+                message: 'User found',
+            });
+        } else {
+            res.status(404).json({
+                success: false,
+                message: 'User not found',
+            });
+        }
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Something went wrong',
+            error: error.message,
+        });
+        console.log(error);
+    }
+};
+
 // Search one user by uid
 export const searchOneByUid = async (req, res) => {
     try {
@@ -167,10 +197,18 @@ export const updateUser = async (req, res) => {
                 location,
             }, { new: true }).exec();
 
+            // New token
+            const token = jwt.sign(
+                { ...updatedUser._doc },
+                process.env.HMS_SECRET_APP,
+                {
+                    expiresIn: '100h',
+                }
+            );
 
             res.status(200).json({
                 success: true,
-                result: updatedUser,
+                result: { ...updatedUser._doc, token },
                 message: 'User updated',
             });
         }

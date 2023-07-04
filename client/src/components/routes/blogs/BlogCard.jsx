@@ -50,7 +50,7 @@ export default function BlogCard({ blog, index, lastBlogRef = null }) {
                     component='div'
                     sx={{ fontFamily: 'Geologica, sans-serif' }}
                 >
-                    {blog.title}
+                    {blog.title.slice(0, 50) + '...'}
                 </Typography>
 
                 <Typography
