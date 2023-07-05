@@ -9,6 +9,7 @@ import { Box } from '@mui/system';
 import axios from 'axios';
 
 // Redux
+import { useSelector } from 'react-redux';
 import {
     startLoading,
     stopLoading,
@@ -16,10 +17,11 @@ import {
 
 // Components
 import Hero from './Hero';
-import AddPost from './addPost/AddPost';
+import AddPostButton from './addPost/AddPostButton';
 
 export default function Explore() {
     const dispatch = useDispatch();
+    const isSignedIn = useSelector((state) => state.auth.isSignedIn);
 
     const observer = useRef();
     const [posts, setPosts] = useState(null);
@@ -75,7 +77,7 @@ export default function Explore() {
                     backgroundColor: 'background.paper',
                 }}
             ></Box>
-            <AddPost {...{ posts, setPosts }} />
+            {isSignedIn && <AddPostButton {...{ posts, setPosts }} />}
         </Box>
     );
 }

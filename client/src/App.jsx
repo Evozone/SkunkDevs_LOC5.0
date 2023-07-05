@@ -33,6 +33,7 @@ import EditBlog from './components/routes/blogs/edit_blog/EditBlog';
 import Account from './components/routes/account/Account';
 import PersonalCall from './components/routes/connect/chat_app/ca_right_side/one_chat/PersonalCall';
 import Profile from './components/routes/profile/Profile';
+import AddPost from './components/routes/newpost/AddPost';
 
 function App() {
     const dispatch = useDispatch();
@@ -94,7 +95,11 @@ function App() {
             <Notify />
             <Navbar {...{ themeChange, mode }} />
             <Routes>
+                {/* Explore */}
                 <Route path='/' element={<Explore />} />
+
+                {/* Add a new post */}
+                <Route path='/addPost' element={<AddPost />} />
 
                 {/* Spaces */}
                 <Route
