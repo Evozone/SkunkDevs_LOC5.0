@@ -16,11 +16,11 @@ import axios from 'axios';
 
 // Custom Components
 import AL_TextInput from './AL_TextInput';
-import AL_BudgetSlider from './AL_BudgetSlider';
 import AL_Location from './AL_Location';
 import AL_Buttons from './AL_Buttons';
 import AL_Tags from './AL_Tags';
 import AL_Time from './AL_Time';
+import AL_Budget from './AL_Budget';
 
 export default function AddListing({ fetchListings }) {
     const dispatch = useDispatch();
@@ -110,7 +110,7 @@ export default function AddListing({ fetchListings }) {
             >
                 <Stack spacing={2}>
                     <AL_TextInput {...{ listingData, handleChange }} />
-                    <AL_BudgetSlider
+                    <AL_Budget
                         {...{ listingData, handleChange, setListingData }}
                     />
                     <AL_Location {...{ listingData, setListingData }} />

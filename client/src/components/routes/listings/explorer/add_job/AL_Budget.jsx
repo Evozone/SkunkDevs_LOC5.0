@@ -2,13 +2,7 @@
 import React, { useState } from 'react';
 
 // Material UI
-import {
-    Typography,
-    Slider,
-    Autocomplete,
-    TextField,
-    Stack,
-} from '@mui/material';
+import { Typography, Autocomplete, TextField, Stack } from '@mui/material';
 
 // External Libraries
 import currencyCodes from 'currency-codes';
@@ -16,7 +10,7 @@ import currencyCodes from 'currency-codes';
 // Get the list of valid currency codes
 const currencies = currencyCodes.codes();
 
-export default function AL_BudgetSlider({
+export default function AL_Budget({
     listingData,
     handleChange,
     setListingData,
@@ -51,20 +45,19 @@ export default function AL_BudgetSlider({
                     )}
                     sx={{ width: '50%' }}
                 />
-                <Slider
-                    aria-label='Budget'
+                <TextField
+                    id='budget'
+                    label='Budget'
+                    type='number'
                     name='budget'
-                    valueLabelDisplay='auto'
-                    value={listingData.budget}
+                    value={listingData.budget || ''}
                     onChange={handleChange}
-                    step={100}
-                    min={0}
-                    max={10000}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    variant='outlined'
                     required
-                    marks={[
-                        { value: 0, label: '0' },
-                        { value: 10000, label: '10K' },
-                    ]}
+                    sx={{ width: '50%' }}
                 />
             </Stack>
         </>
