@@ -1,5 +1,4 @@
 // React
-import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Redux
@@ -14,6 +13,12 @@ import PodcastsIcon from '@mui/icons-material/Podcasts';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import PeopleIcon from '@mui/icons-material/People';
 import ListIcon from '@mui/icons-material/List';
+
+import PropTypes from 'prop-types';
+
+RouteSwticher.propTypes = {
+    lightModeColor: PropTypes.string,
+};
 
 export default function RouteSwticher({ lightModeColor }) {
     const navigate = useNavigate();
@@ -40,10 +45,19 @@ export default function RouteSwticher({ lightModeColor }) {
 
     let currentRouteName = routes.find(
         (route) => route.path === currentRoutePath
-    ).name;
+    )
+        ? routes.find((route) => route.path === currentRoutePath).name
+        : 'Explore';
 
     const handleChange = (event) => {
         const path = routes.find((route) => route.name === event.target.value);
+
+        // Check if the path exists
+        if (path.path === undefined) {
+            // Navigate to a default route or show an error message
+            navigate('/');
+            return;
+        }
 
         window.localStorage.setItem('photoAppLastPage', path.path);
 

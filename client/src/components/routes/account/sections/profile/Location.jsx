@@ -1,5 +1,5 @@
 // React
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 // Material-UI
 import { TextField, Autocomplete, Stack, Typography } from '@mui/material';
@@ -9,6 +9,14 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 // External Libraries
 import axios from 'axios';
+
+// PropTypes
+import PropTypes from 'prop-types';
+
+Location.propTypes = {
+    formData: PropTypes.object.isRequired,
+    setFormData: PropTypes.func.isRequired,
+};
 
 export default function Location({ formData, setFormData }) {
     const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
@@ -67,8 +75,9 @@ export default function Location({ formData, setFormData }) {
                 }}
             >
                 <LocationOnIcon sx={{ mr: 1 }} fontSize='large' />
-                {formData.location.city},{' '}
-                {regionNames.of(formData.location.country)}
+                {formData.location.city},
+                {formData.location.country &&
+                    regionNames.of(formData.location.country)}
             </Typography>
             <Autocomplete
                 fullWidth

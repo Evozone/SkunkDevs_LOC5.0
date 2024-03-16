@@ -79,7 +79,9 @@ const GoogleOneTapLogin = () => {
                 navigate('/account');
             } else {
                 // 2. User already exists
-                navigate('/' + window.localStorage.getItem('photoAppLastPage'));
+                navigate(
+                    '/' + window.localStorage.getItem('photoAppLastPage') || ''
+                );
             }
 
             dispatch(stopLoading());

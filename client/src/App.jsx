@@ -73,7 +73,9 @@ function App() {
                         dispatch(signIn({ ...decodedToken, token }));
                         if (window.location.pathname === '/') {
                             navigate(
-                                '/' + localStorage.getItem('photoAppLastPage')
+                                '/' +
+                                    localStorage.getItem('photoAppLastPage') ||
+                                    ''
                             );
                         }
                     } catch (err) {

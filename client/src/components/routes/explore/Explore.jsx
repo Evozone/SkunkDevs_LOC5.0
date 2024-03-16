@@ -34,7 +34,6 @@ export default function Explore() {
         async function getPosts() {
             try {
                 dispatch(startLoading());
-
                 const postsFromServer = await axios.get(
                     `${
                         import.meta.env.VITE_SERVER_URL
@@ -49,7 +48,7 @@ export default function Explore() {
                 dispatch(stopLoading());
             }
         }
-        getPosts();
+        // getPosts();
     }, [filters]);
 
     const lastPostRef = useCallback(
