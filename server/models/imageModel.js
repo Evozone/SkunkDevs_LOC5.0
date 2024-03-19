@@ -20,7 +20,8 @@ const imageSchema = new mongoose.Schema({
         ref: 'User',
     },
     createdAt: {
-        type: String,
+        type: Date,
+        default: Date.now,
     },
     uid: {
         type: String,
@@ -31,6 +32,9 @@ const imageSchema = new mongoose.Schema({
             commentBy: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'User',
+            },
+            likes: {
+                type: Number,
             },
             commentAt: {
                 type: String,
@@ -43,7 +47,7 @@ const imageSchema = new mongoose.Schema({
     likes: {
         type: Number,
     },
-    description: {
+    caption: {
         type: String,
     },
     monetizeType: {
@@ -53,6 +57,7 @@ const imageSchema = new mongoose.Schema({
     parentCollection: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Collection',
+        default: null,
     },
 });
 

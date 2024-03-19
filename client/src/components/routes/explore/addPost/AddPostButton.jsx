@@ -8,13 +8,20 @@ import AddIcon from '@mui/icons-material/Add';
 // Components
 import DynamicFab from '../../layout/DynamicFab';
 
-export default function AddPost() {
+import AddPostInterface from '../../newpost/AddPostInterface.jsx'; // Import the AddPostInterface component
+
+export default function AddPostButton() {
     const navigate = useNavigate();
+
+    const handleAddPostClick = () => {
+        navigate('/addPost');
+    };
+
     return (
         <DynamicFab
-            onClick={() => navigate('/addPost')}
+            onClick={handleAddPostClick}
             icon={<AddIcon />}
-            label='add new post'
-        />
+            label='Add New Post'
+        /> 
     );
-}
+} 

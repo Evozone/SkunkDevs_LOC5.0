@@ -10,6 +10,7 @@ import AddPhotoAlternate from '@mui/icons-material/AddPhotoAlternate';
 // Components
 import RouteHeader from '../layout/RouteHeader';
 import RouteContent from '../layout/RouteContent';
+import AddPostInterface from './AddPostInterface'; // Import the AddPostInterface component
 
 export default function AddPost() {
     return (
@@ -20,7 +21,9 @@ export default function AddPost() {
                     icon: <AddPhotoAlternate sx={{ fontSize: 60 }} />,
                 }}
             />
-            <RouteContent></RouteContent>
+            <RouteContent>
+                <AddPostInterface />    
+            </RouteContent>
         </Box>
     );
 }

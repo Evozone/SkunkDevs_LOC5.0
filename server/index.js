@@ -16,7 +16,7 @@ import userRouter from './routes/users.js';
 import roomsRouter from './routes/rooms.js';
 import cityRouter from './routes/cities.js';
 import blogRouter from './routes/blogs.js';
-import exploreRouter from './routes/explore.js';
+import imageRouter from './routes/images.js';
 import chatRouter from './routes/chats.js';
 import messageRouter from './routes/messages.js';
 import listingRouter from './routes/listings.js';
@@ -45,7 +45,7 @@ app.use('/api/rooms', roomsRouter);
 app.use('/api/chats', chatRouter);
 app.use('/api/cities', cityRouter);
 app.use('/api/messages', messageRouter);
-app.use('/api/explore', exploreRouter);
+app.use('/api/images', imageRouter);
 app.use('/api/listings', listingRouter);
 
 // MongoDB connection
@@ -57,7 +57,7 @@ mongoose
 
 const server = app.listen(PORT, () =>
     console.log(
-        "Hello! This is photo app's backend, listening on port - ",
+        "Hello! This is ShutterSpace's backend, listening on port - ",
         PORT
     )
 );
@@ -270,5 +270,5 @@ app.get('/auth', (req, res) => {
 
 // Default route
 app.get('/', (req, res) => {
-    res.send("Hello, welocme to photo app's API");
+    res.send("Hello, Welocme to ShutterSpace's API");
 });

@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 
 // Material UI - Components
-import { Box } from '@mui/system';
+import { Box, Grid } from '@mui/material';
 
 // External Packages
 import axios from 'axios';
@@ -38,7 +38,7 @@ export default function Explore() {
                 const postsFromServer = await axios.get(
                     `${
                         import.meta.env.VITE_SERVER_URL
-                    }/api/explore/getPostsByFilter/?filter=${filters}`
+                    }/api/images/?filter=${filters}`
                 );
                 setPosts(postsFromServer.data.data.result);
                 console.log(posts);
@@ -49,8 +49,8 @@ export default function Explore() {
                 dispatch(stopLoading());
             }
         }
-        // getPosts();
-    }, [filters]);
+        getPosts();
+    }, []);
 
     const lastPostRef = useCallback(
         (node) => {
@@ -76,8 +76,23 @@ export default function Explore() {
                     placeItems: 'center',
                     backgroundColor: 'background.paper',
                 }}
-            ></Box>
+            >          
+            {/* Grid to display images */}
+            <Grid container spacing={2} style={{ marginTop: '20px' }}>
+                {posts && posts.map((post, index) => (
+                    <Grid item xs={12} sm={6} md={4} key={index}>
+                        <img src={post.imageUrl} alt={`Image ${index}`} style={{ width: '100%', height: 'auto' }} />
+                    </Grid>
+                ))}
+                {loading && <div>Loading...</div>} {/* Add loading indicator */}
+                {!hasMore && <div>No more images</div>} {/* Add message when there are no more images */}
+                <div ref={lastPostRef} style={{ width: '100%', height: '1px' }} /> {/* Ref for infinite scroll */}
+            </Grid>
+            
+            </Box>
             {isSignedIn && <AddPostButton {...{ posts, setPosts }} />}
-        </Box>
-    );
+
+
+</Box>
+    ); 
 }

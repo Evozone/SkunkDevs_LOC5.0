@@ -2,12 +2,20 @@ import ImageModel from '../models/imageModel.js';
 
 export const getPosts = async (req, res) => {
     try {
+        const filter = req.query.filter;
         const PAGE_SIZE = 10;
         let skip = req.query.page ? parseInt(req.query.page) : 0;
-        const images = await ImageModel.find()
+
+        let query = {};
+        if (filter) {
+            query.monetizeType = filter;
+        }
+
+        const images = await ImageModel.find(query)
             .sort({ createdAt: -1 })
             .skip(skip * PAGE_SIZE)
             .limit(PAGE_SIZE);
+
         res.status(200).json({
             success: true,
             data: {
@@ -22,49 +30,34 @@ export const getPosts = async (req, res) => {
     }
 };
 
-export const getPostsByFilter = async (req, res) => {
-    try {
-        const filter = req.query.filter;
-        const images = await ImageModel.find({ monetizeType: filter });
-        res.status(200).json({
-            success: true,
-            data: {
-                result: images,
-            },
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            data: { error },
-        });
-    }
-}
-
 export const createPost = async (req, res) => {
     const {
-        imageURL,
+        imageUrl,
         thumbnailUrl,
-        description,
+        caption,
         tags,
+        createdBy,
         createdAt,
         uid,
         comments,
-        views,
+        likes,
         monetizeType,
-        createdBy,
+        parentCollection,
     } = req.body;
+
     try {
         const result = await ImageModel.create({
-            imageUrl: imageURL,
-            thumbnailUrl,
-            description,
-            tags,
-            createdAt,
-            uid,
-            comments,
-            views,
-            monetizeType,
-            createdBy,
+        imageUrl,
+        thumbnailUrl,
+        caption,
+        tags,
+        createdBy,
+        createdAt,
+        uid,
+        comments,
+        likes,
+        monetizeType,
+        parentCollection,
         });
         res.status(201).json({
             success: true,
@@ -73,6 +66,7 @@ export const createPost = async (req, res) => {
             },
         });
     } catch (error) {
+        console.log(error);
         res.status(500).json({
             success: false,
             data: { error },

@@ -173,4 +173,4 @@ export const deleteListing = async (req, res) => {
         });
         console.log(error);
     }
-};
+}; 

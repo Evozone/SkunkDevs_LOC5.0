@@ -30,7 +30,7 @@ export default function ExplorerListings() {
         try {
             const res = await axios.get(
                 `${import.meta.env.VITE_SERVER_URL}/api/listings?authorId=${
-                    currentUser.uid
+                    currentUser.uid 
                 }`
             );
             setListings(res.data.result);
