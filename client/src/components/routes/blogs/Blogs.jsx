@@ -19,12 +19,13 @@ import RouteContent from '../layout/RouteContent';
 // External Libraries
 import axios from 'axios';
 import BlogCard from './BlogCard';
-
+ cv 
 function Blogs() {
     const navigate = useNavigate();
 
     // Check if user is signed in
     const isSignedIn = useSelector((state) => state.auth.isSignedIn);
+    const currentUser = useSelector((state) => state.auth);
 
     const observer = useRef();
     const [blogs, setBlogs] = useState(null);
@@ -97,7 +98,7 @@ function Blogs() {
                 )}
             </RouteContent>
 
-            {isSignedIn && (
+            {isSignedIn && currentUser.role === 'photographer' && (
                 <Fab
                     variant='extended'
                     onClick={goToCreateBlog}
@@ -116,5 +117,4 @@ function Blogs() {
         </Box>
     );
 }
-
 export default Blogs;
