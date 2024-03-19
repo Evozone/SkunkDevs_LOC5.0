@@ -45,6 +45,10 @@ const listingSchema = new mongoose.Schema({
     authorEmail: {
         type: String,
     },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 export default mongoose.model('Listing', listingSchema);

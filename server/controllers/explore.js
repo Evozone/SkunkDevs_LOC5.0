@@ -1,4 +1,4 @@
-import ImageModel from '../models/imagesModel.js';
+import ImageModel from '../models/imageModel.js';
 
 export const getPosts = async (req, res) => {
     try {

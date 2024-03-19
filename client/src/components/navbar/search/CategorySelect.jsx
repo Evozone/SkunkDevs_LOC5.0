@@ -5,10 +5,10 @@ import React from 'react';
 import { Select, MenuItem } from '@mui/material';
 
 const categories = [
-    'Everything',
+    // 'Everything',
     'Free',
-    'Standard',
-    'Collections',
+    'Premium',
+    //'Collections
     'Photographers',
 ];
 

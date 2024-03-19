@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const imagesSchema = new mongoose.Schema({
+const imageSchema = new mongoose.Schema({
     imageUrl: {
         type: String,
     },
@@ -40,7 +40,7 @@ const imagesSchema = new mongoose.Schema({
             },
         },
     ],
-    views: {
+    likes: {
         type: Number,
     },
     description: {
@@ -48,8 +48,12 @@ const imagesSchema = new mongoose.Schema({
     },
     monetizeType: {
         type: String,
-        default: 'free',
+        default: 'free', enum: ['free', 'premium']
+    },
+    parentCollection: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Collection',
     },
 });
 
-export default mongoose.model('Image', imagesSchema);
+export default mongoose.model('Image', imageSchema);

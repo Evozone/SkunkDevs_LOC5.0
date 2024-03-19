@@ -77,13 +77,25 @@ export default function AddListing({ fetchListings }) {
             fetchListings();
         } catch (err) {
             console.log(err);
-            dispatch(
-                notify({
-                    open: true,
-                    severity: 'error',
-                    message: 'Something went wrong, please try again later',
-                })
-            );
+            // If error is OneListingPerDayError, notify user
+            if (err.response.status === 400) {
+                dispatch(
+                    notify({
+                        open: true,
+                        severity: 'error',
+                        message:
+                            'You can only create one listing per day, please try again tomorrow',
+                    })
+                );
+            } else {
+                dispatch(
+                    notify({
+                        open: true,
+                        severity: 'error',
+                        message: 'Something went wrong, please try again later',
+                    })
+                );
+            }
         }
     };
 

@@ -40,6 +40,25 @@ export const createListing = async (req, res) => {
         convertedBudget = budget;
     }
 
+    // Fetch all listings which are active and have the same authorId
+    const authorListings = await ListingModel.find({ authorId });
+
+    // If any of the listings have a created date within the last 24 hours, return an error
+    const now = new Date();
+    const last24Hours = new Date(now - 24 * 60 * 60 * 1000);
+
+    // If there are any listings, check if any are within the last 24 hours
+    if (authorListings.length != 0) {
+        const recentListings = authorListings.filter((listing) => new Date(listing.createdAt) > last24Hours);
+        if (recentListings.length > 0){
+            res.status(400).json({
+                success: false,
+                message: 'You can only create 1 listing every 24 hours',
+            });
+            return;
+        }
+    }
+
     // Create new listing
     try {
         const result = await ListingModel.create({
@@ -54,6 +73,7 @@ export const createListing = async (req, res) => {
             authorName,
             authorUsername,
             authorEmail,
+            createdAt: new Date().toISOString(),
         });
         res.status(201).json({
             success: true,

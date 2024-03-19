@@ -19,7 +19,7 @@ import RouteContent from '../layout/RouteContent';
 // External Libraries
 import axios from 'axios';
 import BlogCard from './BlogCard';
- cv 
+ 
 function Blogs() {
     const navigate = useNavigate();
 
@@ -114,7 +114,7 @@ function Blogs() {
                     <CreateIcon /> &nbsp;&nbsp; Create a new blog
                 </Fab>
             )}
-        </Box>
+        </Box> 
     );
 }
 export default Blogs;

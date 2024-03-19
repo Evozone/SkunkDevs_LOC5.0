@@ -11,6 +11,7 @@ import { Box, Checkbox, Stack } from '@mui/material';
 import { List as ListIcon } from '@mui/icons-material';
 
 // Other Components
+import { StyledButton } from '../../helpers/StyledMUI';
 import RouteHeader from '../layout/RouteHeader';
 import RouteContent from '../layout/RouteContent';
 import ExplorerListings from './explorer/ExplorerListings';
@@ -36,14 +37,11 @@ export default function Listings() {
                     // Use checkbox to toggle between explorer and photographer listings
                     <Stack spacing={2} sx={{ width: '100%' }}>
                         <Stack direction='row' alignItems='center' spacing={1}>
-                            <h3>Create/View my own listings instead</h3>
-                            <Checkbox
-                                checked={showExplorer}
-                                onChange={() => setShowExplorer(!showExplorer)}
-                                inputProps={{
-                                    'aria-label': 'show explorer listings',
-                                }}
-                            />
+                            <StyledButton
+                                variant='contained'
+                                onClick={() => setShowExplorer(!showExplorer)}>
+                                    Go to my Listings
+                            </StyledButton>
                         </Stack>
 
                         {showExplorer ? (
