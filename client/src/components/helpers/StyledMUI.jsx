@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 // Material UI components
 import Swtich from '@mui/material/Switch';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 
 export const StyledSwitch = styled(Swtich)(() => ({
     width: 65,
@@ -39,6 +40,15 @@ export const StyledButton = styled(Button)(() => ({
     '&:disabled': {
         borderWidth: '2px',
     },
+}));
+
+export const IslandBox = styled(Box)(() => ({
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    padding: '1rem',
+    margin: '1rem 0 1rem 1rem',
+    borderRadius: '10px',
 }));
 
 export const dateTimeinputStyle = {

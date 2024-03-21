@@ -1,22 +1,29 @@
 import { useState } from 'react';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import TextField from '@mui/material/TextField';
-import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import Button from '@mui/material/Button';
+import {
+    Box,
+    Paper,
+    TextField,
+    Tooltip,
+    IconButton,
+    MenuItem,
+    Select,
+    Button,
+} from '@mui/material';
 import { v4 as uuid } from 'uuid';
 import axios from 'axios';
 
-import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import { useDispatch, useSelector } from 'react-redux';
 import { notify } from '../../../features/notify/notifySlice';
 import AddPhotoAlternate from '@mui/icons-material/AddPhotoAlternate';
 import storage from '../../../appwrite';
 
 const AddPostInterface = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const userId = useSelector((state) => state.auth.uid);
 
     const [image, setImage] = useState(null);
     const [localURL, setLocalURL] = useState('');
@@ -52,6 +59,8 @@ const AddPostInterface = () => {
         formData.append('description', postForm.description);
         formData.append('tags', postForm.tags);
         formData.append('monetizeType', postForm.monetizeType);
+        formData.append('createdBy', userId);
+        formData.append('altText', postForm.altText);
 
         try {
             const id = uuid();
@@ -84,6 +93,7 @@ const AddPostInterface = () => {
                     message: 'Post created successfully',
                 })
             );
+            navigate('/');
         } catch (error) {
             console.log(error);
             dispatch(
@@ -97,14 +107,7 @@ const AddPostInterface = () => {
     };
 
     return (
-        <Box
-            sx={{
-                overflowY: 'auto',
-                mt: 2,
-                padding: '5rem',
-                pt: 0,
-            }}
-        >
+        <Box sx={{ overflowY: 'auto', mt: 2, padding: '5rem', pt: 0 }}>
             <Paper
                 sx={{
                     p: 2,
@@ -172,7 +175,7 @@ const AddPostInterface = () => {
                         type='text'
                         name='description'
                         id='outlined-required'
-                        label='Description'
+                        label='Caption'
                         value={postForm.description}
                         multiline
                         onChange={(e) =>

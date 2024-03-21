@@ -2,13 +2,18 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 
 // Material UI Components
-import { Grid, Typography, Stack } from '@mui/material';
+import { Typography, Stack } from '@mui/material';
+
+import { useSelector } from 'react-redux';
+
+import { useNavigate } from 'react-router-dom';
 
 // External Libraries
 import axios from 'axios';
 
 // Custom Components
 import BlogCard from '../../../blogs/BlogCard';
+import { IslandBox, StyledButton } from '../../../../helpers/StyledMUI';
 
 export default function UserBlogs({ user }) {
     const observer = useRef();
@@ -16,6 +21,11 @@ export default function UserBlogs({ user }) {
     const [pageNum, setPageNum] = useState(0);
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
+
+    // Mode
+    const mode = localStorage.getItem('photoAppTheme');
+    const currentUser = useSelector((state) => state.auth.uid);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getBlogs = async () => {
@@ -53,11 +63,30 @@ export default function UserBlogs({ user }) {
     );
 
     return (
-        <Grid item xs={12} sx={{ p: 5 }}>
-            {/* Title */}
-            <Typography variant='h4' sx={{ mb: '1rem' }}>
-                {user?.name}'s Blogs
-            </Typography>
+        <IslandBox
+            sx={{ backgroundColor: mode === 'light' ? 'grey.200' : 'grey.900' }}
+        >
+            <Stack
+                direction='row'
+                alignItems='center'
+                justifyContent='space-between'
+                spacing={2}
+            >
+                <Typography variant='h5' sx={{ mb: '1rem' }}>
+                    {user?.name}'s Blogs
+                </Typography>
+
+                {currentUser === user?.uid && (
+                    <StyledButton
+                        variant='outlined'
+                        color='primary'
+                        size='small'
+                        onClick={() => navigate('/blogs/create')}
+                    >
+                        Make a new Blog
+                    </StyledButton>
+                )}
+            </Stack>
             {blogs ? (
                 <Stack spacing={2} sx={{ width: '100%' }}>
                     {blogs.map((blog, index) => {
@@ -71,6 +100,6 @@ export default function UserBlogs({ user }) {
             ) : (
                 <Typography variant='body1'>No blogs yet</Typography>
             )}
-        </Grid>
+        </IslandBox>
     );
 }

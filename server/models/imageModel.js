@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 const imageSchema = new mongoose.Schema({
     imageUrl: {
         type: String,
+        required: [true, 'Image URL is required'],
     },
     thumbnailUrl: {
         type: String,
@@ -14,16 +15,12 @@ const imageSchema = new mongoose.Schema({
         type: String,
     },
     createdBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        type: String,
+        required: [true, 'User ID is required'],
     },
     createdAt: {
         type: Date,
         default: Date.now,
-    },
-    uid: {
-        type: String,
-        unique: true,
     },
     comments: [
         {
@@ -44,6 +41,7 @@ const imageSchema = new mongoose.Schema({
     },
     description: {
         type: String,
+        required: [true, 'Description is required'],
     },
     monetizeType: {
         type: String,
