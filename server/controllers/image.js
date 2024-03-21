@@ -2,11 +2,14 @@ import ImageModel from '../models/imageModel.js';
 
 export const getPosts = async (req, res) => {
     try {
-        const filter = req.query.filter;
+        const { filter, user } = req.query;
         const PAGE_SIZE = 10;
         let skip = req.query.page ? parseInt(req.query.page) : 0;
 
         let query = {};
+        if (user) {
+            query.createdBy = user;
+        }
         if (filter) {
             query.monetizeType = filter;
         }
@@ -38,12 +41,13 @@ export const createPost = async (req, res) => {
         tags,
         createdBy,
         createdAt,
-        uid,
         comments,
-        likes,
         monetizeType,
         parentCollection,
+        altText,
     } = req.body;
+
+    const likes = 0;
 
     try {
         const result = await ImageModel.create({
@@ -53,11 +57,11 @@ export const createPost = async (req, res) => {
             tags,
             createdBy,
             createdAt,
-            uid,
             comments,
             likes,
             monetizeType,
             parentCollection,
+            altText,
         });
         res.status(201).json({
             success: true,
