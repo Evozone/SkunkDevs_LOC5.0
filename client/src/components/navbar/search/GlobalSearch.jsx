@@ -4,11 +4,11 @@ import React, { useState } from 'react';
 import { FormControl } from '@mui/material';
 import CategorySelect from './CategorySelect';
 import SearchBar from './SearchBar';
+import { useSelector } from 'react-redux';
 
 export default function GlobalSearch({ lightModeColor }) {
     const [search, setSearch] = useState('');
-    const [category, setCategory] = useState('Free');
-
+    const category = useSelector((state) => state.explore.category);
     const handleSearch = () => {
         console.log('searching for', search, 'in', category);
     };
@@ -46,7 +46,7 @@ export default function GlobalSearch({ lightModeColor }) {
                 },
             }}
         >
-            <CategorySelect {...{ category, setCategory, lightModeColor }} />
+            <CategorySelect {...{ lightModeColor }} />
             <SearchBar
                 {...{ search, setSearch, handleSearch, lightModeColor }}
             />
