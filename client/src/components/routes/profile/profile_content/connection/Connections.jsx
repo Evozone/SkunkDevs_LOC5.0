@@ -52,7 +52,7 @@ export default function Connections({ user }) {
                 border: '3px dotted #ccc',
                 borderRadius: 3,
                 padding: '1rem',
-                mt: 1,
+                margin: '1rem 0',
             }}
         >
             {/* Heading */}
