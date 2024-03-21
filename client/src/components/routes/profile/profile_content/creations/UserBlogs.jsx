@@ -4,12 +4,16 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 // Material UI Components
 import { Typography, Stack } from '@mui/material';
 
+import { useSelector } from 'react-redux';
+
+import { useNavigate } from 'react-router-dom';
+
 // External Libraries
 import axios from 'axios';
 
 // Custom Components
 import BlogCard from '../../../blogs/BlogCard';
-import { IslandBox } from '../../../../helpers/StyledMUI';
+import { IslandBox, StyledButton } from '../../../../helpers/StyledMUI';
 
 export default function UserBlogs({ user }) {
     const observer = useRef();
@@ -20,6 +24,8 @@ export default function UserBlogs({ user }) {
 
     // Mode
     const mode = localStorage.getItem('photoAppTheme');
+    const currentUser = useSelector((state) => state.auth.uid);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const getBlogs = async () => {
@@ -60,9 +66,27 @@ export default function UserBlogs({ user }) {
         <IslandBox
             sx={{ backgroundColor: mode === 'light' ? 'grey.200' : 'grey.900' }}
         >
-            <Typography variant='h5' sx={{ mb: '1rem' }}>
-                {user?.name}'s Blogs
-            </Typography>
+            <Stack
+                direction='row'
+                alignItems='center'
+                justifyContent='space-between'
+                spacing={2}
+            >
+                <Typography variant='h5' sx={{ mb: '1rem' }}>
+                    {user?.name}'s Blogs
+                </Typography>
+
+                {currentUser === user?.uid && (
+                    <StyledButton
+                        variant='outlined'
+                        color='primary'
+                        size='small'
+                        onClick={() => navigate('/blogs/create')}
+                    >
+                        Make a new Blog
+                    </StyledButton>
+                )}
+            </Stack>
             {blogs ? (
                 <Stack spacing={2} sx={{ width: '100%' }}>
                     {blogs.map((blog, index) => {
