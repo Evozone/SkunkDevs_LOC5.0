@@ -21,6 +21,7 @@ import {
 // Components
 import Hero from './Hero';
 import AddPostButton from './addPost/AddPostButton';
+import ImagePopup from './ImagePopup';
 
 export default function Explore() {
     const dispatch = useDispatch();
@@ -33,6 +34,7 @@ export default function Explore() {
     const [hasMore, setHasMore] = useState(true);
     const [loading, setLoading] = useState(false);
     const [hoverIndex, setHoverIndex] = useState(null);
+    const [selectedPost, setSelectedPost] = useState(null);
 
     useEffect(() => {
         async function getPosts() {
@@ -68,6 +70,12 @@ export default function Explore() {
         },
         [loading, hasMore]
     );
+    const handleImageClick = (post) => {
+        setSelectedPost(post);
+    };
+    const handleClosePopup = () => {
+        setSelectedPost(null);
+    };
 
     return (
         <Box className='route-container'>
@@ -86,6 +94,7 @@ export default function Explore() {
                         posts.map((post, index) => (
                             <Grid item xs={12} sm={6} md={4} key={index}>
                                 <Box
+                                    onClick={() => handleImageClick(post)}
                                     onMouseEnter={() => setHoverIndex(index)}
                                     onMouseLeave={() => setHoverIndex(null)}
                                     sx={{
@@ -182,6 +191,11 @@ export default function Explore() {
                 </Grid>
             </Box>
             {isSignedIn && <AddPostButton {...{ posts, setPosts }} />}
+            <ImagePopup
+                open={!!selectedPost}
+                handleClose={handleClosePopup}
+                post={selectedPost}
+            />
         </Box>
     );
 }
