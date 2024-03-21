@@ -34,7 +34,7 @@ export const createPost = async (req, res) => {
     const {
         imageUrl,
         thumbnailUrl,
-        caption,
+        description,
         tags,
         createdBy,
         createdAt,
@@ -47,17 +47,17 @@ export const createPost = async (req, res) => {
 
     try {
         const result = await ImageModel.create({
-        imageUrl,
-        thumbnailUrl,
-        caption,
-        tags,
-        createdBy,
-        createdAt,
-        uid,
-        comments,
-        likes,
-        monetizeType,
-        parentCollection,
+            imageUrl,
+            thumbnailUrl,
+            description,
+            tags,
+            createdBy,
+            createdAt,
+            uid,
+            comments,
+            likes,
+            monetizeType,
+            parentCollection,
         });
         res.status(201).json({
             success: true,
@@ -115,23 +115,21 @@ export const search = async (req, res) => {
         const monetizeType = req.params.monetizeType;
         const keyword = req.query.search
             ? {
-                $or: [
-                    {
-                        tags: {
-                            $elemMatch: {
-                                $regex: req.query.search,
-                                $options: 'i',
-                            },
-                        },
-                    },
-                    {
-                        description: {
-                            $regex: req.query.search,
-                            $options: 'i',
-                        },
-                    },
-                ],
-            }
+                  $or: [
+                      {
+                          tags: {
+                              $regex: req.query.search,
+                              $options: 'i',
+                          },
+                      },
+                      {
+                          description: {
+                              $regex: req.query.search,
+                              $options: 'i',
+                          },
+                      },
+                  ],
+              }
             : {};
         const users = await ImageModel.find(keyword).find({
             monetizeType: monetizeType,

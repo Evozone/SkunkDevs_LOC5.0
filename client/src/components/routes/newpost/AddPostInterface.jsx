@@ -1,47 +1,82 @@
-import React, { useState } from 'react';
-
-import { notify } from '../../../features/notify/notifySlice';
-import { useDispatch } from 'react-redux';
-
+import { useState } from 'react';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import TextField from '@mui/material/TextField';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Button from '@mui/material/Button';
+import { v4 as uuid } from 'uuid';
 import axios from 'axios';
 
-const AddPostInterface = () => {
+import { useDispatch } from 'react-redux';
+import { notify } from '../../../features/notify/notifySlice';
+import AddPhotoAlternate from '@mui/icons-material/AddPhotoAlternate';
+import storage from '../../../appwrite';
 
+const AddPostInterface = () => {
     const dispatch = useDispatch();
 
+    const [image, setImage] = useState(null);
+    const [localURL, setLocalURL] = useState('');
     const [postForm, setPostForm] = useState({
-        imageUrl: 'https://picsum.photos/200/300',
-        thumbnailUrl: 'https://picsum.photos/200/300',
-        caption: '',        
-        tags: {},
-        monetizeType: '',
+        imageUrl: '',
+        thumbnailUrl: '',
+        altText: '',
+        description: '',
+        tags: '',
+        monetizeType: 'free',
         // parentCollection: '',
     });
+
+    // Uploading the cover image to Appwrite Storage
+    const handleImageChange = async (e) => {
+        if (e.target.files[0]) {
+            if (!e.target.files[0].type.match('image.*')) {
+                alert('Please select an image');
+                return;
+            }
+        }
+        setImage(e.target.files[0]);
+        const imageSrc = URL.createObjectURL(e.target.files[0]);
+        setLocalURL(imageSrc);
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const dnd = window.localStorage.getItem('photoApp');
 
-        // Complete the form data
-        // ...
-
         const formData = new FormData();
-        formData.append('imageUrl', postForm.imageUrl);
-        formData.append('thumbnailUrl', postForm.thumbnailUrl);
-        formData.append('caption', postForm.caption);
+        formData.append('description', postForm.description);
         formData.append('tags', postForm.tags);
         formData.append('monetizeType', postForm.monetizeType);
-        
+
         try {
-            const response = await axios.post(
-                `${import.meta.env.VITE_SERVER_URL}/api/images`, 
-                formData,
-                {headers: {
-                    'Content-Type': 'application/json',
-                    authorization: `Bearer ${dnd}`,
-                }}
+            const id = uuid();
+            await storage.createFile(
+                import.meta.env.VITE_APPWRITE_BUCKET_ID,
+                id,
+                image
             );
+            const result = storage.getFilePreview(
+                import.meta.env.VITE_APPWRITE_BUCKET_ID,
+                id
+            );
+            formData.append('imageUrl', result.href);
+
+            await axios.post(
+                `${import.meta.env.VITE_SERVER_URL}/api/images`,
+                formData,
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        authorization: `Bearer ${dnd}`,
+                    },
+                }
+            );
+
             dispatch(
                 notify({
                     open: true,
@@ -62,40 +97,177 @@ const AddPostInterface = () => {
     };
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                {/* Caption */}
-                <label htmlFor="caption">Caption</label>
-                <input
-                    type="text"
-                    id="caption"
-                    name="caption"
-                    value={postForm.caption}
-                    onChange={(e) => setPostForm({ ...postForm, caption: e.target.value })}
-                />
-                {/* Tags */}
-                <label htmlFor="tags">Tags</label>
-                <input
-                    type="text"
-                    id="tags"
-                    name="tags"
-                    value={postForm.tags}
-                    onChange={(e) => setPostForm({ ...postForm, tags: e.target.value })}
-                />
-                {/* Monetize Type */}
-                <label htmlFor="monetizeType">Monetize Type</label>
-                <select
-                    id="monetizeType"
-                    name="monetizeType"
-                    value={postForm.monetizeType}
-                    onChange={(e) => setPostForm({ ...postForm, monetizeType: e.target.value })}
+        <Box
+            sx={{
+                overflowY: 'auto',
+                mt: 2,
+                padding: '5rem',
+                pt: 0,
+            }}
+        >
+            <Paper
+                sx={{
+                    p: 2,
+                    mt: 2,
+                    boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.3)',
+                    borderRadius: '15px',
+                }}
+            >
+                <Box
+                    sx={{
+                        alignItems: 'center',
+                        mb: 3,
+                        mt: 3,
+                        display: 'block',
+                    }}
                 >
-                    <option value="free">Free</option>
-                    <option value="premium">Premium</option>
-                </select>
-                <button type="submit">Upload Image</button>
-            </form>
-        </div>
+                    {localURL && (
+                        <img
+                            src={localURL}
+                            loading='lazy'
+                            style={{
+                                width: '100%',
+                                minWidth: '100px',
+                                maxHeight: '400px',
+                                borderRadius: '10px',
+                                objectFit: 'contain',
+                                cursor: 'pointer',
+                                minHeight: '50px',
+                            }}
+                        />
+                    )}
+                    <label
+                        htmlFor='cover'
+                        style={{
+                            fontSize: '1.1rem',
+                            fontWeight: '500',
+                        }}
+                    >
+                        Choose an image -{' '}
+                    </label>
+                    <IconButton sx={{ pb: '4px' }}>
+                        <label htmlFor='sendImage'>
+                            <input
+                                accept='image/*'
+                                id='sendImage'
+                                type='file'
+                                hidden
+                                onChange={handleImageChange}
+                            />
+                            <Tooltip title='Select an Image'>
+                                <AddPhotoAlternate
+                                    fontSize='large'
+                                    sx={{ cursor: 'pointer' }}
+                                />
+                            </Tooltip>
+                        </label>
+                    </IconButton>
+                </Box>
+
+                <form onSubmit={handleSubmit}>
+                    {/* Caption */}
+                    <TextField
+                        fullWidth
+                        required
+                        type='text'
+                        name='description'
+                        id='outlined-required'
+                        label='Description'
+                        value={postForm.description}
+                        multiline
+                        onChange={(e) =>
+                            setPostForm({
+                                ...postForm,
+                                description: e.target.value,
+                            })
+                        }
+                        sx={{
+                            borderRadius: '6px',
+                            mb: 3,
+                            '& .MuiInputBase-input': {
+                                p: 1,
+                            },
+                            '& .MuiInputLabel-root': {
+                                top: -5,
+                                fontSize: '0.9rem',
+                            },
+                        }}
+                    />
+                    <TextField
+                        fullWidth
+                        required
+                        type='text'
+                        name='tags'
+                        id='outlined-required'
+                        label='Tags'
+                        value={postForm.tags}
+                        onChange={(e) =>
+                            setPostForm({ ...postForm, tags: e.target.value })
+                        }
+                        sx={{
+                            borderRadius: '6px',
+                            mb: 3,
+                            '& .MuiInputBase-input': {
+                                p: 1,
+                            },
+                            '& .MuiInputLabel-root': {
+                                top: -5,
+                                fontSize: '0.9rem',
+                            },
+                        }}
+                    />
+                    <TextField
+                        fullWidth
+                        type='text'
+                        id='outlined-required'
+                        label='Alt Text'
+                        name='altText'
+                        value={postForm.altText}
+                        onChange={(e) =>
+                            setPostForm({
+                                ...postForm,
+                                altText: e.target.value,
+                            })
+                        }
+                        sx={{
+                            borderRadius: '6px',
+                            mb: 3,
+                            '& .MuiInputBase-input': {
+                                p: 1,
+                            },
+                            '& .MuiInputLabel-root': {
+                                top: -5,
+                                fontSize: '0.9rem',
+                            },
+                        }}
+                    />
+                    {/* Monetize Type */}
+                    <label htmlFor='monetizeType'>Monetize Type</label>
+                    <Select
+                        id='monetizeType'
+                        name='monetizeType'
+                        value={postForm.monetizeType}
+                        onChange={(e) =>
+                            setPostForm({
+                                ...postForm,
+                                monetizeType: e.target.value,
+                            })
+                        }
+                        label='Monetization Type'
+                        sx={{
+                            ml: 2,
+                        }}
+                    >
+                        <MenuItem value='free'>Free</MenuItem>
+                        <MenuItem value='premium'>Premium</MenuItem>
+                    </Select>
+                    <br />
+                    <Button sx={{ mt: 4 }} type='submit' variant='outlined'>
+                        Upload post
+                    </Button>{' '}
+                </form>
+            </Paper>
+        </Box>
     );
 };
 export default AddPostInterface;

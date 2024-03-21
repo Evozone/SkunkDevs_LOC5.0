@@ -10,11 +10,9 @@ const imageSchema = new mongoose.Schema({
     altText: {
         type: String,
     },
-    tags: [
-        {
-            type: String,
-        },
-    ],
+    tags: {
+        type: String,
+    },
     createdBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -33,9 +31,6 @@ const imageSchema = new mongoose.Schema({
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'User',
             },
-            likes: {
-                type: Number,
-            },
             commentAt: {
                 type: String,
             },
@@ -47,12 +42,13 @@ const imageSchema = new mongoose.Schema({
     likes: {
         type: Number,
     },
-    caption: {
+    description: {
         type: String,
     },
     monetizeType: {
         type: String,
-        default: 'free', enum: ['free', 'premium']
+        default: 'free',
+        enum: ['free', 'premium'],
     },
     parentCollection: {
         type: mongoose.Schema.Types.ObjectId,
