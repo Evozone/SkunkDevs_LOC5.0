@@ -28,6 +28,12 @@ const imageSchema = new mongoose.Schema({
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'User',
             },
+            userName: {
+                type: String,
+            },
+            avatar: {
+                type: String,
+            },
             commentAt: {
                 type: String,
             },
@@ -36,9 +42,13 @@ const imageSchema = new mongoose.Schema({
             },
         },
     ],
-    likes: {
-        type: Number,
-    },
+    likes: [
+        {
+            likeBy: {
+                type: String,
+            },
+        },
+    ],
     description: {
         type: String,
         required: [true, 'Description is required'],

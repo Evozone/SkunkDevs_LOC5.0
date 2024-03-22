@@ -35,7 +35,6 @@ export default function Explore() {
     const [loading, setLoading] = useState(false);
     const [hoverIndex, setHoverIndex] = useState(null);
     const [selectedPost, setSelectedPost] = useState(null);
-
     useEffect(() => {
         async function getPosts() {
             try {
@@ -46,7 +45,6 @@ export default function Explore() {
                     }/api/images/?filter=${category}`
                 );
                 setPosts(postsFromServer.data.data.result);
-                console.log(posts);
                 dispatch(stopLoading());
             } catch (err) {
                 alert('Something went wrong');
@@ -149,7 +147,7 @@ export default function Explore() {
                                                         color: '#fff',
                                                     }}
                                                 >
-                                                    {post.likes}
+                                                    {post.likes.length}
                                                 </Typography>
                                             </Box>
                                             <Box
@@ -195,6 +193,7 @@ export default function Explore() {
                 open={!!selectedPost}
                 handleClose={handleClosePopup}
                 post={selectedPost}
+                setPosts={setPosts}
             />
         </Box>
     );

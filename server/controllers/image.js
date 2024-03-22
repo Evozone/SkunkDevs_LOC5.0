@@ -1,4 +1,5 @@
 import ImageModel from '../models/imageModel.js';
+import UserModel from '../models/userModel.js';
 
 export const getPosts = async (req, res) => {
     try {
@@ -47,7 +48,7 @@ export const createPost = async (req, res) => {
         altText,
     } = req.body;
 
-    const likes = 0;
+    const likes = [];
 
     try {
         const result = await ImageModel.create({
@@ -150,5 +151,80 @@ export const search = async (req, res) => {
             error: error.message,
         });
         console.log(error);
+    }
+};
+
+export const addImageComment = async (req, res) => {
+    const { commentText } = req.body;
+    const { id } = req.params;
+    const { uid } = req.user;
+    const createdAt = new Date().toISOString();
+    const userResult = await UserModel.findOne({ uid: uid });
+    const toAddComment = {
+        commentBy: userResult._id,
+        commentAt: createdAt,
+        commentText,
+        userName: userResult.username,
+        avatar: userResult.avatar,
+    };
+    try {
+        const result = await ImageModel.findByIdAndUpdate(id, {
+            $push: {
+                comments: toAddComment,
+            },
+        });
+        res.status(200).json({
+            success: true,
+            data: {
+                comments: toAddComment,
+            },
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            data: { error },
+        });
+    }
+};
+
+export const likeDislikeImage = async (req, res) => {
+    const { id } = req.params;
+    const { uid } = req.user;
+    try {
+        //first check if user already liked the post
+        const image = await ImageModel.findById(id);
+        const isLiked = image.likes.some((like) => like.likeBy == uid);
+        if (isLiked) {
+            //if liked, remove like
+            const result = await ImageModel.findByIdAndUpdate(id, {
+                $pull: {
+                    likes: { likeBy: uid },
+                },
+            });
+            res.status(200).json({
+                success: true,
+                data: {
+                    message: 'Post disliked',
+                },
+            });
+        } else {
+            //if not liked, add like
+            const result = await ImageModel.findByIdAndUpdate(id, {
+                $push: {
+                    likes: { likeBy: uid },
+                },
+            });
+            res.status(200).json({
+                success: true,
+                data: {
+                    message: 'Post liked',
+                },
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            data: { error },
+        });
     }
 };
