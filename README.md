@@ -31,7 +31,7 @@ This project is our submission for the L.O.C 5.0 Hackathon by DJSCE ACM Chapter 
 
 | <img src="https://github.com/vishal-codes.png?size=150" width="150" height="150"> | <img src="https://github.com/manastelavane.png?size=150" width="150" height="150"> | <img src="https://github.com/TheBrahmnicBoy.png?size=150" width="150" height="150"> | <img src="https://github.com/Anil-yadav-0712.png?size=150" width="150" height="150"> |
 | --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| [Vishal Shinde](https://github.com/vishal-codes)                                  | [Manas Telavane](https://github.com/manastelavane)                                 | [Bhargav Modak](https://github.com/TheBrahmnicBoy)                                  | [Anilkumar Yadav](https://github.com/Anil-yadav-0712)                                |
+| [Vishal Shinde](https://github.com/vishal-codes)                                  | [Manas Telavane](https://github.com/manastelavane)                                 | [Bhargav Modak](https://github.com/TheBrahmnicBoy)                                  | [Anilkumar Yadav](https://github.com/Anil-yadav-0712)                                |          Shreyashka Patel(https://github.com/ShreyashkaPatel)
 
 ## Tech Stack
 
@@ -64,7 +64,7 @@ This project is our submission for the L.O.C 5.0 Hackathon by DJSCE ACM Chapter 
 - Add the environment variables to a `.env` file in the server and client directories. The file structure should look like this:
 
 ```
-dev-call
+ShutterSpaces
 ├── client
 │   ├── .env
 │   ├── package.json
