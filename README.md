@@ -99,9 +99,3 @@ Open `http://localhost:5173` in your browser to view the application.
 ## Contributing
 
 The project is currently in a closed alpha stage. To make contributions, contact the project maintainers listed below. You will need to be added as a collaborator of the repository to get access to the project.
-
-## Project Maintainer(s)
-
-| <img src="https://github.com/TheBrahmnicBoy.png?size=150" width="150" height="150"> |
-| ----------------------------------------------------------------------------------- |
-| [Bhargav Modak](https://github.com/TheBrahmnicBoy)                                  |
