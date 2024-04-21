@@ -31,7 +31,8 @@ This project is our submission for the L.O.C 5.0 Hackathon by DJSCE ACM Chapter 
 
 | <img src="https://github.com/vishal-codes.png?size=150" width="150" height="150"> | <img src="https://github.com/manastelavane.png?size=150" width="150" height="150"> | <img src="https://github.com/bhargavmodak.png?size=150" width="150" height="150"> | <img src="https://github.com/Anil-yadav-0712.png?size=150" width="150" height="150"> | <img src="https://github.com/ShreyashkaPatel.png?size=150" width="150" height="150"> |
 | --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| [Vishal Shinde](https://github.com/vishal-codes)                                  | [Manas Telavane](https://github.com/manastelavane)                                 | [Bhargav Modak](https://github.com/TheBrahmnicBoy)                                  | [Anilkumar Yadav](https://github.com/Anil-yadav-0712)                                | [Shreyashka Patel](https://github.com/ShreyashkaPatel)                               |
+| [Vishal Shinde](https://github.com/vishal-codes)                                  | [Manas Telavane](https://github.com/manastelavane)                                 | [Bhargav Modak](https://github.com/TheBrahmnicBoy)                                  | [Anilkumar Yadav](https://github.com/Anil-yadav-0712)                                | [Shreyashka Patel](https://github.com/ShreyashkaPatel)                               |    [Pranitha Cuddapah](https://github.com/prani02)   |  [Anushka Bhilare]()
+
 
 ## Tech Stack
 
