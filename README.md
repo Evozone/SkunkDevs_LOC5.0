@@ -20,6 +20,10 @@ This project is our submission for the L.O.C 5.0 Hackathon by DJSCE ACM Chapter 
 
 ---
 
+## Try it out! 
+
+[https://shutterspaces.netlify.app/](https://shutterspaces.netlify.app/)
+
 ## Hackathon Details
 
 - **Name**: L.O.C 5.0
